@@ -1,0 +1,9 @@
+<div class="slider-container">
+      <ng-container *ngFor="let component of components; let i = index">
+          <ng-container *ngIf="i === currentSlideIndex">
+              <ng-container *ngComponentOutlet="component"></ng-container>
+          </ng-container>
+      </ng-container>
+  <button class="prev" (click)="changeSlide(-1)">&#10094;</button>
+  <button class="next" (click)="changeSlide(1)">&#10095;</button>
+</div>

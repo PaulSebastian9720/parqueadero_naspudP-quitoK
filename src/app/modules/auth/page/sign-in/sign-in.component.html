@@ -1,0 +1,52 @@
+<div class="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-800 to-gray-900">
+  <div class="transform -rotate-2">
+    <h2 class="text-5xl mb-10 text-white font-extrabold font">
+      AUTO <span class="text-yellow-500 bg-black px-2 rounded-lg transform ">SPOT</span>
+    </h2>
+  </div>
+  <div  class="bg-white p-8 rounded-lg shadow-lg text-center w-[350px] h-[450px]">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Iniciar Sesión</h2>
+    <i class="fas fa-user fa-4x py-5"></i>
+    <p class="text-gray-600 mb-8">Accede con tu cuenta de Google</p>
+
+    <form (ngSubmit) = "onSubmit()" class="w-full mx-auto" [formGroup]="registerForm">
+      
+      <div class="mb-4">
+        <input 
+        id="correo"
+        type="email"
+        formControlName="correo"
+        class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+        placeholder="example@gmail.com"
+        >
+        <small *ngIf="isRequired('correo')" class="text-red-500">Este campo es requerido </small>
+        <small *ngIf="isEmailRequired()" class="text-red-500">Correo no valido</small>
+      </div>
+
+      <div class="mb-4">
+        <input 
+        id="password"
+        type="password"
+        formControlName="password"
+        class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+        placeholder="******"
+        >
+        <small *ngIf="isRequired('password')" class="text-red-500">Este campo es requerido </small>
+    </div>
+
+    <button type="submit" class="w-full mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg mt-4" [disabled]="registerForm.invalid">Inicias sexion</button>
+
+  </form>
+    <app-button-w-google (onClickEvent)="onSubmitWithGoogle()"></app-button-w-google>
+    <span class="text-gray-400">
+      Aun no tengo cuenta  
+        <a 
+          routerLink="/auth/create-account"
+          class="w-full mt-4 py-2 text-indigo-400 font-medium hover:text-indigo-700 focus:outline-none focus:underline">
+          Crear una
+        </a>
+      </span>
+    </div>  
+</div>
+
+  

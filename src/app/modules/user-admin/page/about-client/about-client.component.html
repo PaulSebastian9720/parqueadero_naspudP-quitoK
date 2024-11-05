@@ -1,0 +1,37 @@
+
+<div class="overflow-x-auto flex flex-col p-10 items-center">
+  <h2 class="text-center font-bold text-3xl mb-5">
+    Listado de Usuarios
+  </h2>
+  <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md mb-5">
+    <thead class="bg-indigo-600 text-white">
+      <tr>
+        <th class="py-3 px-4 text-left font-semibold">Nombre</th>
+        <th class="py-3 px-4 text-left font-semibold">Apellido</th>
+        <th class="py-3 px-4 text-left font-semibold">Estado</th>
+        <th class="py-3 px-4 text-left font-semibold">Correo Electrónico</th>
+        <th class="py-3 px-4 text-left font-semibold">Rol</th>
+        <th class="py-3 px-4 text-left font-semibold">Teléfono</th>
+        <th class="py-3 px-4 text-center font-semibold">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let userData of users;"  class="even:bg-gray-100 hover:bg-gray-200">
+        <td class="py-3 px-4">{{ userData.user.name }}</td>
+        <td class="py-3 px-4">{{ userData.user.last_name }}</td>
+        <td class="py-3 px-4">
+          <span [ngClass]="{'text-green-600': userData.user.state , 'text-red-600': userData.user.state}">
+            {{ userData.user.state ? "Activo" : "Descactivo"}}
+          </span>
+        </td>
+        <td class="py-3 px-4">{{ userData.user.correo }}</td>
+        <td class="py-3 px-4">{{ userData.user.rol }}</td>
+        <td class="py-3 px-4">{{ userData.user.phone }}</td>
+        <td class="py-3 px-4 text-center">
+          <button (click)="onClick(userData)" class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">Seleccionar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-update-form-user class="w-[600px]" [userData]="user"></app-update-form-user>
+  </div>

@@ -1,0 +1,30 @@
+<nav class=" w-64 h-screen p-4 border-r border-gray-300">
+    <h1 class="text-black text-2xl font-bold mb-6">Parking Service</h1>
+    <ul class="space-y-4">
+        <li>
+            <a 
+                (click)="setActiveRoute('/services-client')" 
+                routerLink="/services-client"
+                [class.bg-blue-300]="activeRoute === '/services-client'" 
+                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+            >Ver Vehículos</a>
+        </li>
+       
+        <li>
+            <a  
+                routerLink="/services-client/pay-parking"
+                (click)="setActiveRoute('/services-client/pay-parking')" 
+                [class.bg-blue-300]="activeRoute === '/services-client/pay-parking'" 
+                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+            >Pagar Estacionamiento</a>
+        </li>
+        <li>
+            <a 
+                routerLink="/services-client/reservation-history"
+                (click)="setActiveRoute('/services-client/reservation-history')" 
+                [class.bg-blue-300]="activeRoute === '/services-client/reservation-history'" 
+                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+            >Historial de Reservas</a>
+        </li>
+    </ul>
+</nav>
