@@ -22,8 +22,8 @@
           placeholder="Tu nombre"
           [disabled]="!isEditing"
         />
-        <small *ngIf="isRequired('name')" class="text-red-500">Este campo es requerido</small>
-        <small *ngIf="isShortParameter('name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isRequired('name')" class="text-red-500">Este campo es requerido.</small>
+        <small *ngIf="isShortParameter('name')" class="text-red-500"> Se necesita por lo menos 3 caracteres</small>
       </div>
       
       <div class="mb-4">
@@ -35,8 +35,8 @@
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu apellido"
         >
-        <small *ngIf="isRequired('last_name')" class="text-red-500">Este campo es requerido</small>
-        <small *ngIf="isShortParameter('last_name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isRequired('last_name')" class="text-red-500">Este campo es requerido.</small>
+        <small *ngIf="isShortParameter('last_name')" class="text-red-500"> Se necesita por lo menos 3 caracteres</small>
       </div>
 
       <div class="mb-4">
@@ -81,7 +81,7 @@
           type="text" 
           formControlName="city" 
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          placeholder="Azogues..."
+          placeholder="Tu ciudad"
         />
       </div>
 
