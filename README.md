@@ -1,27 +1,101 @@
-# ProyectoIntegradoParqueadero
+# Universidad Politécnica Salesiana 
+![ups-icc](https://github.com/PaulSebastianNaspud/estructura-u2-pratica3/assets/131235143/d8801de9-eea7-49f5-9594-fe27f5d55528)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
+# Programación y Plataformas Web
 
-## Development server
+### Integrantes: 
+- [PaulSebastianNaspud](https://github.com/PaulSebastianNaspud)  
+- Correo: pnaspudv@est.ups.edu.ec
+- [KarenS22](https://github.com/KarenS22)  
+- Correo: ME LLAMO KAREN Y ME GUSTA LA DANNAESPINO@GMAIL.COM
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Proyecto: Gestión de Parqueadero Público
 
-## Code scaffolding
+### Descripción del Proyecto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Aplicación web para la gestión de un parqueadero público con roles diferenciados para administradores (cajeros) y usuarios (conductores), publicada en Firebase Hosting. Incluye autenticación mediante Google y una interfaz responsive optimizada para usabilidad.
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Funcionalidades Clave
 
-## Running unit tests
+- **Autenticación**: Ingreso con cuenta de Google usando Firebase Authentication.
+- **Usuarios**: Registro, gestión y edición de perfiles.
+- **Administradores**:
+  - Gestión de espacios de parqueo y contratos mensuales.
+  - Configuración de tarifas y horarios.
+  - Administración de usuarios registrados.
+- **Responsive**: Diseño adaptable para móviles y escritorio, siguiendo principios de diseño y usabilidad.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## Tecnologías Utilizadas
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Angular**: Framework principal de desarrollo.
+- **Tailwind CSS**: Para un diseño estilizado y responsivo.
+- **Firebase**: Autenticación y Hosting.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Guía de Instalación
+
+### Requisitos Previos
+
+- **Node.js** (última versión LTS): [Descargar Node.js](https://nodejs.org/)
+- **Firebase CLI**: [Instalar Firebase CLI](https://firebase.google.com/docs/cli)
+
+### Instalación Paso a Paso
+
+#### 1. Clonar el Repositorio  
+   ```bash
+   git clone <https://github.com/PaulSebastian9720/parqueadero_naspudP-quitoK.git>
+   cd <PROYECTO-INTEGRADO-PARQUADERO>
+   ```
+   
+#### 2. Instalar Angular CLI  
+   Si no tienes Angular CLI instalado globalmente, instálalo con el siguiente comando:
+   ```bash
+   npm install -g @angular/cli
+   ```
+## Paso 3: Instalar Dependencias del Proyecto
+
+Una vez dentro de la carpeta del proyecto, instala todas las dependencias necesarias ejecutando el siguiente comando en tu terminal:
+
+```bash
+npm install
+```
+Este comando descargará e instalará todos los paquetes necesarios que están listados en el archivo package.json.
+## Paso 4: Instalar Tailwind CSS
+
+### 4.1 Instalar Dependencias Necesarias
+
+   Instala las dependencias necesarias para usar Tailwind CSS e inicializar:
+   ```bash
+   npm install -D tailwindcss postcss autoprefixer
+   npx tailwindcss init
+```
+ ## 4.2 Configuración de Tailwind
+
+Abre el archivo `tailwind.config.js` y agrega la siguiente configuración para que Tailwind procese todos los archivos de tu aplicación Angular:
+
+```js
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## 4.3 Agregar Tailwind a los Estilos Globales
+
+Crea o abre el archivo `src/styles.css` y agrega las siguientes directivas de Tailwind:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```

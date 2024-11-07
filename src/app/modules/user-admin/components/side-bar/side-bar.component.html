@@ -7,24 +7,40 @@
                 routerLink="/services-admin"
                 [class.bg-blue-300]="activeRoute === '/services-admin'" 
                 class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Listar Usarios</a>
+            >Gestion de Espacios</a>
         </li>
        
         <li>
             <a  
-                routerLink="//services-admin/about-client"
+                routerLink="/services-admin/about-client"
                 (click)="setActiveRoute('/services-admin/about-client')" 
                 [class.bg-blue-300]="activeRoute === '/services-admin/about-client'" 
                 class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Editar Usuarios</a>
+            >Gestion de Clientes</a>
         </li>
         <li>
             <a 
-                routerLink="/services-client/reservation-history"
-                (click)="setActiveRoute('/services-client/reservation-history')" 
-                [class.bg-blue-300]="activeRoute === '/services-client/reservation-history'" 
+                routerLink="/services-admin/contract-management"
+                (click)="setActiveRoute('/services-admin/contract-management')" 
+                [class.bg-blue-300]="activeRoute === '/services-admin/contract-management'" 
                 class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Dashboard</a>
+            >Contrado con Clientes</a>
+        </li>
+        <li>
+            <a 
+                routerLink="/services-admin/parking-schedules"
+                (click)="setActiveRoute('/services-admin/parking-schedules')" 
+                [class.bg-blue-300]="activeRoute === '/services-admin/parking-schedules'" 
+                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+            >Horarios</a>
+        </li>
+        <li>
+            <a 
+                routerLink="/services-admin/parking-rates"
+                (click)="setActiveRoute('/services-admin/parking-rates')" 
+                [class.bg-blue-300]="activeRoute === '/services-admin/parking-rates'" 
+                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+            >Tarifas</a>
         </li>
     </ul>
 </nav>

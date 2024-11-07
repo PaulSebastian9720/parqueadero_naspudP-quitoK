@@ -1,0 +1,27 @@
+<div class="flex  p-3 flex-col">
+    <h2 class="text-2xl font-semibold my-4 text-center">
+        Aquí puedes consultar la disponibilidad de nuestros espacios
+    </h2>
+
+    <div class="flex gap-4  w-full">
+        <span class="w-16"></span>
+        <span class="border p-5 font-semibold" *ngFor="let column of [1, 2, 3, 4, 5, 6]">
+            {{ column }} 
+        </span>
+    </div>
+
+    <div *ngFor="let rowOfMatriz of matrizSpaces; let i = index" class="flex gap-4 items-center w-full">
+        <span class="font-semibold w-16 text-center ">{{ getRowHeader(i) }}</span> 
+        
+        <div *ngFor="let space of rowOfMatriz" class="flex gap-4">
+            <span 
+                class="border p-5 text-center w-24"
+                [ngClass]="{
+                    'bg-green-400': space.isAvailable, 
+                    'bg-red-400': !space.isAvailable
+                }">
+                {{ space.location }}
+            </span>
+        </div>
+    </div>
+</div>

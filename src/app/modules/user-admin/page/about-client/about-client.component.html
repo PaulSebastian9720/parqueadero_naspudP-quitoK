@@ -1,37 +1,71 @@
+<div class="overflow-x-auto flex flex-col p-10">
+  <div class="text-black text-center p-8 mb-6 rounded-lg shadow-md">
+    <p class="text-2xl font-semibold mb-4">
+      En esta página, puedes listar y editar clientes con facilidad.
+    </p>
+    <p class="text-lg">
+      Gestiona de manera rápida y sencilla todos los datos relacionados con los clientes. ¡Haz clic en cualquier usuario para empezar a editar!
+    </p>
+  </div>
 
-<div class="overflow-x-auto flex flex-col p-10 items-center">
-  <h2 class="text-center font-bold text-3xl mb-5">
+  <h2 class="font-bold text-3xl mb-5">
     Listado de Usuarios
   </h2>
-  <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md mb-5">
-    <thead class="bg-indigo-600 text-white">
-      <tr>
-        <th class="py-3 px-4 text-left font-semibold">Nombre</th>
-        <th class="py-3 px-4 text-left font-semibold">Apellido</th>
-        <th class="py-3 px-4 text-left font-semibold">Estado</th>
-        <th class="py-3 px-4 text-left font-semibold">Correo Electrónico</th>
-        <th class="py-3 px-4 text-left font-semibold">Rol</th>
-        <th class="py-3 px-4 text-left font-semibold">Teléfono</th>
-        <th class="py-3 px-4 text-center font-semibold">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let userData of users;"  class="even:bg-gray-100 hover:bg-gray-200">
-        <td class="py-3 px-4">{{ userData.user.name }}</td>
-        <td class="py-3 px-4">{{ userData.user.last_name }}</td>
-        <td class="py-3 px-4">
-          <span [ngClass]="{'text-green-600': userData.user.state , 'text-red-600': userData.user.state}">
-            {{ userData.user.state ? "Activo" : "Descactivo"}}
-          </span>
-        </td>
-        <td class="py-3 px-4">{{ userData.user.correo }}</td>
-        <td class="py-3 px-4">{{ userData.user.rol }}</td>
-        <td class="py-3 px-4">{{ userData.user.phone }}</td>
-        <td class="py-3 px-4 text-center">
-          <button (click)="onClick(userData)" class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">Seleccionar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <app-update-form-user class="w-[600px]" [userData]="user"></app-update-form-user>
+
+  <div class="flex justify-end mb-6">
+    <input type="text" placeholder="Buscar..." 
+           class="w-64 px-4 py-2 border-2 border-blue-500 rounded-l-md focus:outline-none focus:border-blue-700 transition ease-in-out duration-300"
+           [(ngModel)]="wordFilter">
+    <button (click)="onSearch()" 
+            class="ml-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-r-md transition ease-in-out duration-300">
+      Buscar
+    </button>
   </div>
+
+  <div class="overflow-x-auto w-full mb-6 bg-white rounded-lg shadow-lg">
+    <table class="min-w-full shadow-sm">
+      <thead class="bg-blue-600 text-white">
+        <tr>
+          <th class="py-3 px-4 text-left font-semibold">Nombre</th>
+          <th class="py-3 px-4 text-left font-semibold">Apellido</th>
+          <th class="py-3 px-4 text-left font-semibold">Estado</th>
+          <th class="py-3 px-4 text-left font-semibold">Correo Electrónico</th>
+          <th class="py-3 px-4 text-left font-semibold">Rol</th>
+          <th class="py-3 px-4 text-left font-semibold">Teléfono</th>
+          <th class="py-3 px-4 text-center font-semibold">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userData of filteredUsers" class="even:bg-gray-100 hover:bg-blue-50 transition-colors">
+          <td class="py-3 px-4">{{ userData.user.name }}</td>
+          <td class="py-3 px-4">{{ userData.user.last_name }}</td>
+          <td class="py-3 px-4">
+            <span [ngClass]="{'text-green-600': userData.user.state, 'text-red-600': !userData.user.state}">
+              {{ userData.user.state ? "Activo" : "Desactivo" }}
+            </span>
+          </td>
+          <td class="py-3 px-4">{{ userData.user.correo }}</td>
+          <td class="py-3 px-4">{{ userData.user.rol }}</td>
+          <td class="py-3 px-4">{{ userData.user.phone }}</td>
+          <td class="py-3 px-4 text-center">
+            <button (click)="onClick(userData)" 
+                    class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md transition ease-in-out duration-300">
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <span class="block mb-3 w-full text-center text-lg text-gray-700">
+    Selecciona un usuario de la tabla para ver más detalles y realizar acciones.
+  </span>
+
+  <div class="w-full flex justify-center mb-6">
+    <app-update-form-user 
+      [userData]="user"
+      (updateTable)="initUser()"      >
+    </app-update-form-user>
+  </div>
+</div>

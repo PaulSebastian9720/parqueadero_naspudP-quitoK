@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IUsernAuth } from '../../../modules/auth/utils/interfaceRegisterFom';
 import { isShortParameter, isRequired, isNumberPhone } from '../../../modules/auth/utils/validator';
@@ -19,6 +19,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   isEditing = false;
 
   @Input() userData !: UserData
+    @Output() updateTable =  new EventEmitter<void>()
 
   constructor(
     private form: FormBuilder, 
@@ -96,9 +97,9 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
         correoS: correoS || null,
       }
 
-      this.userService.updateUser(this.userData.crendentialUserUID,userData);
+      await this.userService.updateUser(this.userData.crendentialUserUID,userData);
+      this.updateTable.emit()
 
-      
     } catch (error) {
       console.log("Error: " + error)
     }

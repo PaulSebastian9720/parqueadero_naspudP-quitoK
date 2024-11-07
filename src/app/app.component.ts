@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/section/header/header.component';
+import { FooterComponent } from './shared/section/footer/footer.component';
 import { SidebarComponent } from "./modules/user-client/components/sidebar/sidebar.component";
 import { SideBarComponent } from "./modules/user-admin/components/side-bar/side-bar.component";
 

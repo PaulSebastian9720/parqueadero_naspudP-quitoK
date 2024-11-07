@@ -1,18 +1,30 @@
 import { Routes } from "@angular/router";
-import { DashboardComponent } from "./page/dashboard/dashboard.component";
 import { AboutClientComponent } from "./page/about-client/about-client.component";
+import { SpaceInventoryComponent } from "./page/space-inventory/space-inventory.component";
+import { ContractManagementComponent } from "./page/contract-management/contract-management.component";
+import { ParkingSchedulesComponent } from "./page/parking-schedules/parking-schedules.component";
+import { ParkingRatesComponent } from "./page/parking-rates/parking-rates.component";
 
 export default [
     {
         path: "",
-        component:DashboardComponent
+        component: SpaceInventoryComponent
     },
     {
         path: "about-client",
         component: AboutClientComponent
     },
     {
-        path: "editar-cliente",
-        component: AboutClientComponent
-    }
+        path: "contract-management",
+        component: ContractManagementComponent
+    },
+    {
+        path: "parking-schedules",
+        component: ParkingSchedulesComponent
+    },
+
+    {
+        path: "parking-rates",
+        component: ParkingRatesComponent
+    },
 ] as Routes
