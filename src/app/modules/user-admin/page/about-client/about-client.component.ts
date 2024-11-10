@@ -5,11 +5,12 @@ import { UserData } from '../../../../core/models/user';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { UpdateFormUserComponent } from "../../../../shared/components/update-form-user/update-form-user.component";
 import { FormsModule } from '@angular/forms';
+import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
 
 @Component({
   selector: 'app-about-client',
   standalone: true,
-  imports: [CommonModule, UpdateFormUserComponent, FormsModule],
+  imports: [CommonModule, UpdateFormUserComponent, FormsModule, HeaderServiceComponent],
   templateUrl: './about-client.component.html',
 })
 

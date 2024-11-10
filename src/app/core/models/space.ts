@@ -1,15 +1,47 @@
+import { Client } from "./client";
+
 export class Space  {
     constructor(
-        public location? : string,
-        public isAvailable? : boolean,
-        public lastUsed? : Date | null,
-        public currentUserUID? : string,
-        public lastComment? : Date | null,
-        public comments? : number,
-        public lastPayment? : Date | null,
+        public location : string,
+        public isAvailable : boolean,
+        public client? : Client
     ){}
 }
 
+export class SpaceFB {
+    constructor(
+        public location : string,
+        public isAvailable : boolean,
+        public idFBCliente : string,
+        public idFBManagement: string
+    ){}
+    
+    toJSON() {
+        return {
+          location: this.location,
+          isAvailable: this.isAvailable,
+          idFBCliente: this.idFBCliente,
+          idFBManagement: this.idFBManagement,
+        };
+    }
+
+    static fromJSON(json: any): SpaceFB {
+        return new SpaceFB(
+            json.location,
+            json.isAvailable,
+            json.idFBCliente,
+            json.idFBManagement
+        );
+    }
+}
+
+export class SpaceData {
+    constructor(
+        public id: string,
+        public  spaceFB:SpaceFB ,
+
+    ){}
+}
 export const getMatrix = () => {
     return [
         [new Space('A-1', true), new Space('A-2', false), new Space('A-3', true), new Space('A-4', false), new Space('A-5', true), new Space('A-6', false)],

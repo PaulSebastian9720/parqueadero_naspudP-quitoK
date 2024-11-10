@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUsernAuth } from '../../../modules/auth/utils/interfaceRegisterFom';
 import { isShortParameter, isRequired, isNumberPhone } from '../../../modules/auth/utils/validator';
 import { UserfbService } from '../../services/user/userfb.service';
 import { CommonModule } from '@angular/common';
@@ -19,7 +18,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   isEditing = false;
 
   @Input() userData !: UserData
-    @Output() updateTable =  new EventEmitter<void>()
+  @Output() updateTable =  new EventEmitter<void>()
 
   constructor(
     private form: FormBuilder, 
@@ -106,6 +105,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   }
 
   toggleEdit() {
+    if(!this.userData)return
     this.isEditing = !this.isEditing
   }
 

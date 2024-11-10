@@ -22,7 +22,8 @@ export class AppComponent implements OnInit{
   showSideBar = false
   showSideBarAdmin = false
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+  ) {}
   
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -46,5 +47,4 @@ export class AppComponent implements OnInit{
       
     });
   }
-
 }

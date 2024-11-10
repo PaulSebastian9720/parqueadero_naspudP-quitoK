@@ -1,27 +1,26 @@
-<div class="flex  p-3 flex-col">
-    <h2 class="text-2xl font-semibold my-4 text-center">
-        Aquí puedes consultar la disponibilidad de nuestros espacios
-    </h2>
-
-    <div class="flex gap-4  w-full">
-        <span class="w-16"></span>
-        <span class="border p-5 font-semibold" *ngFor="let column of [1, 2, 3, 4, 5, 6]">
-            {{ column }} 
-        </span>
+<div class="p-4   overflow-y-auto max-w-full sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1200px] mx-auto">
+        
+    <div class="grid grid-cols-8 gap-2 text-center border-b-2 pb-3 mb-3 font-semibold text-gray-700">
+        <span></span> 
+        <span *ngFor="let column of [1, 2, 3, 4, 5, 6, 7]" class="px-2">{{ column }}</span>
     </div>
 
-    <div *ngFor="let rowOfMatriz of matrizSpaces; let i = index" class="flex gap-4 items-center w-full">
-        <span class="font-semibold w-16 text-center ">{{ getRowHeader(i) }}</span> 
-        
-        <div *ngFor="let space of rowOfMatriz" class="flex gap-4">
-            <span 
-                class="border p-5 text-center w-24"
+    <div *ngFor="let rowOfMatriz of matrizSpaces; let i = index" class="grid grid-cols-8 gap-2 items-center mb-2">
+        <span class="font-semibold text-gray-700 text-center px-2">{{ getRowHeader(i) }}</span> 
+
+        <div *ngFor="let space of rowOfMatriz" class="w-full h-20 flex justify-center items-center">
+            <div 
+                (click)="onCLickEmiter(space)"
+                class="w-full h-full flex flex-col justify-center items-center rounded-lg  cursor-pointer"
                 [ngClass]="{
-                    'bg-green-400': space.isAvailable, 
-                    'bg-red-400': !space.isAvailable
+                    'bg-green-400 hover:bg-green-300': space.spaceFB.isAvailable, 
+                    'bg-red-400 hover:bg-red-300': !space.spaceFB.isAvailable
                 }">
-                {{ space.location }}
-            </span>
+                
+                <i *ngIf="space.spaceFB.isAvailable" class="fas fa-car text-xl text-black"></i>
+                <i *ngIf="!space.spaceFB.isAvailable" class="fas fa-ban text-xl text-black"></i>
+                <span class="text-xs font-medium text-gray-800 mt-1">{{ space.spaceFB.location }}</span>
+            </div>
         </div>
     </div>
 </div>

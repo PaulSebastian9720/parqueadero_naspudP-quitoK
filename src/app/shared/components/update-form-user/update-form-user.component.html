@@ -20,7 +20,7 @@
           formControlName="name" 
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu nombre"
-          [disabled]="!isEditing"
+          [readonly]="!isEditing"
         />
         <small *ngIf="isRequired('name')" class="text-red-500">Este campo es requerido.</small>
         <small *ngIf="isShortParameter('name')" class="text-red-500"> Se necesita por lo menos 3 caracteres</small>
@@ -31,7 +31,8 @@
         <input 
           id="last_name"
           type="text" 
-          formControlName="last_name" 
+          formControlName="last_name"
+          [readonly]="!isEditing"
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu apellido"
         >
@@ -44,7 +45,8 @@
         <input 
           id="correo"
           type="email" 
-          formControlName="correo" 
+          formControlName="correo"
+          [readonly]="true" 
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="example@gmail.com"
         >   
@@ -57,7 +59,8 @@
         <input 
           id="correoO"
           type="email" 
-          formControlName="correoS" 
+          formControlName="correoS"
+          [readonly]="!isEditing"
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="example@gmail.com"
         >   
@@ -68,7 +71,8 @@
         <input 
           id="direccion"
           type="text" 
-          formControlName="direction" 
+          formControlName="direction"
+          [readonly]="!isEditing"
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu dirección"
         />
@@ -79,7 +83,8 @@
         <input 
           id="city"
           type="text" 
-          formControlName="city" 
+          formControlName="city"
+          [readonly]="!isEditing"
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu ciudad"
         />
@@ -90,7 +95,8 @@
         <input 
           id="phone"
           type="text" 
-          formControlName="phone" 
+          formControlName="phone"
+          [readonly]="!isEditing"
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Número de teléfono"
         />
@@ -101,7 +107,8 @@
         <label for="birthday" class="block text-gray-500 font-semibold mb-2">Fecha de nacimiento</label>
         <input 
           id="birthday" 
-          type="date" 
+          type="date"
+          [readonly]="!isEditing"
           formControlName="birthday" 
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
         >

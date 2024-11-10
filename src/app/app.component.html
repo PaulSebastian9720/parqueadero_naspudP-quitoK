@@ -1,9 +1,12 @@
 <app-header *ngIf="showSections"></app-header>
-<div class="flex w-full h-full min-h-screen">
+
+<div class="flex flex-col sm:flex-row w-full h-full min-h-screen overflow-hidden">
     <app-sidebar *ngIf="showSideBar"></app-sidebar>
-    <app-side-bar *ngIf="showSideBarAdmin"></app-side-bar>
-    <div class="flex-1">  
+    <app-side-bar *ngIf="showSideBarAdmin" ></app-side-bar>
+    
+    <div class="flex-1 overflow-auto max-w-full">
         <router-outlet></router-outlet>
     </div>
 </div>
+
 <app-footer *ngIf="showSections"></app-footer>

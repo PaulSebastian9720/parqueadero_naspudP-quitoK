@@ -10,8 +10,12 @@ import { RouterModule } from '@angular/router';
 })
 export class SideBarComponent {
   activeRoute: string = "/services-admin"
+  isOpen = false;
 
   setActiveRoute(route: string) {
     this.activeRoute = route;
+  }
+  toggleSidebar() {
+    this.isOpen = !this.isOpen;
   }
 }
