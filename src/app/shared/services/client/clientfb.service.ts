@@ -23,6 +23,7 @@ export class ClientFBService {
     }
 
     async updateClient(clientId: string, updatedClient: Partial<ClientFB>){
-        return setDoc(doc(this.firestore, `client/${clientId}`), updatedClient)
+        return setDoc(doc(this.firestore, `client/${clientId}`), updatedClient, {merge: true})
     }
+                        
 }

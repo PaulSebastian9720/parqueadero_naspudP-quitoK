@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { doc, Firestore, setDoc } from "@angular/fire/firestore";
-import { ManagementFB } from "../../../core/models/management";
+import { collection, doc, Firestore, getDoc, getDocs, setDoc, snapToData } from "@angular/fire/firestore";
+import { ManagementData, ManagementFB } from "../../../core/models/management";
 
 @Injectable ({
     providedIn : 'root'
@@ -11,4 +11,23 @@ export class ContractManFBService {
     async createContract(id: string, managenteFB : ManagementFB) {
         return setDoc(doc(this.fireStore, `contract-m/${id}`), managenteFB.toJson())
     }
+
+    async getContract(id: string): Promise<ManagementFB | null> {
+        return getDoc(doc(this.fireStore, `contract-m/${id}`))
+        .then((snapShot) => snapShot.data() as ManagementFB) || null
+    }
+
+
+    async updatoContract(id: string, updateManagementFb:Partial<ManagementFB | null>) {
+        return setDoc(doc(this.fireStore, `conrtract-m/${id}`), updateManagementFb, {merge: true})
+    }
+
+    async getListManagement(): Promise<ManagementData []>{
+        const getListManagement =  collection(this.fireStore,'conrtract-m')
+        const managementSnapt = await getDocs(getListManagement)
+        return managementSnapt.docs.map( doc => {
+            return new ManagementData(doc.id, doc.data() as ManagementFB)
+        })
+    }
+
 }

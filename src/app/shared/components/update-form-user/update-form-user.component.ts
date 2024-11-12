@@ -15,9 +15,9 @@ import { UserData, UserFB } from '../../../core/models/user';
 
 export class UpdateFormUserComponent implements OnInit, OnChanges {
   registerForm!: FormGroup;
-  isEditing = false;
 
   @Input() userData !: UserData
+  @Input()   isEditing = false
   @Output() updateTable =  new EventEmitter<void>()
 
   constructor(
@@ -73,6 +73,8 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   }
 
   async onSubmit(){
+    if(!this.userData) return
+    
     if (this.registerForm.invalid) return;
     
     const { name, last_name, correo,  birthDay, correoS, direction, city, phone } = this.registerForm.value;
@@ -86,9 +88,9 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       const userData : UserFB = {
         name: name,
         last_name: last_name,
-        correo: correo,
-        rol: 'C', 
-        state: true,
+        correo: this.userData.user.correo,
+        rol: this.userData.user.rol, 
+        state: this.userData.user.state,
         birthDay: birthDay || null,
         city: city || null,
         phone: phone || null,
@@ -104,9 +106,6 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
     }
   }
 
-  toggleEdit() {
-    if(!this.userData)return
-    this.isEditing = !this.isEditing
-  }
+  
 
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { getMatrix, Space, SpaceData } from '../../../core/models/space';
+import { SpaceData } from '../../../core/models/space';
 import { CommonModule } from '@angular/common';
 import { NgModel } from '@angular/forms';
 import { ParkinLotService } from '../../services/space/parkink-lot.service';

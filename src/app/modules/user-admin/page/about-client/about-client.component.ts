@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgModel } from '@angular/forms';
 import { UserData } from '../../../../core/models/user';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { UpdateFormUserComponent } from "../../../../shared/components/update-form-user/update-form-user.component";
 import { FormsModule } from '@angular/forms';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
+import { TableContractComponent } from "../../components/table-contract/table-contract.component";
 
 @Component({
   selector: 'app-about-client',
   standalone: true,
-  imports: [CommonModule, UpdateFormUserComponent, FormsModule, HeaderServiceComponent],
+  imports: [CommonModule, UpdateFormUserComponent, FormsModule, HeaderServiceComponent, TableContractComponent],
   templateUrl: './about-client.component.html',
 })
 
@@ -21,6 +21,8 @@ export class AboutClientComponent implements OnInit {
   users: UserData[] = []
   filteredUsers: UserData[] = []  
   wordFilter: string = ""
+  isEditing = false
+
 
   async ngOnInit(): Promise<void> {
     this.initUser()
@@ -37,11 +39,17 @@ export class AboutClientComponent implements OnInit {
   onClick(userData: UserData): void {
     console.log(userData);
     this.user = userData;
-  }
+  } 
 
   async initUser(): Promise<void> {
     const users = await this.userService.getListUsers();
-    this.users = users.filter(UserData => UserData.user.rol != 'A')
-    this.filteredUsers = [...this.users];
+    this.users = users
+    this.filteredUsers = users
+  }
+
+  toggleEdit() {
+    if(!this.user) return
+    if(this.user.user.rol === 'A') return
+    this.isEditing = !this.isEditing
   }
 }

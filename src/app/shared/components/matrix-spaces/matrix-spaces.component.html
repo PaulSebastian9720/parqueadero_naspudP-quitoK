@@ -1,6 +1,8 @@
 <div class="p-4   overflow-y-auto max-w-full sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1200px] mx-auto">
         
-    <div class="grid grid-cols-8 gap-2 text-center border-b-2 pb-3 mb-3 font-semibold text-gray-700">
+    <div 
+        *ngIf="matrizSpaces"
+        class="grid grid-cols-8 gap-2 text-center  pb-3 mb-3 font-semibold text-gray-700">
         <span></span> 
         <span *ngFor="let column of [1, 2, 3, 4, 5, 6, 7]" class="px-2">{{ column }}</span>
     </div>

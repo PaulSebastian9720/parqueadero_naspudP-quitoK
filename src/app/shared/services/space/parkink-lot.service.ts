@@ -33,6 +33,24 @@ export class ParkinLotService {
         return setDoc(doc(this.fireStore, `parking-lot/${keyRow}/col/${id}-SPC`), dataToSave)
     }
 
-
+    private async fillParkingLot() {
+        const rows = 7; 
+        const spacesPerColumn = 7; 
+    
+        for (let row = 1; row <= rows; row++) { 
+          const rowLetter = String.fromCharCode(64 + row)
+    
+            for (let space = 1; space <= spacesPerColumn; space++) {
+                const spaceId = `R${rowLetter}-C${space}-SPC`
+                const location = `R${rowLetter}-C${space}`
+                
+                await setDoc(
+                    doc(this.fireStore, `parking-lot/row-${rowLetter.toLowerCase()}/col/${spaceId}`),
+                    new SpaceFB(location, true, "", "").toJSON() 
+                )
+            }
+        }
+    
+      }
     
 }

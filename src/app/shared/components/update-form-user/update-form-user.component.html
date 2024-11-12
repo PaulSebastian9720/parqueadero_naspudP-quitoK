@@ -1,16 +1,5 @@
 <div class="bg-white w-full min-w-[500px] p-4 mt-5">
-  <div class="flex justify-between items-center">
-    <h3 class="text-xl font-semibold mb-4">Detalles del Perfil</h3>
-  
-    <button (click)="toggleEdit()" 
-      class="px-10 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg" 
-    > 
-    {{ isEditing ? 'Cancelar' : 'Editar' }}
-    </button>
-  </div>  
-
-  <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="mt-8">
-    <h3 class="text-2xl font-bold text-center text-gray-700">Actualiza tus datos</h3>
+  <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
     <div class="space-y-4 mt-8">
       <div class="mb-4">
         <label for="name" class="block text-gray-500 font-semibold mb-2">Nombre</label>
@@ -119,7 +108,7 @@
       type="submit" 
       class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 rounded-lg my-2" 
       [disabled]="registerForm.invalid">
-      Actualiza
+      Actualizar
     </button>
   </form>
 </div>

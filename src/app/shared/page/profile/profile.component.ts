@@ -15,6 +15,8 @@ import { UserData, UserFB } from '../../../core/models/user';
 export class ProfileComponent implements OnInit{
 
   user! : UserData
+  isEditing = false
+
 
 
   constructor(
@@ -30,6 +32,11 @@ export class ProfileComponent implements OnInit{
       const userData : UserFB = UserFB.fromJsson(userCurrent)
       this.user = new UserData(currentUserUID,userData)
     }
+  }
+
+  toggleEdit() {
+    if(!this.user)return
+    this.isEditing = !this.isEditing
   }
 }
 

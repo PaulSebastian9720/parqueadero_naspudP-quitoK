@@ -1,4 +1,5 @@
 <div class="flex flex-col w-full items-center px-2 py-4">
+    
     <div class="flex flex-col items-center  w-full max-w-[600px] border-b border-gray-900 p-4  ">
         <img 
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP6b8NWqozq2vsz9fWwMqPW2vsqDNPj5spaQ&s" 
@@ -13,7 +14,22 @@
             
         </div>
     </div>
-    
-    <app-update-form-user [userData]="user"></app-update-form-user>
+   
+    <h3 class="text-2xl font-bold text-center text-gray-700 mt-5">Actualiza tus datos</h3>
+    <button 
+        (click)="toggleEdit()" 
+        class="px-10 font-semibold py-2 rounded-lg mt-5 text-white"
+        [ngClass]="{
+            ' bg-blue-500 hover:bg-blue-600  ': !isEditing,
+            ' bg-red-500 hover:bg-red-600' : isEditing,
+
+        }"> 
+    {{ isEditing ? 'Cancelar' : 'Editar' }}
+    </button>
+
+    <app-update-form-user 
+        [userData]="user"
+        [isEditing]="isEditing"	
+    ></app-update-form-user>
     
 </div>

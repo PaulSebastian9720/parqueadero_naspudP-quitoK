@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
 import { MatrixSpacesComponent } from "../../../../shared/components/matrix-spaces/matrix-spaces.component";
 import { SpaceData } from '../../../../core/models/space';
