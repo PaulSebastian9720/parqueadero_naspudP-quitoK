@@ -40,11 +40,11 @@ export class CreateContractComponent {
     return this.formatDate(this.endDate)
   }
 
-  onClickButtonML( monts: number ) {
+  onClickButtonML( months: number ) {
     if (!this.userData ||!this.spaceData) return
-    if(this.endDate.getTime() === this.startDate.getTime() && monts < 0) return
-    this.endDate.setMonth(this.endDate.getMonth() + monts)
-    this.price = monts > 0 ? (this.price + 35) : (this.price - 35)
+    if(this.endDate.getTime() === this.startDate.getTime() && months < 0) return
+    this.endDate.setMonth(this.endDate.getMonth() + months)
+    this.price = months > 0 ? (this.price + 35) : (this.price - 35)
   }
 
   private formatDate(dateC :Date): string {
