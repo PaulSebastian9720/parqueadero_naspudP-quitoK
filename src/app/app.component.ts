@@ -15,15 +15,14 @@ import { SideBarComponent } from "./modules/user-admin/components/side-bar/side-
   styleUrl: './app.component.scss'
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit{ 
   title = 'proyecto-integrado-parqueadero';
 
   showSections = false
   showSideBar = false
   showSideBarAdmin = false
 
-  constructor(private router: Router,
-  ) {}
+  constructor(private router: Router) {}
   
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -47,4 +46,6 @@ export class AppComponent implements OnInit{
       
     });
   }
+
+  
 }

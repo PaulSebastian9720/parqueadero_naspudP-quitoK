@@ -1,33 +1,27 @@
-<div class="flex flex-col items-center bg-gradient-to-r from-teal-400 to-blue-500 px-8 py-14 rounded-lg shadow-lg text-center  h-[475px]">
-    <h2 class="text-white font-bold text-xl uppercase tracking-wider mb-2">
-        HORARIOS DE ATENCIÓN
-    </h2>
-    <h1 class="text-white font-extrabold text-4xl mb-4">
-        ¡Estamos aquí para ti!
-    </h1>
+<div class="flex flex-col items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500 px-8 py-14 rounded-lg shadow-lg text-center lg:h-[475px] md:h-auto">
+  <h2 class="text-white font-bold text-xl uppercase tracking-wider mb-2">
+    HORARIOS DE ATENCIÓN
+  </h2>
+  <h1 class="text-white font-extrabold text-4xl mb-4">
+    ¡Estamos aquí para ti!
+  </h1>
 
-    <p class="text-white text-lg mb-4">
-        Nuestra atención es personalizada y dedicada. Asegúrate de visitarnos en los siguientes horarios:
-    </p>
+  <p class="text-white text-lg mb-4">
+    Nuestra atención es personalizada y dedicada. Asegúrate de visitarnos en los siguientes horarios:
+  </p>
 
-    <div class="flex flex-col space-y-4 mb-6">
-        <div class="bg-white p-4 rounded-lg shadow-lg">
-            <p class="text-gray-800 font-semibold">Lunes a Viernes</p>
-            <p class="text-3xl font-extrabold text-teal-600">7:00 AM - 12:00 PM</p>
-        </div>
+  <div class="flex flex-wrap justify-center gap-4 mb-6 w-full">
+    <div *ngFor="let group of groupedDays" class="bg-white p-4 rounded-lg shadow-lg w-48 h-28 flex flex-col justify-center items-center text-center">
+      <p class="text-gray-800 font-semibold">{{ group.days.join(', ') }}</p>
+      <p class="text-2xl font-extrabold text-teal-600">
+        {{ (group.open === "00:00" && group.close === "00:00") ? 'No Abierto' : (group.open + ' - ' + group.close)  }}
+      </p>
+          </div>
+  </div>
 
-        <div class="bg-white p-4 rounded-lg shadow-lg">
-            <p class="text-gray-800 font-semibold">Sábado</p>
-            <p class="text-3xl font-extrabold text-teal-600">8:00 AM - 12:00 PM</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow-lg">
-            <p class="text-gray-800 font-semibold">Domingo</p>
-            <p class="text-3xl font-extrabold text-teal-600">Cerrado</p>
-        </div>
-    </div>
-
-    <button class="bg-yellow-400 text-black font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-yellow-500 transition">
-        ¡PLANIFICA TU VISITA!
-    </button>
+  <a
+    href="#schedule"
+    class="bg-yellow-400 text-black font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-yellow-500 transition">
+    ¡PLANIFICA TU VISITA!
+</a>
 </div>

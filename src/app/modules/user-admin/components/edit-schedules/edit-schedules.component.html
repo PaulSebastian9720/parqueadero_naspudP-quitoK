@@ -1,0 +1,55 @@
+<div class="mt-6 w-full max-w-md mx-auto p-6 flex flex-col items-center">
+    <h3>Seleccione 00:00 y 00:00 para dias no laburables</h3>
+    <div class="flex flex-col gap-6 mb-6 w-[400px]">
+        <div class="flex flex-col">
+            <label for="startDay" class="text-lg font-semibold mb-2">Desde</label>
+            <select 
+                id="startDay" 
+                [(ngModel)]="selectedStartDay" 
+                class="border border-gray-300 rounded p-2 w-full text-gray-700">
+                <option value="" disabled selected hidden>Día de inicio</option>
+                <option *ngFor="let day of daysOfWeek" [value]="day">
+                    {{ day }}
+                </option>
+            </select>
+        </div>
+        
+        <div class="flex flex-col">
+            <label for="endDay" class="text-lg font-semibold mb-2">Hasta</label>
+            <select 
+                id="endDay" 
+                [(ngModel)]="selectedEndDay" 
+                class="border border-gray-300 rounded p-2 w-full text-gray-700">
+                <option value="" disabled selected hidden>Día de fin</option>
+                <option *ngFor="let day of getFilteredEndDays()" [value]="day">
+                    {{ day }}
+                </option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="startTime" class="text-lg font-semibold mb-2">Hora de Inicio</label>
+            <input 
+                type="time" 
+                id="startTime" 
+                [(ngModel)]="selectStartTime" 
+                class="border border-gray-300 rounded p-2 w-full text-gray-700">
+        </div>
+        
+        <div class="flex flex-col">
+            <label for="endTime" class="text-lg font-semibold mb-2">Hora de Fin</label>
+            <input 
+                type="time" 
+                id="endTime" 
+                [(ngModel)]="selectEndTime" 
+                class="border border-gray-300 rounded p-2 w-full text-gray-700">
+        </div>
+    </div>
+
+    <button 
+        type="button" 
+        class="bg-blue-500 text-white rounded-lg py-3 px-16 hover:bg-blue-600 transition duration-200"
+        (click)="onCLickSetDay()">
+        Guardar
+    </button>
+</div>
