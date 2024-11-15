@@ -1,3 +1,5 @@
+import { Automobile } from "./automobile";
+
 export class UserFB {
   
     constructor(
@@ -11,23 +13,9 @@ export class UserFB {
       public city?: string,
       public phone?: string,
       public correoS?: string,
+      public listAutomobile?: Automobile [],
+      public listManagement?: string[],
     ){}
-    
-    static fromJsson(jsson :any): UserFB {
-      return new UserFB(
-        jsson.name,
-        jsson.state,
-        jsson.last_name,
-        jsson.correo,
-        jsson.rol,
-        jsson.birthDay? new Date(jsson.birthDay) : null,
-        jsson.direction || '',
-        jsson.city || '',
-        jsson.phone || '',
-        jsson.correoS || '',
-
-      ) 
-    }
 }
 
 export class UserData {

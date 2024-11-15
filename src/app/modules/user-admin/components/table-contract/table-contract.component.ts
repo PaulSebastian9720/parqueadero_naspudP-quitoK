@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {  ManagementFB } from '../../../../core/models/management';
 import { UserData } from '../../../../core/models/user';
-import { ClientFBService } from '../../../../shared/services/client/clientfb.service';
 import { ContractManFBService } from '../../../../shared/services/contract-management/contract-manfb.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModel } from '@angular/forms';
+import { UserfbService } from '../../../../shared/services/user/userfb.service';
 
 @Component({
   selector: 'app-table-contract',
@@ -14,21 +14,20 @@ import { NgModel } from '@angular/forms';
   imports: [CommonModule,  FormsModule]
 })
 export class TableContractComponent implements OnChanges {
+  @Input() userData !: UserData
+  listContract : ManagementFB[] = []
 
   constructor(
-    private clientService : ClientFBService,
-    private contracService : ContractManFBService
+    private contracService : ContractManFBService,
+    private userService : UserfbService,
   ) { }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userData'] && changes['userData'].currentValue) {
       this.initTable()
     }
   }
 
- 
-  @Input() userData !: UserData
-  listContract : ManagementFB[] = []
-  
   OnChanges(){
 
   }
@@ -45,17 +44,13 @@ export class TableContractComponent implements OnChanges {
 
   async initTable(){
 
-    const exists = await this.clientService.clientExists(`cli-${this.userData.crendentialUserUID}`)
-    if(!exists) {
-      console.log("No tiene asociado")
-      return
-    }
+    
     let listContractAux : ManagementFB [] = []
-    const client = await this.clientService.getClient(`cli-${this.userData.crendentialUserUID}`)
+    const client = await this.userService.getUser(this.userData.crendentialUserUID)
     console.log(client)
     if(client){
-      for( let i = 0; i < client?.fbUIManagementList!.length; i++){
-        const contract = await this.contracService.getContract(client.fbUIManagementList![i])
+      for( let i = 0; i < client?.listManagement!.length; i++){
+        const contract = await this.contracService.getContract(client.listManagement![i])
         console.log(contract)  
         if(contract!){
           listContractAux.push(contract)

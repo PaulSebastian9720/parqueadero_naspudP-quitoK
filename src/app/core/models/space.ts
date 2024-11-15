@@ -1,17 +1,8 @@
-import { Client } from "./client";
-
-export class Space  {
-    constructor(
-        public location : string,
-        public isAvailable : boolean,
-        public client? : Client
-    ){}
-}
 
 export class SpaceFB {
     constructor(
         public location : string,
-        public isAvailable : boolean,
+        public state : "Y"| "N" | "O"|"NP",
         public idFBCliente : string,
         public idFBManagement: string
     ){}
@@ -19,7 +10,7 @@ export class SpaceFB {
     toJSON() {
         return {
           location: this.location,
-          isAvailable: this.isAvailable,
+          state: this.state,
           idFBCliente: this.idFBCliente,
           idFBManagement: this.idFBManagement,
         };
@@ -28,7 +19,7 @@ export class SpaceFB {
     static fromJSON(json: any): SpaceFB {
         return new SpaceFB(
             json.location,
-            json.isAvailable,
+            json.state,
             json.idFBCliente,
             json.idFBManagement
         )

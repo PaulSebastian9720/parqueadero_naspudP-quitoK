@@ -49,7 +49,7 @@ export class SignInComponent implements OnInit{
   async onSubmitWithGoogle() {
     try {
         const userCredential = await this.authService.signInWithGoogle()
-        if (!userCredential.user) return;
+        if (!userCredential.user) return
 
         const user = userCredential.user
         const exists: boolean = await this.userService.userExists(user.uid)
@@ -62,18 +62,22 @@ export class SignInComponent implements OnInit{
                 rol: 'C',
                 state: true,
                 birthDay: null,
+                direction: "",
+                city: "",
+                phone: "",
+                correoS: "",
+                listAutomobile: [],
+                listManagement: [],
             }
             await this.userService.createUserInFirestore(user.uid, userData)
             this.currenUserCanche.setUser(userData)
         } else {
             const currenUser = await this.userService.getUser(user.uid)
-            this.currenUserCanche.setUser(UserFB.fromJsson(currenUser))
+            this.currenUserCanche.setUser(currenUser as UserFB)
         }
         
         this.router.navigateByUrl('/');
-    } catch (error) {
-        console.error("Error during Google sign-in:", error)
-    }
+    } catch (error) {}
   }
 
 
@@ -86,7 +90,7 @@ export class SignInComponent implements OnInit{
       const credential = await this.authService.signIn({correo,password})
       if(!credential.user) return
       const currentUser = await this.userService.getUser(credential.user.uid)
-      this.currenUserCanche.setUser(UserFB.fromJsson(currentUser))
+      this.currenUserCanche.setUser(currentUser as UserFB)
       this.router.navigateByUrl('/')
     }catch(error){}
   }

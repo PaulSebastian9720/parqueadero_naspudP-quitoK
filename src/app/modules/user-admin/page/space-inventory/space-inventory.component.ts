@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatrixSpacesComponent } from "../../../../shared/components/matrix-spaces/matrix-spaces.component";
 import { InfoSpaceComponent } from "../../components/info-space/info-space.component";
-import { Space } from '../../../../core/models/space';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";

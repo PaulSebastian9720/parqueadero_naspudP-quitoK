@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit{
     const currentUserUID = await this.authService.credentialUserUID
     if(currentUserUID){
       const userCurrent = await  this.userFBSerivce.getUser(currentUserUID!)
-      const userData : UserFB = UserFB.fromJsson(userCurrent)
+      const userData : UserFB = userCurrent as UserFB
       this.user = new UserData(currentUserUID,userData)
     }
   }

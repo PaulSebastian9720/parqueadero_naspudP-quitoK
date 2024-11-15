@@ -37,8 +37,8 @@ export class UserfbService {
     const usersRef = collection(this.fireStore, 'users')
     const usersSnap = await getDocs(usersRef)
     return usersSnap.docs.map(doc => {
-        return new UserData(doc.id, UserFB.fromJsson(doc.data()))
+        return new UserData(doc.id, doc.data() as UserFB)
     });
-}
+  }
 
 }

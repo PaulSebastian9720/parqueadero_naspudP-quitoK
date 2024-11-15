@@ -5,7 +5,7 @@ import { ClientFB } from "../../../core/models/client";
 @Injectable({
     providedIn: "root"
 })
-export class ClientFBService {
+class ClientFBService {
     constructor(private firestore: Firestore) { }
 
     async createClient(clientId: string, clientFB: ClientFB){

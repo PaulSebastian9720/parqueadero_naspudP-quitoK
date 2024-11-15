@@ -14,7 +14,7 @@ export class UserCacheService {
     const userJson = localStorage.getItem(this.storageKey)
     if (userJson) {
       const userObject = JSON.parse(userJson);
-      this.userSubject.next(UserFB.fromJsson(userObject))
+      this.userSubject.next(userObject as UserFB)
     }
   }
 

@@ -27,19 +27,19 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userData'] && changes['userData'].currentValue) {
-      this.registerForm.patchValue({
-        name: this.userData.user.name || '',
-        last_name: this.userData.user.last_name || '',
-        correo: this.userData.user.correo || '',
-        birthday: this.userData.user.birthDay || null,
-        phone: this.userData.user.phone || null,
-        direction : this.userData.user.direction || null,
-        city: this.userData.user.city || null,
-        correoS: this.userData.user.correoS || null,
-      });
-
-    }
+      if (changes['userData'] && changes['userData'].currentValue) {
+        this.registerForm.patchValue({
+          name: this.userData.user.name || '',
+          last_name: this.userData.user.last_name || '',
+          correo: this.userData.user.correo || '',
+          birthday: this.userData.user.birthDay || null,
+          phone: this.userData.user.phone || "",
+          direction : this.userData.user.direction || "",
+          city: this.userData.user.city || "",
+          correoS: this.userData.user.correoS || "",
+        });
+  
+      }
   }
   
   ngOnInit(): void {
@@ -56,8 +56,21 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       direction:       this.form.control(''), 
       city:       this.form.control('',),
       phone:       this.form.control('',),
-      birthday:        this.form.control(new Date())
+      birthday:        this.form.control(new Date()) || null
     }, { });
+
+    if(this.userData){
+      this.registerForm.patchValue({
+        name: this.userData.user.name || '',
+        last_name: this.userData.user.last_name || '',
+        correo: this.userData.user.correo || '',
+        birthday: this.userData.user.birthDay || null,
+        phone: this.userData.user.phone || null,
+        direction : this.userData.user.direction || null,
+        city: this.userData.user.city || null,
+        correoS: this.userData.user.correoS || null,
+      });
+    }
   }
 
   isShortParameter(fiel : "password" | "name" | "last_name"| "number" , minLength:  number = 3){

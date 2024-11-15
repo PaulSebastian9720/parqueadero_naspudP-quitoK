@@ -29,11 +29,10 @@ export class ParkinLotService {
     async updateParkigSpace(id : string, updateSpace: Partial<SpaceFB>){
         const keyRow = `row-${id.split('-')[0].split('')[1].toLowerCase()}`
         const dataToSave = (updateSpace instanceof SpaceFB) ? updateSpace.toJSON() : updateSpace;
-        console.log(dataToSave)
         return setDoc(doc(this.fireStore, `parking-lot/${keyRow}/col/${id}-SPC`), dataToSave)
     }
 
-    private async fillParkingLot() {
+    async fillParkingLot() {
         const rows = 7; 
         const spacesPerColumn = 7; 
     
@@ -46,7 +45,7 @@ export class ParkinLotService {
                 
                 await setDoc(
                     doc(this.fireStore, `parking-lot/row-${rowLetter.toLowerCase()}/col/${spaceId}`),
-                    new SpaceFB(location, true, "", "").toJSON() 
+                    new SpaceFB(location, "Y", "", "").toJSON() 
                 )
             }
         }

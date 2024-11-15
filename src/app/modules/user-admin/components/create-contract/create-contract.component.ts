@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserData } from '../../../../core/models/user';
 import { CommonModule } from '@angular/common';
 import { SpaceData, SpaceFB } from '../../../../core/models/space';
-import { ClientFBService } from '../../../../shared/services/client/clientfb.service';
 import { ContractManFBService } from '../../../../shared/services/contract-management/contract-manfb.service';
 import { ManagementFB } from '../../../../core/models/management';
-import { ClientFB } from '../../../../core/models/client';
 import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.service';
+import { UserfbService } from '../../../../shared/services/user/userfb.service';
 
 @Component({
   selector: 'app-create-contract',
@@ -21,7 +20,7 @@ export class CreateContractComponent {
 
 
   constructor(
-    private clientService: ClientFBService,
+    private userService: UserfbService,
     private contractService: ContractManFBService,
     private parkinkLot: ParkinLotService
   ){}
@@ -39,7 +38,17 @@ export class CreateContractComponent {
     if (!this.userData || !this.spaceData) return "--/--/----"
     return this.formatDate(this.endDate)
   }
-
+  
+  getMenssage(): string {
+    if(!this.spaceData) return ""
+    if(this.spaceData.spaceFB.state === "Y"){
+      return "Dispnible"
+    } else if(this.spaceData.spaceFB.state === "N"){
+      return "No disponible"
+    } else {
+      return "Ocupado"
+    }
+  }
   onClickButtonML( months: number ) {
     if (!this.userData ||!this.spaceData) return
     if(this.endDate.getTime() === this.startDate.getTime() && months < 0) return
@@ -61,7 +70,8 @@ export class CreateContractComponent {
       console.log("Faltas los datos")
       return
     }
-    if(!this.spaceData.spaceFB.isAvailable) {
+
+    if(this.spaceData.spaceFB.state === "N" || this.spaceData.spaceFB.state === "NP") {
       console.log("El espacio no esta disponible, ya esta ocupado")
       return
     }
@@ -70,47 +80,39 @@ export class CreateContractComponent {
       return
     }
 
-    try {
-      const clientId : string = `cli-${this.userData.crendentialUserUID}`
-      const existCient = await this.clientService.clientExists(clientId)
-      console.log(existCient ? "ExistCient": "No existe creara")
-      if (!existCient){
-        const clientFB : ClientFB = {
-          fbUIUser: this.userData.crendentialUserUID,
-          fbUIManagementList: [],
-          listAutomobile: []
-        }
-        this.clientService.createClient(clientId, clientFB)
-        console.log("cliente creado")
-      } 
 
-      const clientFb = await this.clientService.getClient(clientId)
-      console.log("cliente obtenido")
-      const managementId : string = `man-${this.userData.crendentialUserUID}-${clientFb?.fbUIManagementList?.length}`
+    if(this.spaceData.spaceFB.state === "O"){
+      console.log("El espacio esta ocupado, pero dispnible proximanente desea ocuparlo")
+    }
+    try {
+      const userID : string = this.userData.crendentialUserUID
+      const userFB = await this.userService.getUser(userID)
+      const idUserForManagent = this.userData.crendentialUserUID.slice(0,4)
+      const managementId : string = `man-${idUserForManagent}-${userFB?.listManagement?.length}`
 
       const contractFb = new ManagementFB  (
-        clientId,
+        userID,
         this.startDate,
         this.endDate,
         this.price,
         true,
         this.spaceData.id,
-        []
+        [],
       )
 
-      const spaceUpdat = new  SpaceFB(
+      const spaceUpdate = new  SpaceFB(
          this.spaceData.spaceFB.location,
-         false,
-         clientId,
+         "N",
+         userID,
          managementId
       )
 
       await this.contractService.createContract(managementId,contractFb)
       console.log("contract created")
-      clientFb?.fbUIManagementList?.push(managementId)
-      await this.clientService.updateClient(clientId,clientFb!)
+      userFB?.listManagement?.push(managementId)
+      await this.userService.updateUser(userID,userFB!)
       console.log("client updated")
-      await this.parkinkLot.updateParkigSpace(this.spaceData.spaceFB.location, spaceUpdat)
+      await this.parkinkLot.updateParkigSpace(this.spaceData.spaceFB.location, spaceUpdate)
       console.log("space updated")
       this.updateMapEvent.emit()
       this.userData = null

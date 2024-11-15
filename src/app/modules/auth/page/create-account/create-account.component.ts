@@ -77,12 +77,18 @@ export class CreateAccountComponent implements OnInit {
                 rol: 'C',
                 state: true,
                 birthDay: null,
+                direction: "",
+                city: "",
+                phone: "",
+                correoS: "",
+                listAutomobile: [],
+                listManagement: [],
             }
             await this.userService.createUserInFirestore(user.uid, userData)
             this.currenUserCanche.setUser(userData)
         } else {
             const currenUser = await this.userService.getUser(user.uid)
-            this.currenUserCanche.setUser(UserFB.fromJsson(currenUser))
+            this.currenUserCanche.setUser(currenUser as UserFB)
         }
         
         this.router.navigateByUrl('/');
@@ -110,13 +116,18 @@ async onSubmit() {
         const user = userCredential.user;
         if (user) {
           const userData : UserFB = {
-      
             name: name,
             last_name: last_name,
             correo: correo,
             rol: 'C', 
             state: true,
-            birthDay: birthDay || null
+            birthDay: birthDay || null,
+            direction: "",
+            city: "",
+            phone: "",
+            correoS: "",
+            listAutomobile: [],
+            listManagement: [],
           }
 
           await this.userService.createUserInFirestore(user.uid,userData);

@@ -15,12 +15,12 @@
                 (click)="onCLickEmiter(space)"
                 class="w-full h-full flex flex-col justify-center items-center rounded-lg  cursor-pointer"
                 [ngClass]="{
-                    'bg-green-400 hover:bg-green-300': space.spaceFB.isAvailable, 
-                    'bg-red-400 hover:bg-red-300': !space.spaceFB.isAvailable
+                    'bg-green-400 hover:bg-green-300': space.spaceFB.state === 'Y', 
+                    'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N'
                 }">
                 
-                <i *ngIf="space.spaceFB.isAvailable" class="fas fa-car text-xl text-black"></i>
-                <i *ngIf="!space.spaceFB.isAvailable" class="fas fa-ban text-xl text-black"></i>
+                <i *ngIf="space.spaceFB.state === 'Y'" class="fas fa-car text-xl text-black"></i>
+                <i *ngIf="space.spaceFB.state === 'N'" class="fas fa-ban text-xl text-black"></i>
                 <span class="text-xs font-medium text-gray-800 mt-1">{{ space.spaceFB.location }}</span>
             </div>
         </div>
