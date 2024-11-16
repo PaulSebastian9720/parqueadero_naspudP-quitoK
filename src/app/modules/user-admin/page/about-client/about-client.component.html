@@ -1,104 +1,139 @@
-<div class="overflow-x-auto flex flex-col p-10">
-  
-  <app-header-service 
-        titlePage="En esta página, puedes listar y editar clientes con facilidad." 
-        description="Gestiona de manera rápida y sencilla todos los datos relacionados con los clientes. 
-        ¡Haz clic en cualquier usuario para empezar a editar!">
+<div class="overflow-x-auto flex flex-col p-4 sm:p-6 md:p-10">
+  <app-header-service
+    titlePage="En esta página, puedes listar y editar clientes con facilidad."
+    description="Gestiona de manera rápida y sencilla todos los datos relacionados con los clientes. ¡Haz clic en cualquier usuario para empezar a editar!"
+  >
   </app-header-service>
 
-  <div class="flex flex-row items-center justify-between w-full mb-4">
-    <h2 class="font-bold text-3xl">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center justify-between w-full mb-4 space-y-4 sm:space-y-0"
+  >
+    <h2 class="font-bold text-xl sm:text-2xl md:text-3xl">
       Listado de Usuarios
     </h2>
-    
-    <div class="flex items-center space-x-2">
-      <input 
-        type="text" 
-        placeholder="Buscar..." 
-        class="w-[250px] px-4 py-2 border-2 border-gray-300 rounded-l-md focus:outline-none focus:border-gray-800 transition ease-in-out duration-300 shadow-md"
-        [(ngModel)]="wordFilter"
 
-      >
-      <button 
-        (click)="onSearch()" 
-        class="px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white rounded-r-md transition ease-in-out duration-300 shadow-md"
+    <div
+      class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2"
+    >
+      <input
+        type="text"
+        placeholder="Buscar..."
+        class="w-full sm:w-[250px] px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-800 transition ease-in-out duration-300 shadow-md"
+        [(ngModel)]="wordFilter"
+      />
+      <button
+        (click)="onSearch()"
+        class="w-full sm:w-auto px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white rounded-md transition ease-in-out duration-300 shadow-md"
       >
         Buscar
       </button>
     </div>
   </div>
-  
-  <div class="overflow-x-auto w-full mb-6  shadow-lg">
-    <table class="min-w-full ">
-      <thead class="bg-gray-300 text-black">
+
+  <div class="overflow-x-auto w-full mb-6 shadow-lg">
+    <table class="min-w-full table-auto text-sm sm:text-base">
+      <thead class="bg-gray-900 text-white">
         <tr>
-          <th class="py-3 px-4 text-left font-semibold">Nombre</th>
-          <th class="py-3 px-4 text-left font-semibold">Apellido</th>
-          <th class="py-3 px-4 text-left font-semibold">Estado</th>
-          <th class="py-3 px-4 text-left font-semibold">Correo Electrónico</th>
-          <th class="py-3 px-4 text-left font-semibold">Rol</th>
-          <th class="py-3 px-4 text-left font-semibold">Ciudad</th>
-          <th class="py-3 px-4 text-left font-semibold">Direcciòn</th>
-          <th class="py-3 px-4 text-left font-semibold">Teléfono</th>
-          <th class="py-3 px-4 text-center font-semibold">Acciones</th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Nombre
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Apellido
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Estado
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Correo Electrónico
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">Rol</th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Ciudad
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Dirección
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+            Teléfono
+          </th>
+          <th class="py-2 px-2 sm:py-3 sm:px-4 text-center font-semibold">
+            Acciones
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let userData of filteredUsers" class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
-          <td class="py-3 px-4">{{ userData.user.name }}</td>
-          <td class="py-3 px-4">{{ userData.user.last_name }}</td>
-          <td class="py-3 px-4">
-            <span [ngClass]="{'text-green-600 font-semibold': userData.user.state, 'text-red-600 font-semibold': !userData.user.state}">
-              {{ userData.user.state ? "Activo" : "Desactivo" }}
+        <tr
+          *ngFor="let userData of filteredUsers"
+          class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300"
+        >
+          <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.name }}</td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">
+            {{ userData.user.last_name }}
+          </td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">
+            <span
+              [ngClass]="{
+                ' bg-green-400 ': userData.user.state,
+                ' bg-red-400 ': !userData.user.state
+              }"
+              class="inline-block text-center text-white rounded-lg px-4 sm:px-6 py-1"
+            >
+              {{ userData.user.state ? "Activo" : "Desactivado" }}
             </span>
           </td>
-          <td class="py-3 px-4">{{ userData.user.correo }}</td>
-          <td class="py-3 px-4">{{ userData.user.rol }}</td>
-          <td class="py-3 px-4">{{ userData.user.city }}</td>
-          <td class="py-3 px-4">{{ userData.user.direction }}</td>
-          <td class="py-3 px-4">{{ userData.user.phone }}</td>
-          <td class="py-3 px-4 text-center">
-            
-            <button (click)="onClick(userData)" 
-              class="font-medium text-gray-500 dark:text-gray-800 hover:underline">
+          <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.correo }}</td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.rol }}</td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.city }}</td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">
+            {{ userData.user.direction }}
+          </td>
+          <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.phone }}</td>
+          <td
+            class="py-2 px-2 sm:py-3 sm:px-4 text-center flex flex-col sm:flex-row justify-center gap-2 sm:gap-4"
+          >
+            <button
+              (click)="onClick(userData)"
+              class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
+            >
               Seleccionar
+            </button>
+            <button
+              class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
+            >
+              Desactivar
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  
-  <div *ngIf="user">
-    <h2
-      class="font-bold text-2xl mb-2">
-      Listado de Contratos del Cliente
-   </h2>
 
-  <app-table-contract
-    [userData]="user">
-  </app-table-contract>
-  
-  <div class="w-full flex justify-center mb-6">
-    <button 
-      (click)="toggleEdit()" 
-      class="px-10 font-semibold py-2 rounded-lg mt-5 text-white w-36"
-      [ngClass]="{
-        ' bg-gray-900 hover:bg-gray-700': !isEditing,
-        ' bg-red-500 hover:bg-red-600': isEditing
-      }"> 
-      {{ isEditing ? 'Cancelar' : 'Editar' }}
-    </button>
+  <div *ngIf="user" class="w-full">
+    <h2 class="font-bold text-xl sm:text-2xl mb-2">
+      Listado de Contratos del Cliente
+    </h2>
+
+    <app-table-contract [userData]="user"></app-table-contract>
+
+    <div class="w-full flex justify-center mb-6">
+      <button
+        (click)="toggleEdit()"
+        class="px-6 py-2 sm:px-10 font-semibold rounded-lg mt-5 text-white"
+        [ngClass]="{
+          ' bg-gray-900 hover:bg-gray-700': !isEditing,
+          ' bg-red-500 hover:bg-red-600': isEditing
+        }"
+      >
+        {{ isEditing ? "Cancelar" : "Editar" }}
+      </button>
+    </div>
+
+    <div class="w-full flex justify-center mb-6">
+      <app-update-form-user
+        [userData]="user"
+        (updateTable)="initUser()"
+        [isEditing]="isEditing"
+      ></app-update-form-user>
+    </div>
   </div>
-  
-  <div class="w-full flex justify-center mb-6">
-    <app-update-form-user 
-      [userData]="user"
-      (updateTable)="initUser()"
-      [isEditing]="isEditing">
-    </app-update-form-user>
-    
-  </div>
-  </div>
-  
 </div>

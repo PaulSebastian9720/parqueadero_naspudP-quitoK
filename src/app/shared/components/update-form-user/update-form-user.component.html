@@ -1,18 +1,18 @@
-<div class="bg-white w-full min-w-[500px] p-4 mt-5">
+<div class="w-full max-w-[800px] lg:max-w-[1000px] p-4 mt-5 mx-auto">
   <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
-    <div class="space-y-4 mt-8">
+    <div class="space-y-4 mt-8 md:w-[450px]">
       <div class="mb-4">
         <label for="name" class="block text-gray-500 font-semibold mb-2">Nombre</label>
         <input 
           id="name"
           type="text" 
           formControlName="name" 
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu nombre"
           [readonly]="!isEditing"
         />
         <small *ngIf="isRequired('name')" class="text-red-500">Este campo es requerido.</small>
-        <small *ngIf="isShortParameter('name')" class="text-red-500"> Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isShortParameter('name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
       </div>
       
       <div class="mb-4">
@@ -22,11 +22,11 @@
           type="text" 
           formControlName="last_name"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu apellido"
         >
         <small *ngIf="isRequired('last_name')" class="text-red-500">Este campo es requerido.</small>
-        <small *ngIf="isShortParameter('last_name')" class="text-red-500"> Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isShortParameter('last_name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
       </div>
 
       <div class="mb-4">
@@ -36,7 +36,7 @@
           type="email" 
           formControlName="correo"
           [readonly]="true" 
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="example@gmail.com"
         >   
       </div>
@@ -50,7 +50,7 @@
           type="email" 
           formControlName="correoS"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="example@gmail.com"
         >   
       </div>
@@ -62,7 +62,7 @@
           type="text" 
           formControlName="direction"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu dirección"
         />
       </div>
@@ -74,7 +74,7 @@
           type="text" 
           formControlName="city"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Tu ciudad"
         />
       </div>
@@ -86,7 +86,7 @@
           type="text" 
           formControlName="phone"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="Número de teléfono"
         />
         <small *ngIf="isNotNumber()" class="text-red-500">Se necesita por lo menos 10 caracteres</small>
@@ -99,7 +99,7 @@
           type="date"
           [readonly]="!isEditing"
           formControlName="birthday" 
-          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
         >
       </div>
     </div>

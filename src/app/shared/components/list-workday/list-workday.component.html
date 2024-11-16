@@ -1,17 +1,17 @@
 <div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
   <table class="min-w-full shadow-lg rounded-lg border-collapse">
-    <thead class="bg-gray-300 text-black">
+    <thead class="bg-gray-900 text-white">
       <tr>
-        <th class="py-3 px-4 text-left font-semibold">Día</th>
-        <th class="py-3 px-4 text-left font-semibold">Hora de Apertura</th>
-        <th class="py-3 px-4 text-left font-semibold">Hora de Cierre</th>
+        <th class="py-3 px-4 text-center font-semibold">Día</th> 
+        <th class="py-3 px-4 text-center font-semibold">Hora de Apertura</th> 
+        <th class="py-3 px-4 text-center font-semibold">Hora de Cierre</th> 
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let day of workDays" class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 border-t">
-        <td class="py-3 px-4">{{ day.dayOfWeek }}</td>
-        <td class="py-3 px-4">{{ day.open }}</td>
-        <td class="py-3 px-4">{{ day.close }}</td>
+        <td class="py-3 px-4 text-center">{{ day.dayOfWeek }}</td> 
+        <td class="py-3 px-4 text-center">{{ day.open }}</td> 
+        <td class="py-3 px-4 text-center">{{ day.close }}</td> 
       </tr>
     </tbody>
   </table>

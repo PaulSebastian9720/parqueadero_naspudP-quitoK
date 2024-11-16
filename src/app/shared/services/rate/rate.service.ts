@@ -7,7 +7,7 @@ import { RateData, RateFB } from "../../../core/models/rate";
 })
 export class RateService {
     constructor (private fireStore: Firestore){}
-
+    
     async createRate( ratefb:RateFB){
         return addDoc(
             collection(this.fireStore, "rates"),
@@ -29,10 +29,7 @@ export class RateService {
     }
 
     async updateRate(id: string, ratefb: Partial<RateFB>){
-        return setDoc
-            (doc(this.fireStore, `rates/${id}`), 
-            ratefb, 
-            {merge: true}
-        )
+        const rateDoc = doc(this.fireStore, `rates/${id}`)
+        return setDoc(rateDoc, Object.assign({},ratefb), {merge: true})
     }
 }

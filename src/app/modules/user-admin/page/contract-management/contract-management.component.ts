@@ -7,21 +7,29 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { CreateContractComponent } from "../../components/create-contract/create-contract.component";
 import { UserData } from '../../../../core/models/user';
 import { SelectUserComponent } from "../../../../shared/components/select-user/select-user.component";
+import { SelectRateComponent } from "../../components/select-rate/select-rate.component";
+import { RateData } from '../../../../core/models/rate';
 
 @Component({
   selector: 'app-contract-management',
   standalone: true,
-  imports: [HeaderServiceComponent, MatrixSpacesComponent, CommonModule, FormsModule, CreateContractComponent, SelectUserComponent],
+  imports: [HeaderServiceComponent, MatrixSpacesComponent, CommonModule, FormsModule, CreateContractComponent, SelectUserComponent, SelectRateComponent],
   templateUrl: './contract-management.component.html',
 })
 export class ContractManagementComponent {
   
   userFb! : UserData | null
   spaceFB! : SpaceData | null
-  @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent;
+  rateFb! : RateData | null
+
+  @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent
 
   onClickUser(userData : UserData){
     this.userFb = userData
+  }
+
+  onClickRate(rateData : RateData){
+    this.rateFb = rateData
   }
    
   onClinkSpace(space: SpaceData) {

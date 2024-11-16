@@ -1,34 +1,69 @@
 <div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
-  
-    <table 
-      class="min-w-full shadow-sm">
-      <thead class="bg-gray-300 text-black">
-        <tr>
-          <th class="py-3 px-4 text-left font-semibold">Nombre</th>
-          <th class="py-3 px-4 text-left font-semibold">Tarifa</th>
-          <th class="py-3 px-4 text-left font-semibold">Tiempo</th>
-          <th class="py-3 px-4 text-left font-semibold">Acciones</th>
+  <table class="min-w-full shadow-sm">
+    <thead class="bg-gray-900 text-white">
+      <tr>
+        <th class="py-3 px-4  text-center">Nombre</th>
+        <th class="py-3 px-4  text-center">Tarifa</th>
+        <th class="py-3 px-4  text-center">Tiempo</th>
+        <th class="py-3 px-4  text-center">Acciones</th>
+      </tr>
+    </thead>
 
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let rateData of listRate" class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
-          <td class="py-3 px-4">{{ rateData.rateFB.name}}</td>
-          <td class="py-3 px-4">{{ rateData.rateFB.unitRate + " $"}}</td>
-          <td class="py-3 px-4">{{   " " + rateData.rateFB.timeUnit }}</td>
-          <td class="py-3 px-4 flex">
-            <button 
-              class="font-medium text-gray-500 dark:text-gray-800 hover:underline mr-8">
-              Seleccionar
-            </button>
+    <tbody>
+      <tr
+        *ngFor="let rateData of listRate"
+        class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 text-center"
+      >
+        <td class="py-3 px-4">{{ rateData.rateFB.name }}</td>
+        <td class="py-3 px-4">{{ rateData.rateFB.unitRate + " $" }}</td>
+        <td class="py-3 px-4">
+          {{
+            getNameSpanish(rateData.rateFB.timeUnit, rateData.rateFB.quantity)
+          }}
+        </td>
+        <td class="py-3 px-4 flex justify-center space-x-4">
+          <button
+            (click)="getRateDate(rateData)"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            Seleccionar
+          </button>
 
-            <button 
-              class="font-medium text-gray-500 dark:text-gray-800 hover:underline">
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-      
-  </div>
+          <button
+            class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RateService } from '../../../../shared/services/rate/rate.service';
-import { RateFB } from '../../../../core/models/rate';
+import { RateData, RateFB } from '../../../../core/models/rate';
 
 @Component({
   selector: 'app-edit-rate',
@@ -10,15 +10,28 @@ import { RateFB } from '../../../../core/models/rate';
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-rate.component.html',
 })
-export class EditRateComponent implements OnInit  {
+export class EditRateComponent implements OnInit, OnChanges  {
+
   rateName: string = ''
   timeUnit: string = 'minutes'
   quantity: number = 1
   unitRate: number = 1
   quantityOptions: number[] = [] 
 
-  
+  @Input() rateData !: RateData | null
+  @Output() eventUpdateRates = new EventEmitter<void>
+
   constructor(private rateService: RateService) {}
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rateData'] && changes['rateData'].currentValue) {
+      this.rateName = this.rateData!.rateFB.name
+      this.timeUnit = this.rateData!.rateFB.timeUnit
+      this.quantity = this.rateData!.rateFB.quantity
+      this.unitRate = this.rateData!.rateFB.unitRate
+    }
+  }
   
   ngOnInit(): void {
     this.updateQuantityOptions() 
@@ -58,6 +71,7 @@ export class EditRateComponent implements OnInit  {
       return
     }
     try {
+
       const rateRef  = new RateFB(
         this.rateName,
         this.timeUnit,
@@ -65,8 +79,27 @@ export class EditRateComponent implements OnInit  {
         this.quantity
       )
 
+      if(this.rateData){
+        await this.rateService.updateRate(this.rateData.id, rateRef)
+        this.eventUpdateRates.emit()
+        this.clearCamps()
+        console.log("se actualizo")
+        return
+      }
+
       await this.rateService.createRate( rateRef)
-      console.log('Tarifa agregada:', rateRef)
-    }catch(e){}
+      this.eventUpdateRates.emit()
+      this.clearCamps()
+    }catch(e){
+      console.error(e)
+    }
+ }
+
+ clearCamps(){
+  this.rateData = null
+  this.rateName = ''
+  this.timeUnit = 'minutes'
+  this.quantity = 1
+  this.unitRate = 1
  }
 }

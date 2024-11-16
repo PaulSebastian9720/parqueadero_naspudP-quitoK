@@ -48,8 +48,11 @@
 
     <button 
         type="button" 
-        class="bg-blue-500 text-white rounded-lg py-3 px-16 hover:bg-blue-600 transition duration-200"
-        (click)="onCLickSetDay()">
+        (click)="onCLickSetDay()"
+        class="flex items-center justify-center gap-2 py-4 px-12 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 ">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l-4-4m0 0l-4 4m4-4v9M5 20h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z" />
+        </svg>   
         Guardar
     </button>
 </div>

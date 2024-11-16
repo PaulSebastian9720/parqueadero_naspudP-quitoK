@@ -1,24 +1,28 @@
-<div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
-  
-  <table 
-    *ngIf="userData" 
-    class="min-w-full shadow-sm">
-    <thead class="bg-gray-300 text-black">
+<div class="overflow-x-auto w-full mb-6 flex flex-col items-center shadow-lg">
+  <table *ngIf="listContract.length > 0" class="min-w-full text-center text-sm sm:text-base">
+    <thead class="bg-gray-900 text-white">
       <tr>
-        <th class="py-3 px-4 text-left font-semibold">Espacio</th>
-        <th class="py-3 px-4 text-left font-semibold">Fecha de Incio</th>
-        <th class="py-3 px-4 text-left font-semibold">Fecha de Fin</th>
-        <th class="py-3 px-4 text-left font-semibold">Estado</th>
-        <th class="py-3 px-4 text-left font-semibold">Precio</th>
+        <th class="py-3 px-4 font-semibold">Espacio</th>
+        <th class="py-3 px-4 font-semibold">Fecha de Inicio</th>
+        <th class="py-3 px-4 font-semibold">Fecha de Fin</th>
+        <th class="py-3 px-4 font-semibold">Estado</th>
+        <th class="py-3 px-4 font-semibold">Precio</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let contracData of listContract" class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
-        <td class="py-3 px-4">{{ contracData.uidSpaces}}</td>
-        <td class="py-3 px-4">{{ formatDate(contracData.startDate)}}</td>
+      <tr 
+        *ngFor="let contracData of listContract" 
+        class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
+        <td class="py-3 px-4">{{ contracData.uidSpaces }}</td>
+        <td class="py-3 px-4">{{ formatDate(contracData.startDate) }}</td>
         <td class="py-3 px-4">{{ formatDate(contracData.endDate) }}</td>
         <td class="py-3 px-4">
-          <span [ngClass]="{'text-green-600 font-semibold': contracData.status, 'text-red-600 font-semibold': !contracData.status}">
+          <span
+            [ngClass]="{
+              'bg-green-400': contracData.status,
+              'bg-red-400': !contracData.status
+            }"
+            class="inline-block text-center text-white rounded-lg px-6 py-1">
             {{ contracData.status ? "Activo" : "Desactivo" }}
           </span>
         </td>
@@ -26,5 +30,4 @@
       </tr>
     </tbody>
   </table>
-    
 </div>
