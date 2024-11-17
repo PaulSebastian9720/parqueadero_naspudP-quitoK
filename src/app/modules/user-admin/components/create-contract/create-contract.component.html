@@ -1,14 +1,14 @@
-<div class="h-[75px]"></div>
-<div
-  class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto shadow-sm"
->
+<div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Cliente
+  </h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700 text-lg"> Nombre </span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">
+      <span class="font-semibold text-gray-700"> Nombre </span>
+      <span class="text-gray-900 font-medium mt-1 block">
         {{ userData ? userData.user.name : "" }}
       </span>
     </div>
@@ -16,8 +16,8 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700 text-lg">Apellido</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">
+      <span class="font-semibold text-gray-700">Apellido</span>
+      <span class="text-gray-900 font-medium mt-1 block">
         {{ userData ? userData.user.last_name : "" }}
       </span>
     </div>
@@ -25,8 +25,8 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700 text-lg">Correo</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">
+      <span class="font-semibold text-gray-700">Correo</span>
+      <span class="text-gray-900 font-medium mt-1 block">
         {{ userData ? userData.user.correo : "" }}
       </span>
     </div>
@@ -34,75 +34,127 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700 text-lg">Teléfono</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">
+      <span class="font-semibold text-gray-700">Teléfono</span>
+      <span class="text-gray-900 font-medium mt-1 block">
         {{ userData ? userData.user.phone : "" }}
       </span>
     </div>
+  </div>
+
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Automóvil
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+    <div
+      [ngClass]="{ 'border border-green-500': automobile }"
+      class="p-4 shadow-md rounded-lg"
+    >
+      <span class="font-semibold text-gray-700">Placa</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        automobile?.plate ? automobile?.plate : "AAAA-000"
+      }}</span>
+    </div>
+    <div
+      [ngClass]="{ 'border border-green-500': automobile }"
+      class="p-4 shadow-md rounded-lg"
+    >
+      <span class="font-semibold text-gray-700">Marca</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        automobile?.brand ? automobile?.brand : "GENERICA"
+      }}</span>
+    </div>
+  </div>
+
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Spot
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
     <div
       [ngClass]="{ 'border border-green-500': spaceData }"
       class="p-4 shadow-md rounded-lg"
     >
-      <span class="font-semibold text-gray-700 text-lg">Posiciòn</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">{{
+      <span class="font-semibold text-gray-700">Posición</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
         spaceData ? spaceData.spaceFB.location : ""
       }}</span>
     </div>
+  <div
+    [ngClass]="{
+      'border-green-500': spaceData? spaceData.spaceFB.state === 'Y' : false,
+      'border-red-500': spaceData? spaceData.spaceFB.state === 'N' : false,
+      'border-yellow-500': spaceData? spaceData.spaceFB.state === 'O' : false,
+    }"
+    class="border p-4 shadow-md rounded-lg"
+  >
+  <span class="font-semibold text-gray-700">Estado</span>
+  <span class="text-gray-900 font-medium mt-1 block">
+    {{ getMenssage() }}
+  </span>
+</div>
+
+  </div>
+
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos de la Tarifa
+  </h2>
+  <div class="grid grid-cols-1 gap-6 p-4">
     <div
-      [ngClass]="{ 'border border-green-500': spaceData }"
       class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': rateData }"
     >
-      <span class="font-semibold text-gray-700 text-lg">Estado</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">{{
-        getMenssage()
-      }}</span>
-    </div>
-    <div
-      class="p-4 shadow-md rounded-lg"
-      [ngClass]="{ 'border border-green-500': spaceData && userData }"
-    >
-      <span class="font-semibold text-gray-700 text-lg">Fecha de inicio</span>
-      <span class="text-gray-900 font-medium text-xl mt-1 block">{{
+      <span class="font-semibold text-gray-700">Fecha de inicio</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
         getStartDate()
       }}</span>
     </div>
     <div
       class="p-4 shadow-md rounded-lg"
-      [ngClass]="{ 'border border-green-500': spaceData && userData }"
+      [ngClass]="{ 'border border-green-500': rateData }"
     >
-      <span class="font-semibold text-gray-700 text-lg">Fecha de fin</span>
-      <div class="flex justify-between">
-        <span class="text-gray-900 font-medium text-xl mt-1 block">
-          {{ getEndDate() }}</span
-        >
-        <button
-          class="hover:text-red-500 text-2xl"
-          (click)="onClickButtonML(-1)"
-        >
-          <i class="fa fa-minus-circle"></i>
-        </button>
-        <button
-          class="hover:text-green-500 text-2xl"
-          (click)="onClickButtonML(+1)"
-        >
-          <i class="fa fa-plus-circle"></i>
-        </button>
+      <div class="flex justify-between items-center">
+        <span class="font-semibold text-gray-700">Fecha de fin</span>
+        <div class="flex gap-2">
+          <button
+            class="hover:text-red-500 text-2xl"
+            (click)="onClickButtonML(-1)"
+          >
+            <i class="fa fa-minus-circle"></i>
+          </button>
+          <button
+            class="hover:text-green-500 text-2xl"
+            (click)="onClickButtonML(+1)"
+          >
+            <i class="fa fa-plus-circle"></i>
+          </button>
+        </div>
       </div>
+      <span class="text-gray-900 font-medium mt-2 block">{{
+        getEndDate()
+      }}</span>
+    </div>
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': rateData }"
+    >
+      <span class="font-semibold text-gray-700">Pago Mensual</span>
+      <span class="text-gray-900 font-medium mt-1 block">
+        {{rateData ? rateData.rateFB.unitRate : "0.00"}}$
+        </span>
     </div>
   </div>
 
   <div class="p-4 shadow-md rounded-lg mt-6">
     <div class="flex justify-between">
-      <span class="font-semibold text-gray-700 text-lg"
-        >Total del Pago </span
-      >
-      <span class="text-gray-900 font-bold text-xl">{{ price }} $</span>
+      <span class="font-semibold text-gray-700">Total del Pago</span>
+      <span class="text-gray-900 font-bold">{{ price }} $</span>
     </div>
   </div>
 
   <button
     class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 w-full"
-    [ngClass]="{ 'cursor-not-allowed': !spaceData || !userData || !rateData ||price <= 0 }"
+    [ngClass]="{
+      'cursor-not-allowed': !spaceData || !userData || !rateData || price <= 0
+    }"
     (click)="onClickSaveContract()"
   >
     <svg

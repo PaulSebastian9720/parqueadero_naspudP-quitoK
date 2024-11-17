@@ -7,7 +7,7 @@ export class UserFB {
       public state: boolean,
       public last_name: string,
       public correo: string,
-      public rol: 'C' | 'A',
+      public rol: 'C' | 'A' |'CF',
       public birthDay?: Date | null,
       public direction?: string,
       public city?: string,

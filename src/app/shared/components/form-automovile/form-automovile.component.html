@@ -1,0 +1,70 @@
+<div class="rounded-lg p-6 w-full max-w-3xl">
+    
+    <div class="flex w-full justify-between">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        {{ automobileData ? "EDITAR AUTOMÓVIL" : "CREAR AUTOMÓVIL" }}
+      </h2>
+      <button
+        (click)="clearForm()"
+        *ngIf="automobileData"
+        class="p-2 bg-red-500 text-white rounded hover:bg-red-600 px-4 py-2"
+      >
+        Cancelar
+      </button>
+    </div>
+    <form (submit)="onSubmit()" class="space-y-4">
+      
+      <div class="flex-1">
+        <label for="plate" class="text-sm font-semibold text-gray-600">Placa</label>
+        <input
+          id="plate"
+          type="text"
+          [(ngModel)]="automobile.plate"
+          name="plate"
+          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          placeholder="Ejemplo: ABC-1234"
+        />
+      </div>
+  
+      <div class="flex-1">
+        <label for="brand" class="text-sm font-semibold text-gray-600">Marca</label>
+        <input
+          id="brand"
+          type="text"
+          [(ngModel)]="automobile.brand"
+          name="brand"
+          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          placeholder="Ejemplo: Toyota"
+        />
+      </div>
+  
+      <div class="flex-1">
+        <label for="model" class="text-sm font-semibold text-gray-600">Modelo</label>
+        <input
+          id="model"
+          type="text"
+          [(ngModel)]="automobile.model"
+          name="model"
+          class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          placeholder="Ejemplo: Corolla"
+        />
+      </div>
+  
+      <div class="flex justify-center mt-6">
+        <button
+          type="submit"
+          class="flex items-center justify-center gap-2 p-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 w-full"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17 16l-4-4m0 0l-4 4m4-4v9M5 20h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"
+            />
+          </svg>
+          {{ automobileData ? "Actualizar Automóvil" : "Crear Automóvil" }}
+        </button>
+      </div>
+    </form>
+  </div>
+  

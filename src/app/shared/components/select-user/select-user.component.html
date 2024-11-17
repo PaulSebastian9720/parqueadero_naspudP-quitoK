@@ -5,7 +5,7 @@
 >
   <option value="" disabled selected>Seleccionar cliente</option>
   
-  <option *ngFor="let userData of listUserFb" [value]="userData.crendentialUserUID">
+  <option *ngFor="let userData of listUserFBFilter" [value]="userData.crendentialUserUID">
     {{ userData.user.name }} - {{ userData.user.last_name }} - {{ userData.user.correo }}
   </option>
 </select>

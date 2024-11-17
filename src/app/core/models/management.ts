@@ -1,3 +1,4 @@
+import { Automobile } from "./automobile";
 import { Client } from "./client";
 
 export class Management {
@@ -13,6 +14,7 @@ export class Management {
 
 export class ManagementFB {
     constructor(
+        public type : "M" | "R",
         public fbIDClient: string,
         public startDate: Date,
         public endDate: Date,
@@ -20,6 +22,7 @@ export class ManagementFB {
         public status: boolean,
         public uidSpaces: string,
         public benefits?: string[],
+        public autmobile?: Automobile
     ){}
    
       

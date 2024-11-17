@@ -16,11 +16,13 @@
                 class="w-full h-full flex flex-col justify-center items-center rounded-lg  cursor-pointer"
                 [ngClass]="{
                     'bg-green-400 hover:bg-green-300': space.spaceFB.state === 'Y', 
-                    'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N'
+                    'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N',
+                    'bg-yellow-300 hover:bg-yellow-200': space.spaceFB.state === 'O',
                 }">
                 
                 <i *ngIf="space.spaceFB.state === 'Y'" class="fas fa-car text-xl text-black"></i>
                 <i *ngIf="space.spaceFB.state === 'N'" class="fas fa-ban text-xl text-black"></i>
+                <i *ngIf="space.spaceFB.state === 'O'" class="fas fa-clock text-xl text-black"></i>
                 <span class="text-xs font-medium text-gray-800 mt-1">{{ space.spaceFB.location }}</span>
             </div>
         </div>

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class SelectUserComponent implements OnInit {
   selectedUser: string = ""
   listUserFb : UserData [] = []
+  listUserFBFilter : UserData[] = []
 
   @Output() userEventEmitter = new EventEmitter<UserData>();
   constructor(
@@ -34,6 +35,7 @@ export class SelectUserComponent implements OnInit {
     try {
       const list = await this.userfbService.getListUsers()
       this.listUserFb = list
+      this.listUserFBFilter = this.listUserFb.filter(userData => userData.user.rol !== "CF")
      }catch (e) {}
   }
 } 

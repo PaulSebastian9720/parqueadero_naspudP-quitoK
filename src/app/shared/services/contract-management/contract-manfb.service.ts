@@ -9,7 +9,7 @@ export class ContractManFBService {
     constructor(private fireStore: Firestore){}
 
     async createContract(id: string, managenteFB : ManagementFB) {
-        return setDoc(doc(this.fireStore, `contract-m/${id}`), managenteFB.toJson())
+        return setDoc(doc(this.fireStore, `contract-m/${id}`), Object.assign({}, managenteFB))
     }
 
     async getContract(id: string): Promise<ManagementFB | null> {

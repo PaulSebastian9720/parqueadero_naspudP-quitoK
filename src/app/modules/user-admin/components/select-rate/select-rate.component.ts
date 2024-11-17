@@ -12,22 +12,24 @@ import { FormsModule } from '@angular/forms';
 })
 export class SelectRateComponent implements OnInit {
   selectRate: string = ''
-  @Input() filter : boolean = false
-
+  
   listRate: RateData[] = []
+
+  listFilter: RateData[] = []
 
   @Output() eventRate = new EventEmitter<RateData>()
 
   constructor(private rateService: RateService) {}
 
   async ngOnInit(): Promise<void> {
+    this.initrates()
+  }
+  async initrates(){
     try {
       const data = await this.rateService.getListRate()
-      if(this.filter){
-        this.listRate = data.filter(value => value.rateFB.timeUnit === 'month')
-      }else {
-        this.listRate = data
-      }
+      this.listRate = data
+      this.listFilter = this.listRate
+        .filter(value => value.rateFB.timeUnit === 'month')
     } catch (error) {}
   }
 
