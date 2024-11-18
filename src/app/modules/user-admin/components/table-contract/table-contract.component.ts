@@ -28,13 +28,24 @@ export class TableContractComponent implements OnChanges {
     }
   }
 
-  formatDate(stringDate :Date): string {
-    console.log(stringDate);
-    const date = new Date(stringDate)
+   formatDate(firebaseTimestamp: any, timeUnit : string ): string {
+    if (!firebaseTimestamp || !firebaseTimestamp.seconds) {
+        return "00/00/0000";
+    }
+
+    const date = new Date(firebaseTimestamp.seconds * 1000); 
+
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${day}/${month}/${year}`  
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    if(timeUnit === "month") {
+      return `${day}/${month}/${year}`;
+    } else {
+      return `${day}/${month}/${year} ${hour}h:${minute}`;
+    }
+    
   }
 
   

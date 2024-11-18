@@ -14,7 +14,9 @@ export class ContractManFBService {
 
     async getContract(id: string): Promise<ManagementFB | null> {
         return getDoc(doc(this.fireStore, `contract-m/${id}`))
-        .then((snapShot) => snapShot.data() as ManagementFB) || null
+        .then((snapShot) => {
+            console.log(snapShot.data())
+            return snapShot.data() as ManagementFB}) || null
     }
 
 

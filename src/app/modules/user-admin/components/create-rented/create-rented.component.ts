@@ -123,10 +123,7 @@ export class CreateRentedComponent implements OnChanges {
       console.log('El espacio no esta disponible, ya esta ocupado');
       return;
     }
-    if (this.endDate.getTime() === this.startDate.getTime()) {
-      console.log('Seleccione por lo menos un mes');
-      return;
-    }
+
 
     try {
       const userID: string = this.userData.crendentialUserUID;
@@ -147,13 +144,13 @@ export class CreateRentedComponent implements OnChanges {
             brand: 'GENERICO',
             model: 'GENERICO',
           };
-
+      
       const contractFb = new ManagementFB(
         "R",
         userID,
         this.startDate,
         this.endDate,
-        this.price,
+        this.rateData.rateFB.quantity,
         "A",
         this.spaceData.id,
         this.rateData.rateFB,

@@ -2,20 +2,27 @@
   <table *ngIf="listContract.length > 0" class="min-w-full text-center text-sm sm:text-base">
     <thead class="bg-gray-900 text-white">
       <tr>
+        <th class="py-3 px-4 font-semibold">Contrato</th>
         <th class="py-3 px-4 font-semibold">Espacio</th>
         <th class="py-3 px-4 font-semibold">Fecha de Inicio</th>
-        <th class="py-3 px-4 font-semibold">Fecha de Fin</th>
+        <th class="py-3 px-4 font-semibold">Fecha de Cancelación</th>
         <th class="py-3 px-4 font-semibold">Estado</th>
-        <th class="py-3 px-4 font-semibold">Precio</th>
+        <th class="py-3 px-4 font-semibold">Total a Cancelar</th>
       </tr>
     </thead>
     <tbody>
       <tr 
         *ngFor="let contracData of listContract" 
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
+        <td class="py-3 px-4">{{ contracData.type === "M" ? "Contrato Mensual" : "Renta temporal" }}</td>
         <td class="py-3 px-4">{{ contracData.uidSpaces }}</td>
-        <td class="py-3 px-4">{{ formatDate(contracData.startDate) }}</td>
-        <td class="py-3 px-4">{{ formatDate(contracData.endDate) }}</td>
+        <td class="py-3 px-4">{{ formatDate(contracData.startDate, contracData.rate.timeUnit) }}</td>
+        <td class="py-3 px-4">
+          {{
+            contracData.type === "M"  ? formatDate(contracData.endDate, contracData.rate.timeUnit) 
+            : contracData.state === "A" ?  "Tiempo indefinido" : formatDate(contracData.endDate, contracData.type)
+          }}  
+        </td>
         <td class="py-3 px-4">
           <span
             [ngClass]="{
@@ -24,10 +31,15 @@
               'bg-yellow-400': contracData.state === 'W' ,
             }"
             class="inline-block text-center text-white rounded-lg px-6 py-1">
-            {{ showMenssageState(contracData) }}
+            {{  showMenssageState(contracData) }}
           </span>
         </td>
-        <td class="py-3 px-4">{{ contracData.totalPrice }}</td>
+        <td class="py-3 px-4">
+          {{ 
+            contracData.type === "M" ? contracData.totalPrice + "$" :  
+            contracData.state === "A" ?  "No calculado" : contracData.totalPrice + "$" 
+          }}
+        </td>
       </tr>
     </tbody>
   </table>

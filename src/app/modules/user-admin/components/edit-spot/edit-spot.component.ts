@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SpaceData } from '../../../../core/models/space';
 import { UserData, UserFB } from '../../../../core/models/user';
 import { ManagementData, ManagementFB } from '../../../../core/models/management';
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule],
   templateUrl: './edit-spot.component.html',
 })
-export class EditSpotComponent implements OnInit  {
+export class EditSpotComponent implements OnChanges  {
  
   @Input() spaceData!: SpaceData
   userFB!: UserFB | null
@@ -26,17 +26,36 @@ export class EditSpotComponent implements OnInit  {
     private contracService: ContractManFBService,
     private spotService: ParkinLotService
   ){}
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
 
-  async ngOnInit(): Promise<void> {
-    try {
-      const userUID = this.spaceData.spaceFB.idFBCliente
-      const contractID = this.spaceData.spaceFB.idFBCliente
-      this.userFB = await this.userService.getUser(userUID)
-      this.contractFB = await this.contracService.getContract(contractID)
-    }catch{}
+    if(changes["spaceData"] && changes["spaceData"].currentValue){
+      if(!this.spaceData) return
+      if(this.spaceData.spaceFB.state === "Y") return
+      this.reloadData()
+    }
+   
   }
 
-  formatDate(dateC: Date): string {
+
+  async reloadData(){
+    try {
+      const userUID = this.spaceData.spaceFB.idFBCliente
+      const contractID = this.spaceData.spaceFB.idFBManagement
+      this.userFB = await this.userService.getUser(userUID)
+      this.contractFB = await this.contracService.getContract(contractID)
+    }catch(e){
+      console.error('Error al cargar datos del parqueadero o cliente' ,e);
+      return;
+    }
+  }
+
+  formatDate(firebaseTimestamp: any): string {
+    if (!firebaseTimestamp || !firebaseTimestamp.seconds) {
+        return "00/00/0000";
+    }
+
+    const dateC = new Date(firebaseTimestamp.seconds * 1000); 
+
     const date = new Date(dateC);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -44,8 +63,11 @@ export class EditSpotComponent implements OnInit  {
     const minute = String(date.getMinutes()).padStart(2, '0');
     const hour = String(date.getHours()).padStart(2, '0');
 
-    return `${day}/${month}/${year} ${hour}h:${minute}`;
+    return `${day}/${month}/${year}  ${hour}h:${minute}m`;
+    
   }
+
+
 
 
   getNameSpanish(timeUnit: string, quantity: number): string{
