@@ -1,1 +1,66 @@
-<p>view-vehicules works!</p>
+<!-- Componente que muestra el listado de los vehiculos de los clientes -->
+<div class="overflow-x-auto flex flex-col p-4 sm:p-6 md:p-10">
+    <app-header-service
+      titlePage="En esta página, se mostrara el listado de los carros de los clientes."
+      description="Gestiona de manera rápida y sencilla todos los datos relacionados con los clientes. ¡Haz clic en cualquier usuario para empezar a editar!"
+    >
+    </app-header-service>
+  
+    <div
+      class="flex flex-col sm:flex-row sm:items-center justify-between w-full mb-4 space-y-4 sm:space-y-0"
+    >
+      <h2 class="font-bold text-xl sm:text-2xl md:text-3xl">
+        Listado de Vehiculos
+      </h2>
+  
+      <!-- <div
+        class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2"
+      > -->
+        <!-- <input
+          type="text"
+          placeholder="Buscar..."
+          class="w-full sm:w-[250px] px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-800 transition ease-in-out duration-300 shadow-md"
+          [(ngModel)]="wordFilter"
+        />
+        <button
+          (click)="onSearch()"
+          class="w-full sm:w-auto px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white rounded-md transition ease-in-out duration-300 shadow-md"
+        >
+          Buscar
+        </button>
+      </div> -->
+    </div>
+  
+    <div class="overflow-x-auto w-full mb-6 shadow-lg">
+      <table class="min-w-full table-auto text-sm sm:text-base">
+        <thead class="bg-gray-900 text-white">
+          <tr>
+            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+              Marca
+            </th>
+            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+              Modelo
+            </th>
+            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
+              Placa
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let vehiculo of vehiculos"
+                class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300"
+                >
+                <td class="py-2 px-2 sm:py-3 sm:px-4">{{ vehiculo.brand }}</td>
+                <td class="py-2 px-2 sm:py-3 sm:px-4">
+                    {{ vehiculo.model }}
+                </td>
+                <td class="py-2 px-2 sm:py-3 sm:px-4">
+                    {{ vehiculo.plate }}
+                </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
-import { Firestore, doc, setDoc, getDoc, snapToData, collection, getDocs } from '@angular/fire/firestore'
+import { Firestore, doc, setDoc, getDoc, snapToData, collection, getDocs, onSnapshot } from '@angular/fire/firestore'
 import { UserData, UserFB } from '../../../core/models/user'
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -8,6 +9,9 @@ import { UserData, UserFB } from '../../../core/models/user'
 })
 
 export class UserfbService {
+  private userSubject = new BehaviorSubject<UserFB | null>(null);
+  user$ = this.userSubject.asObservable();
+
   constructor(private fireStore: Firestore) {}
 
   async createUserInFirestore( uid: string ,user: UserFB) {    
@@ -41,4 +45,14 @@ export class UserfbService {
     });
   }
 
+  listenToUserChanges(uid: string) {
+    const userDocRef = doc(this.fireStore, `users/${uid}`);
+    onSnapshot(userDocRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.userSubject.next(snapshot.data() as UserFB); 
+      } else {
+        this.userSubject.next(null); 
+      }
+    });
+  }
 }
