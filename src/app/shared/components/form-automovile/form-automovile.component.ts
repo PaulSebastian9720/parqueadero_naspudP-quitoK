@@ -58,15 +58,13 @@ export class FormAutomovileComponent {
       return
     }     
     
-    
-    this.userData.user.listAutomobile?.forEach( automobile => {
-      if(automobile.id == this.automobile.id){
-        automobile = {...this.automobile}
-        return
-      }
-    })
+    const userUpdate = { ...this.userData.user };
 
-    await this.userService.updateUser(this.userData.crendentialUserUID, this.userData.user)
+    userUpdate.listAutomobile = userUpdate.listAutomobile!.map(automobile =>
+      automobile.id === this.automobile.id ? { ...this.automobile } : automobile
+    )
+    
+    await this.userService.updateUser(this.userData.crendentialUserUID, userUpdate)
     this.eventUpateUser.emit()
     this.clearForm()
   }

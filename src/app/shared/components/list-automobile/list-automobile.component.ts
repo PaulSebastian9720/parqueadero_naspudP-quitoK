@@ -5,6 +5,8 @@ import { UserfbService } from '../../services/user/userfb.service';
 import { DialogService } from '../../services/dialog/dialogconfirm.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { FormAutomovileComponent } from '../form-automovile/form-automovile.component';
 
 @Component({
   selector: 'app-list-automobile',
@@ -20,7 +22,7 @@ export class ListAutomobileComponent implements OnChanges {
   constructor(
     private userService : UserfbService,
     private dialogService : DialogService,
-
+    private dialog: MatDialog
   ) { }
 
   @Output() eventGetRateDate = new EventEmitter<void>;
@@ -31,7 +33,16 @@ export class ListAutomobileComponent implements OnChanges {
     }  
   }
   
-
+  async onUpdateAutomobile(automobile: Automobile){
+    const dialogRef = this.dialog.open(FormAutomovileComponent)
+    const instance = dialogRef.componentInstance
+    instance.automobileData = automobile
+    instance.userData = this.userData!
+    instance.eventUpateUser.subscribe(()=>{
+      this.dialog.closeAll()
+      this.initList()
+    })
+  } 
   
 
   async initList() {
