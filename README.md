@@ -7,7 +7,7 @@
 - [PaulSebastianNaspud](https://github.com/PaulSebastianNaspud)  
 - Correo: pnaspudv@est.ups.edu.ec
 - [KarenS22](https://github.com/KarenS22)  
-- Correo: ME LLAMO KAREN Y ME GUSTA LA DANNAESPINO@GMAIL.COM
+- Correo: kquitol@est.ups.edu.ec
 
 ## Proyecto: Gestión de Parqueadero Público
 
