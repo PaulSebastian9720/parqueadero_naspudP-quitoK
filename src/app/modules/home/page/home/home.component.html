@@ -10,7 +10,11 @@
       </div>
   
       <div class="mt-8">
-        <app-new-comment></app-new-comment>
+        <app-list-comments
+        #listComments> </app-list-comments>
+        <app-new-comment
+        (eventUpdateComments)="reloadComments()"
+        ></app-new-comment>
       </div>
     </div>
   </div>

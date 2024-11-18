@@ -32,35 +32,9 @@
     </div>
   
     <div class="overflow-x-auto w-full mb-6 shadow-lg">
-      <table class="min-w-full table-auto text-sm sm:text-base">
-        <thead class="bg-gray-900 text-white">
-          <tr>
-            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
-              Marca
-            </th>
-            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
-              Modelo
-            </th>
-            <th class="py-2 px-2 sm:py-3 sm:px-4 text-left font-semibold">
-              Placa
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr
-                *ngFor="let vehiculo of vehiculos"
-                class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300"
-                >
-                <td class="py-2 px-2 sm:py-3 sm:px-4">{{ vehiculo.brand }}</td>
-                <td class="py-2 px-2 sm:py-3 sm:px-4">
-                    {{ vehiculo.model }}
-                </td>
-                <td class="py-2 px-2 sm:py-3 sm:px-4">
-                    {{ vehiculo.plate }}
-                </td>
-            </tr>
-        </tbody>
-      </table>
+      <app-list-automobile
+      [userData]="user">
+      </app-list-automobile>
     </div>
   
     

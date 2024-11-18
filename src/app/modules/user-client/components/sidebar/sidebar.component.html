@@ -1,30 +1,45 @@
-<nav class=" w-64 h-screen p-4 border-r border-gray-300">
+<div class="relative">
+  <button
+    (click)="toggleSidebar()"
+    class="top-10 left-10 text-gray-700 text-2xl focus:outline-none lg:hidden p-5 z-30"
+  >
+    <i class="fa" [ngClass]="{ 'fa-times': isOpen, 'fa-bars': !isOpen }"></i>
+  </button>
+
+  <div
+    class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+    *ngIf="isOpen"
+    (click)="toggleSidebar()"
+  ></div>
+
+  <nav
+    [ngClass]="{ 'translate-x-0': isOpen, '-translate-x-full': !isOpen }"
+    class="fixed z-30 top-0 left-0 w-64 h-screen bg-white p-4 border-r border-gray-300 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
+  >
     <h1 class="text-black text-2xl font-bold mb-6">Parking Service</h1>
     <ul class="space-y-4">
-        <li>
-            <a 
-                (click)="setActiveRoute('/services-client')" 
-                routerLink="/services-client"
-                [class.bg-blue-300]="activeRoute === '/services-client'" 
-                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Ver Vehículos</a>
-        </li>
-       
-        <li>
-            <a  
-                routerLink="/services-client/pay-parking"
-                (click)="setActiveRoute('/services-client/pay-parking')" 
-                [class.bg-blue-300]="activeRoute === '/services-client/pay-parking'" 
-                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Pagar Estacionamiento</a>
-        </li>
-        <li>
-            <a 
-                routerLink="/services-client/reservation-history"
-                (click)="setActiveRoute('/services-client/reservation-history')" 
-                [class.bg-blue-300]="activeRoute === '/services-client/reservation-history'" 
-                class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-            >Historial de Reservas</a>
-        </li>
+      <li>
+        <a
+          (click)="setActiveRoute('/services-client')"
+          routerLink="/services-client"
+          [ngClass]="{ 'bg-blue-300': activeRoute === '/services-client' }"
+          class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+          >Ver Vehículos</a
+        >
+      </li>
+
+      <li>
+        <a
+          routerLink="/services-client/reservation-history"
+          (click)="setActiveRoute('/services-client/reservation-history')"
+          [ngClass]="{
+            'bg-blue-300':
+              activeRoute === '/services-client/reservation-history'
+          }"
+          class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
+          >Historial de Reservas</a
+        >
+      </li>
     </ul>
-</nav>
+  </nav>
+</div>

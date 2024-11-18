@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { NgModel } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 
@@ -11,9 +10,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent {
+  isOpen = false;
   activeRoute: string = "/services-client"
 
   setActiveRoute(route: string) {
     this.activeRoute = route;
+  }
+  
+  toggleSidebar() {
+    this.isOpen = !this.isOpen;
   }
 }

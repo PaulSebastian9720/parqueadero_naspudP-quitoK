@@ -5,11 +5,12 @@ import { UserData, UserFB } from '../../../../core/models/user';
 import { CommonModule } from '@angular/common';
 import { Automobile } from '../../../../core/models/automobile';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
+import { ListAutomobileComponent } from '../../../../shared/components/list-automobile/list-automobile.component';
 
 @Component({
   selector: 'app-view-vehicules',
   standalone: true,
-  imports: [CommonModule, HeaderServiceComponent],
+  imports: [CommonModule, HeaderServiceComponent, ListAutomobileComponent],
   templateUrl: './view-vehicules.component.html',
   styleUrl: './view-vehicules.component.scss'
 })
