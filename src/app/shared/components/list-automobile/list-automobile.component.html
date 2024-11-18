@@ -1,0 +1,47 @@
+<div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
+    <table class="min-w-full shadow-sm">
+      <thead class="bg-gray-900 text-white">
+        <tr>
+          <th class="py-3 px-4  text-center">Marca</th>
+          <th class="py-3 px-4  text-center">Modelo</th>
+          <th class="py-3 px-4  text-center">Placa</th>
+          <th class="py-3 px-4  text-center">Acciones</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr
+          *ngFor="let automovil of listAutomobile"
+          class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 text-center"
+        >
+          <td class="py-3 px-4">{{ automovil.brand }}</td>
+          <td class="py-3 px-4">{{ automovil.model }}</td>
+          <td class="py-3 px-4">{{ automovil.plate}}</td>
+          <td class="py-3 px-4 flex justify-center space-x-4">
+            
+            <button
+              (click)="onClickDeleteAutomobile(automovil)"
+              class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

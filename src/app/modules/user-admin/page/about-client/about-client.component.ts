@@ -6,11 +6,12 @@ import { UpdateFormUserComponent } from "../../../../shared/components/update-fo
 import { FormsModule } from '@angular/forms';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
 import { TableContractComponent } from "../../components/table-contract/table-contract.component";
+import { ListAutomobileComponent } from "../../../../shared/components/list-automobile/list-automobile.component";
 
 @Component({
   selector: 'app-about-client',
   standalone: true,
-  imports: [CommonModule, UpdateFormUserComponent, FormsModule, HeaderServiceComponent, TableContractComponent],
+  imports: [CommonModule, UpdateFormUserComponent, FormsModule, HeaderServiceComponent, TableContractComponent, ListAutomobileComponent],
   templateUrl: './about-client.component.html',
 })
 
@@ -37,14 +38,15 @@ export class AboutClientComponent implements OnInit {
   }
 
   onClick(userData: UserData): void {
-    console.log(userData);
     this.user = userData;
+    this.isEditing = false
   } 
 
   async initUser(): Promise<void> {
     const users = await this.userService.getListUsers();
     this.users = users
     this.filteredUsers = users
+    this.isEditing = false
   }
 
   toggleEdit() {

@@ -120,8 +120,9 @@ export class CreateContractComponent implements OnChanges{
         this.startDate,
         this.endDate,
         this.price,
-        true,
+        "A",
         this.spaceData.id,
+        this.rateData.rateFB,
         [],
         automobile
       )

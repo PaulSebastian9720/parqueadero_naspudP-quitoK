@@ -28,11 +28,8 @@ export class TableContractComponent implements OnChanges {
     }
   }
 
-  OnChanges(){
-
-  }
-
   formatDate(stringDate :Date): string {
+    console.log(stringDate);
     const date = new Date(stringDate)
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -41,7 +38,18 @@ export class TableContractComponent implements OnChanges {
   }
 
   
-
+  showMenssageState(contrac:ManagementFB){
+    if(!contrac){
+      return""
+    }
+    if(contrac.state === "A"){
+      return "Activo"
+    } else if (contrac.state === "I"){
+      return "Inactivo"
+    }else {
+      return "Pendiente"
+    }
+  }
   async initTable(){
 
     
@@ -51,7 +59,6 @@ export class TableContractComponent implements OnChanges {
     if(client){
       for( let i = 0; i < client?.listManagement!.length; i++){
         const contract = await this.contracService.getContract(client.listManagement![i])
-        console.log(contract)  
         if(contract!){
           listContractAux.push(contract)
         }

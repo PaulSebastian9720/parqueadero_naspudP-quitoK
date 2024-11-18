@@ -8,5 +8,21 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(), provideFirebaseApp(() => initializeApp({"projectId":"p-auto-spot","appId":"1:123731332897:web:339785831ead889f983860","storageBucket":"p-auto-spot.firebasestorage.app","apiKey":"AIzaSyCySf1fTgJg_uLm7blUK1Otv-WNezVFLiA","authDomain":"p-auto-spot.firebaseapp.com","messagingSenderId":"123731332897"})), provideAuth(() => getAuth()), provideFirestore(() => getFirestore())]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'p-auto-spot',
+        appId: '1:123731332897:web:339785831ead889f983860',
+        storageBucket: 'p-auto-spot.firebasestorage.app',
+        apiKey: 'AIzaSyCySf1fTgJg_uLm7blUK1Otv-WNezVFLiA',
+        authDomain: 'p-auto-spot.firebaseapp.com',
+        messagingSenderId: '123731332897',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
 };

@@ -39,3 +39,7 @@ $proyecto-integrado-parqueadero-theme: mat.define-theme((
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tailwind-dialog .mat-dialog-container {
+  @apply p-0 bg-transparent shadow-none;
+}

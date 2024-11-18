@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RateData } from '../../../../core/models/rate';
 import { RateService } from '../../../../shared/services/rate/rate.service';
+import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 
 @Component({
   selector: 'app-list-rates',
@@ -14,7 +15,8 @@ export class ListRatesComponent implements OnInit {
   listRate : RateData [] = []
 
   constructor(
-    private rateServices : RateService
+    private rateServices : RateService,
+    private dialogService: DialogService
   ) { }
   
   @Output() eventGetRateDate = new EventEmitter<RateData>;
@@ -43,5 +45,21 @@ export class ListRatesComponent implements OnInit {
 
   async initListRates() {
     this.listRate = await this.rateServices.getListRate()
+  }
+
+  async onClickDeleteRate(rateData:RateData){
+    this.dialogService
+      .confirm({
+        title: '¡Advertencia!',
+        question: '¿Estás seguro de continuar con esta acción?',
+        highlight: `Esto eliminará la taria ${rateData.rateFB.name}`,
+        icon: 'fas fa-exclamation-circle',
+      })
+      .then((confirmed) => {
+        if (confirmed) {
+          this.rateServices.deleteRate(rateData.id)
+          this.initListRates()
+        } else {}
+      });
   }
 }

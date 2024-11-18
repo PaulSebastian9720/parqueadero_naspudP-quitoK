@@ -1,51 +1,27 @@
-<div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
+<!-- <div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
     <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
       Datos del Cliente
     </h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
       <div
         class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': userData }"
+        [ngClass]="{ 'border border-green-500': userFB }"
       >
         <span class="font-semibold text-gray-700"> Nombre </span>
         <span class="text-gray-900 font-medium mt-1 block">
-          {{ userData ? userData.user.name : "" }}
+          {{ userFB ? userFB.name : "" }}
         </span>
       </div>
       <div
         class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': userData }"
+        [ngClass]="{ 'border border-green-500': userFB }"
       >
         <span class="font-semibold text-gray-700">Correo</span>
         <span class="text-gray-900 font-medium mt-1 block">
-          {{ userData ? userData.user.correo : "" }}
+          {{ userFB ? userFB.correo : "" }}
         </span>
       </div>
       
-    </div>
-  
-    <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-      Datos del Automóvil
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
-      <div
-        [ngClass]="{ 'border border-green-500': automobile }"
-        class="p-4 shadow-md rounded-lg"
-      >
-        <span class="font-semibold text-gray-700">Placa</span>
-        <span class="text-gray-900 font-medium mt-1 block">{{
-          automobile?.plate ? automobile?.plate : "AAAA-000"
-        }}</span>
-      </div>
-      <div
-        [ngClass]="{ 'border border-green-500': automobile }"
-        class="p-4 shadow-md rounded-lg"
-      >
-        <span class="font-semibold text-gray-700">Marca</span>
-        <span class="text-gray-900 font-medium mt-1 block">{{
-          automobile?.brand ? automobile?.brand : "GENERICA"
-        }}</span>
-      </div>
     </div>
   
     <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
@@ -77,36 +53,36 @@
     </div>
   
     <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-      Datos de la Tarifa
+      Datos del Contrato
     </h2>
     <div class="grid grid-cols-1 gap-6 p-4">
       <div
         class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': rateData }"
+        [ngClass]="{ 'border border-green-500': contractFB }"
       >
         <span class="font-semibold text-gray-700">Fecha de inicio</span>
         <span class="text-gray-900 font-medium mt-1 block">{{
-          getStartDate()
+          formatDate(contractFB?.startDate!)
         }}</span>
       </div>
       <div
         class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': rateData }"
+        [ngClass]="{ 'border border-green-500': contractFB }"
       >
         <div class="flex justify-between items-center">
           <span class="font-semibold text-gray-700">Tarifa información</span>
         </div>
         <span class="text-gray-900 font-medium mt-2 block">
-          {{rateData ? getNameSpanish(rateData.rateFB.timeUnit, rateData.rateFB.quantity) : "Selccione una Tarifa"}}
+          
         </span>
       </div>
       <div
         class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': rateData }"
+        [ngClass]="{ 'border border-green-500': contractFB }"
       >
         <span class="font-semibold text-gray-700">Coste de la Tarifa</span>
         <span class="text-gray-900 font-medium mt-1 block">
-          {{rateData ? rateData.rateFB.unitRate : "0.00"}}$
+          {{contractFB ? contractFB.rateFB.unitRate : "0.00"}}$
           </span>
       </div>
     </div>
@@ -114,7 +90,7 @@
     <button
       class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 w-full"
       [ngClass]="{
-        'cursor-not-allowed': !spaceData || !userData || !rateData || price <= 0
+        'cursor-not-allowed': !spaceData || !userFB || !contractFB || price <= 0
       }"
       (click)="onClickSaveContract()"
     >
@@ -135,4 +111,4 @@
       Guardar
     </button>
   </div>
-  
+   -->

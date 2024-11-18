@@ -54,6 +54,20 @@ export class CreateRentedComponent implements OnChanges {
     return this.formatDate(this.endDate);
   }
 
+  getNameSpanish(timeUnit: string, quantity: number): string{
+    this
+    if(timeUnit === "month"){
+      return `${quantity} ${quantity > 1 ? "Meses" : "Mes"}`
+    }else if (timeUnit === "days"){
+      return  `${quantity} ${quantity > 1 ? "Días" : "Día"}`
+
+    }else if (timeUnit === "hours"){
+      return `${quantity} ${quantity > 1 ? "Horas" : "Hora"}`
+    }else {
+      return `${quantity} ${quantity > 1 ? "Minutos" : "Minuto"}`
+    }
+  }
+
   getMenssage(): string {
     if (!this.spaceData) return '';
     if (this.spaceData.spaceFB.state === 'Y') {
@@ -140,13 +154,12 @@ export class CreateRentedComponent implements OnChanges {
         this.startDate,
         this.endDate,
         this.price,
-        true,
+        "A",
         this.spaceData.id,
+        this.rateData.rateFB,
         [],
         automobile
       );
-
-      console.log(contractFb.autmobile);
 
       const spaceUpdate = new SpaceFB(
         this.spaceData.spaceFB.location,

@@ -1,5 +1,6 @@
 import { Automobile } from "./automobile";
 import { Client } from "./client";
+import { RateFB } from "./rate";
 
 export class Management {
     constructor(
@@ -19,10 +20,11 @@ export class ManagementFB {
         public startDate: Date,
         public endDate: Date,
         public totalPrice: number,
-        public status: boolean,
+        public state: "A"| "I" |"W",
         public uidSpaces: string,
+        public rate : RateFB,
         public benefits?: string[],
-        public autmobile?: Automobile
+        public autmobile?: Automobile,
     ){}
    
       
@@ -32,7 +34,7 @@ export class ManagementFB {
         startDate: this.startDate.toISOString(), 
         endDate: this.endDate.toISOString(), 
         totalPrice: this.totalPrice,
-        status: this.status,
+        state: this.state,
         uidSpaces: this.uidSpaces,
         benefits: this.benefits || [], 
     }

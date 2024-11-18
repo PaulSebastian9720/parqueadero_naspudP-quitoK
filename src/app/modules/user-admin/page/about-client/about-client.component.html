@@ -109,6 +109,14 @@
   </div>
 
   <div *ngIf="user" class="w-full">
+
+    <h2 class="font-bold text-xl sm:text-2xl mb-2">
+      Listado de Automoble del Cliente
+    </h2>
+    <app-list-automobile 
+      [userData]="user">
+    </app-list-automobile>
+
     <h2 class="font-bold text-xl sm:text-2xl mb-2">
       Listado de Contratos del Cliente
     </h2>

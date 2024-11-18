@@ -4,6 +4,9 @@ import { isShortParameter, isRequired, isNumberPhone } from '../../../modules/au
 import { UserfbService } from '../../services/user/userfb.service';
 import { CommonModule } from '@angular/common';
 import { UserData, UserFB } from '../../../core/models/user';
+import { NotificationService } from '../../services/dialog/notificaion.service';
+
+
 
 @Component({
   selector: 'app-update-form-user',
@@ -22,7 +25,8 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
 
   constructor(
     private form: FormBuilder, 
-    private userService : UserfbService
+    private userService : UserfbService,
+    private notiticationService : NotificationService
   ) {}
 
 
@@ -32,7 +36,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
           name: this.userData.user.name || '',
           last_name: this.userData.user.last_name || '',
           correo: this.userData.user.correo || '',
-          birthday: this.userData.user.birthDay || null,
+          birthday: this.userData.user.birthDay || new Date(),
           phone: this.userData.user.phone || "",
           direction : this.userData.user.direction || "",
           city: this.userData.user.city || "",
@@ -64,11 +68,11 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
         name: this.userData.user.name || '',
         last_name: this.userData.user.last_name || '',
         correo: this.userData.user.correo || '',
-        birthday: this.userData.user.birthDay || null,
-        phone: this.userData.user.phone || null,
-        direction : this.userData.user.direction || null,
-        city: this.userData.user.city || null,
-        correoS: this.userData.user.correoS || null,
+        birthday: this.userData.user.birthDay || new Date(),
+        phone: this.userData.user.phone || "",
+        direction : this.userData.user.direction || "",
+        city: this.userData.user.city || "",
+        correoS: this.userData.user.correoS || "",
       });
     }
   }
@@ -113,7 +117,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
 
       await this.userService.updateUser(this.userData.crendentialUserUID,userData);
       this.updateTable.emit()
-
+      this.notiticationService.showNotification("USUARIO ACTUALIZADO CORRECTAMENTE")
     } catch (error) {
       console.log("Error: " + error)
     }

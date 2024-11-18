@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatrixSpacesComponent } from "../../../../shared/components/matrix-spaces/matrix-spaces.component";
-import { InfoSpaceComponent } from "../../components/info-space/info-space.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
@@ -8,7 +7,7 @@ import { HeaderServiceComponent } from "../../../../shared/components/header-ser
 @Component({
   selector: 'app-space-inventory',
   standalone: true,
-  imports: [MatrixSpacesComponent, InfoSpaceComponent, FormsModule, CommonModule, HeaderServiceComponent],
+  imports: [MatrixSpacesComponent, FormsModule, CommonModule, HeaderServiceComponent],
   templateUrl: './space-inventory.component.html',
 })
 export class SpaceInventoryComponent implements OnInit  {

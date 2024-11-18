@@ -16,7 +16,6 @@ import { SelectAutomobileComponent } from "../../components/select-automobile/se
 import { FormAutomovileComponent } from '../../../../shared/components/form-automovile/form-automovile.component';
 import { Automobile } from '../../../../core/models/automobile';
 import { CreateRentedComponent } from "../../components/create-rented/create-rented.component";
-import { race } from 'rxjs';
 
 
 @Component({
@@ -43,7 +42,6 @@ export class ContractManagementComponent {
   rateFb!: RateData | null
   isSelected1 = true
   isSelected2 = false 
-  filterList = true
   automobile!: Automobile | null
 
   @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent
@@ -66,12 +64,11 @@ export class ContractManagementComponent {
       this.isSelected2 = true
       this.selectTarifa.listFilter = this.selectTarifa.
         listRate.filter(value => value.rateFB.timeUnit !== 'month')
-        this.selectTarifa.listFilter = this.selectTarifa.
-        listRate.filter(value => value.rateFB.timeUnit === 'month')
       this.selectUser.listUserFBFilter = this.selectUser.listUserFb
     }
     this.rateFb = null
     this.userFb = null
+    this.automobile = null
     this.spaceFB = null
   }
 
