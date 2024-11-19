@@ -20,6 +20,7 @@ import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-edit-spot',
@@ -32,6 +33,7 @@ export class EditSpotComponent implements OnChanges {
   userFB!: UserFB | null;
   contractFB!: ManagementFB | null;
   dateToday!: Date;
+  totalPrice!: number;
   @Output() eventReloadMatriz = new EventEmitter<void>();
 
   constructor(
@@ -40,6 +42,8 @@ export class EditSpotComponent implements OnChanges {
     private spotService: ParkinLotService,
     private dialogService: DialogService
   ) {}
+
+
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes['spaceData'] && changes['spaceData'].currentValue) {
       if (!this.spaceData) return;
@@ -48,7 +52,14 @@ export class EditSpotComponent implements OnChanges {
         this.contractFB = null;
         return;
       }
-      this.reloadData();
+      await this.reloadData();
+      const startDate =  new Date((this.contractFB?.startDate as any).seconds * 1000)
+      this.totalPrice =this.calculateCost(
+                startDate, this.contractFB?.rate.timeUnit!,
+                this.contractFB?.rate.quantity!, 
+                this.contractFB?.rate.unitRate!
+      ) 
+
     }
   }
 
@@ -119,7 +130,6 @@ export class EditSpotComponent implements OnChanges {
       return;
     }
 
-    let isConfirm = false;
     this.dialogService
       .confirm({
         title: '¡Advertencia!',
@@ -139,14 +149,25 @@ export class EditSpotComponent implements OnChanges {
           spaceOfParking.idFBCliente = '';
           spaceOfParking.idFBManagement = '';
           contractUpdate.state = 'I';
-          console.log(contractUpdate);
 
           try {
             if (this.contractFB?.type == 'M') {
               this.contracService.updatoContract(contracID, contractUpdate);
               this.spotService.updateParkigSpace(spaceID, spaceOfParking);
-            } else {
-              console.log('AUN NO ECO CON ES OTRA VAINA');
+            } else if (this.contractFB?.type == 'R') {
+              
+              const startDate =  new Date((this.contractFB?.startDate as any).seconds * 1000)
+              const costTotal =this.calculateCost(
+                startDate, this.contractFB?.rate.timeUnit!,
+                this.contractFB?.rate.quantity!, 
+                this.contractFB?.rate.unitRate!
+              )     
+              contractUpdate.totalPrice =  Math.round(costTotal * 100) / 100
+              contractUpdate.endDate = new Date(Date.now())
+              this.contracService.updatoContract(contracID, contractUpdate);
+              this.spotService.updateParkigSpace(spaceID, spaceOfParking);
+
+              console.log("Update correcto")
             }
           } catch (e) {
             console.error(
@@ -162,4 +183,34 @@ export class EditSpotComponent implements OnChanges {
         }
       });
   }
+
+  calculateCost(
+    startDate: Date, 
+    timeUnit: string, 
+    unitValue: number, 
+    ratePerUnit: number 
+): number {
+    const now: Date = new Date();
+
+    const elapsedMilliseconds: number = now.getTime() - startDate.getTime();
+
+    if (elapsedMilliseconds < 0) {
+        return 0;
+    }
+
+    const elapsedMinutes: number = elapsedMilliseconds / (1000 * 60);
+
+    let totalUnits: number;
+    if (timeUnit === "minutes") {
+        totalUnits = Math.ceil(elapsedMinutes / unitValue);
+    } else if (timeUnit === "hours") {
+        totalUnits = Math.ceil(elapsedMinutes / (unitValue * 60));
+    } else {
+        throw new Error("La unidad de tiempo debe ser 'minutes' o 'hours'.");
+    }
+
+    const totalCost: number = totalUnits * ratePerUnit;
+    Math.round(totalCost * 100) / 100
+    return totalCost;
+}
 }
