@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatrixSpacesComponent } from "../../../../shared/components/matrix-spaces/matrix-spaces.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,8 @@ import { SpaceData } from '../../../../core/models/space';
 export class SpaceInventoryComponent implements OnInit{
   spaceData !: SpaceData | null
 
+  @ViewChild("parkingLot") parkingLot ! : MatrixSpacesComponent
+
   query: string = '';
   results: string[] = [];
   items: string[] = ['Apple', 'Banana', 'Orange', 'Pineapple', 'Strawberry'];
@@ -28,7 +30,11 @@ export class SpaceInventoryComponent implements OnInit{
       this.results = [];
     }
   }
+  
 
+  reloarParkingLot(){
+    this.parkingLot.initParkingLotService()
+  }
 
   editSpot(spaceData: SpaceData): void {
     this.spaceData = spaceData;

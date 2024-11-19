@@ -21,11 +21,11 @@ export class ContractManFBService {
 
 
     async updatoContract(id: string, updateManagementFb:Partial<ManagementFB | null>) {
-        return setDoc(doc(this.fireStore, `conrtract-m/${id}`), updateManagementFb, {merge: true})
+        return setDoc(doc(this.fireStore, `contract-m/${id}`), updateManagementFb, {merge: true})
     }
 
     async getListManagement(): Promise<ManagementData []>{
-        const getListManagement =  collection(this.fireStore,'conrtract-m')
+        const getListManagement =  collection(this.fireStore,'contract-m')
         const managementSnapt = await getDocs(getListManagement)
         return managementSnapt.docs.map( doc => {
             return new ManagementData(doc.id, doc.data() as ManagementFB)

@@ -1,98 +1,123 @@
 <div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
-    <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-      Datos del Cliente
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
-      <div
-        class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': userFB }"
-      >
-        <span class="font-semibold text-gray-700"> Nombre </span>
-        <span class="text-gray-900 font-medium mt-1 block">
-          {{ userFB ? userFB.name : "" }}
-        </span>
-      </div>
-      <div
-        class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': userFB }"
-      >
-        <span class="font-semibold text-gray-700">Correo</span>
-        <span class="text-gray-900 font-medium mt-1 block">
-          {{ userFB ? userFB.correo : "" }}
-        </span>
-      </div>
-      
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Cliente
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': userFB }"
+    >
+      <span class="font-semibold text-gray-700"> Nombre </span>
+      <span class="text-gray-900 font-medium mt-1 block">
+        {{ userFB ? userFB.name : "" }}
+      </span>
     </div>
-  
-    <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-      Datos del Spot
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
-      <div
-        [ngClass]="{ 'border border-green-500': spaceData }"
-        class="p-4 shadow-md rounded-lg"
-      >
-        <span class="font-semibold text-gray-700">Posición</span>
-        <span class="text-gray-900 font-medium mt-1 block">{{
-          spaceData ? spaceData.spaceFB.location : ""
-        }}</span>
-      </div>
-      <div
-        [ngClass]="{
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': userFB }"
+    >
+      <span class="font-semibold text-gray-700">Correo</span>
+      <span class="text-gray-900 font-medium mt-1 block">
+        {{ userFB ? userFB.correo : "" }}
+      </span>
+    </div>
+  </div>
+
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Spot
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+    <div
+      [ngClass]="{ 'border border-green-500': spaceData }"
+      class="p-4 shadow-md rounded-lg"
+    >
+      <span class="font-semibold text-gray-700">Posición</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        spaceData ? spaceData.spaceFB.location : ""
+      }}</span>
+    </div>
+    <div
+      [ngClass]="{
           'border-green-500': spaceData? spaceData.spaceFB.state === 'Y' : false,
           'border-red-500': spaceData? spaceData.spaceFB.state === 'N' : false,
           'border-yellow-500': spaceData? spaceData.spaceFB.state === 'O' : false,
         }"
-        class="border p-4 shadow-md rounded-lg"
-      >
-        <span class="font-semibold text-gray-700">Estado</span>
-        <span class="text-gray-900 font-medium mt-1 block">{{
-          getMenssage()
-        }}</span>
-      </div>
+      class="border p-4 shadow-md rounded-lg"
+    >
+      <span class="font-semibold text-gray-700">Estado</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        getMenssage()
+      }}</span>
     </div>
-  
-    <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-      Datos del Contrato
-    </h2>
-    <div class="grid grid-cols-1 gap-6 p-4">
+  </div>
+
+  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+    Datos del Contrato
+  </h2>
+  <div class="grid grid-cols-1 gap-6 p-4">
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': contractFB }"
+    >
+      <span class="font-semibold text-gray-700">Tipo de Contrato</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        contractFB
+          ? contractFB.type === "M"
+            ? "Contrato Mensual"
+            : "Renta Temporal"
+          : ""
+      }}</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
       <div
         class="p-4 shadow-md rounded-lg"
         [ngClass]="{ 'border border-green-500': contractFB }"
       >
-        <span class="font-semibold text-gray-700">Fecha de inicio</span>
+        <span class="font-semibold text-gray-700">Tarifa</span>
         <span class="text-gray-900 font-medium mt-1 block">{{
-          contractFB ? formatDate(contractFB.startDate) : ""
+          contractFB
+            ? getNameSpanish(contractFB.rate.timeUnit, contractFB.rate.quantity)
+            : ""
         }}</span>
-      </div>
-      <!-- <div
-        class="p-4 shadow-md rounded-lg"
-        [ngClass]="{ 'border border-green-500': contractFB }"
-      >
-        <div class="flex justify-between items-center">
-          <span class="font-semibold text-gray-700">Tarifa información</span>
-        </div>
-        <span class="text-gray-900 font-medium mt-2 block">
-          
-        </span>
       </div>
       <div
         class="p-4 shadow-md rounded-lg"
         [ngClass]="{ 'border border-green-500': contractFB }"
       >
-        <span class="font-semibold text-gray-700">Coste de la Tarifa</span>
-        <span class="text-gray-900 font-medium mt-1 block">
-          {{contractFB ? contractFB.rateFB.unitRate : "0.00"}}$
-          </span>
+        <span class="font-semibold text-gray-700">Precio Acordado</span>
+        <span class="text-gray-900 font-medium mt-1 block"
+          >{{ contractFB ? contractFB.rate.unitRate : "0.00" }}$</span
+        >
       </div>
     </div>
-  
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': contractFB }"
+    >
+      <span class="font-semibold text-gray-700">Fecha de inicio</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        contractFB ? formatDate(contractFB.startDate) : ""
+      }}</span>
+    </div>
+
+    <div
+      class="p-4 shadow-md rounded-lg"
+      [ngClass]="{ 'border border-green-500': contractFB }"
+    >
+      <span class="font-semibold text-gray-700">Fecha de Pago</span>
+      <span class="text-gray-900 font-medium mt-1 block">{{
+        contractFB
+          ? contractFB.type === "M"
+            ? formatDate(contractFB.endDate)
+            : formateToday()
+          : ""
+      }}</span>
+    </div>
+
     <button
-      class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 w-full"
-      [ngClass]="{
-        'cursor-not-allowed': !spaceData || !userFB || !contractFB || price <= 0
-      }"
-      (click)="onClickSaveContract()"
+      class="flex items-center justify-center gap-2 py-4 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 mt-4 w-full"
+      *ngIf="contractFB"
+      (click)="onClickPay()"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -102,13 +127,28 @@
         stroke="currentColor"
         stroke-width="2"
       >
-        <path
+        <rect
+          x="3"
+          y="7"
+          width="18"
+          height="10"
+          rx="2"
+          ry="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          d="M17 16l-4-4m0 0l-4 4m4-4v9M5 20h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"
+        />
+        <path
+          d="M12 11c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M6 9h.01M18 15h-.01"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
-      Guardar
-    </button> -->
+      COBRAR
+    </button>
   </div>
-  
+</div>

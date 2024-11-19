@@ -7,12 +7,14 @@
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-6">
         <div class="flex-1 lg:flex-[2]">
             <app-edit-spot
+                (eventReloadMatriz)="reloarParkingLot()"
                 [spaceData]="spaceData!">
             </app-edit-spot>
         </div>
         
         <div class="flex-1 lg:flex-[1]">
             <app-matrix-spaces
+                #parkingLot
                 (eventEmitrSpace)="editSpot($event)">   
             </app-matrix-spaces>
         </div>
