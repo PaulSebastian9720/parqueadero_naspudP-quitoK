@@ -53,7 +53,7 @@ export class CreateContractComponent implements OnChanges{
   getMenssage(): string {
     if (!this.spaceData) return ''
     if (this.spaceData.spaceFB.state === 'Y') {
-      return 'Dispnible'
+      return 'Disponible'
     } else if (this.spaceData.spaceFB.state === 'N') {
       return 'No disponible'
     } else {
@@ -100,7 +100,7 @@ export class CreateContractComponent implements OnChanges{
 
     if (this.spaceData.spaceFB.state === 'O') {
       console.log(
-        'El espacio esta ocupado, pero dispnible proximanente desea ocuparlo'
+        'El espacio esta ocupado, pero disponible proximanente desea ocuparlo'
       )
     }
 

@@ -1,9 +1,9 @@
 <header class="bg-gray-900 text-white">
   <div class="container mx-auto flex justify-between items-center py-6">
-    <h2 class="px-4 text-2xl text-white font-extrabold font">
+    <a routerLink="/" class="px-4 text-2xl text-white font-extrabold font">
       AUTO
       <span class="text-black bg-white px-2 rounded-lg transform">SPOT</span>
-    </h2>
+    </a>
 
     <nav class="hidden md:flex space-x-6">
       <a routerLink="/" class="hover:text-gray-400 text-lg">
@@ -17,9 +17,10 @@
         *ngIf="isAdmin"
         class="hover:text-gray-400 text-lg"
       >
-        <i class="fa fa-home"> Administrador</i></a
+        <i class="fa fa-cogs"> Administrador</i></a
       >
-      <a href="#footer" class="hover:text-gray-400 text-lg">
+      <a routerLink="contact-us" 
+      class="hover:text-gray-400 text-lg">
         <i class="fa fa-globe"> Contactanos</i>
       </a>
     </nav>
@@ -71,19 +72,23 @@
         </button>
         <div
           *ngIf="isMenuOpen"
-          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-10 right-1"
+          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-10 right-1 w-40"
         >
           <a routerLink="/" class="block hover:text-gray-400">
             <i class="fa fa-home"></i> Inicio
           </a>
           <a routerLink="/services-client" class="block hover:text-gray-400">
             <i class="fa fa-concierge-bell"></i> Servicios
+          </a> 
+          <a routerLink="/services-admin" *ngIf="isAdmin" class="block hover:text-gray-400">
+            <i class="fa fa-cogs"></i> Administrador
           </a>
-          <a href="#" class="block hover:text-gray-400">
+          <a routerLink="contact-us" class="block hover:text-gray-400">
             <i class="fa fa-globe"></i> Contactanos
           </a>
         </div>
       </div>
+      
     </div>
   </div>
 </header>

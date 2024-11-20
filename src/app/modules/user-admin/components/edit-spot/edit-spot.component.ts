@@ -116,7 +116,7 @@ export class EditSpotComponent implements OnChanges {
   getMenssage(): string {
     if (!this.spaceData) return '';
     if (this.spaceData.spaceFB.state === 'Y') {
-      return 'Dispnible';
+      return 'Disponible';
     } else if (this.spaceData.spaceFB.state === 'N') {
       return 'No disponible';
     } else {
