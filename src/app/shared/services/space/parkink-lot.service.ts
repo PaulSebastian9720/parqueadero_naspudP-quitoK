@@ -12,11 +12,12 @@ export class ParkinLotService {
 
     async addNewSpot(row: string){   
         const indexCurrent = await this.getRowlength(row)
-        const idSpace = `R${row.toUpperCase()}-C${indexCurrent+1}`
+        const newIndex = (indexCurrent as number) + 1
+        const idSpace = `R${row.toUpperCase()}-C${newIndex}`
         const newSpace = new SpaceFB(idSpace,"Y","", "")
         const query = `row-${row.toLowerCase()}/col/${idSpace}-SPC`
         return setDoc(doc(this.fireStore, `parking-lot/${query}`), Object.assign({}, newSpace)).then(() =>{
-            setDoc(doc(this.fireStore, `parking-lot/row-${row.toLowerCase()}`), {length : indexCurrent +1} )
+            setDoc(doc(this.fireStore, `parking-lot/row-${row.toLowerCase()}`), {length : newIndex} )
         })
     }
 
