@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { collection, doc, Firestore, getDocs, setDoc } from "@angular/fire/firestore";
+import { collection, doc, Firestore, getDoc, getDocs, setDoc } from "@angular/fire/firestore";
 import { SpaceData, SpaceFB } from "../../../core/models/space";
 
 @Injectable(
@@ -10,12 +10,22 @@ import { SpaceData, SpaceFB } from "../../../core/models/space";
 export class ParkinLotService {
     constructor(private fireStore: Firestore) {}
 
+    async addNewSpot(row: string){   
+        const indexCurrent = await this.getRowlength(row)
+        const idSpace = `R${row.toUpperCase()}-C${indexCurrent+1}`
+        const newSpace = new SpaceFB(idSpace,"Y","", "")
+        const query = `row-${row.toLowerCase()}/col/${idSpace}-SPC`
+        return setDoc(doc(this.fireStore, `parking-lot/${query}`), Object.assign({}, newSpace)).then(() =>{
+            setDoc(doc(this.fireStore, `parking-lot/row-${row.toLowerCase()}`), {length : indexCurrent +1} )
+        })
+    }
+
     async getParkingLot() : Promise<SpaceData[][]>{
         let matrixSpaces : SpaceData[][] =[] 
-        const rows = ["a", "b", "c", "d", "e", "f", "g"]
-        for (let i = 0; i < rows.length; i++) {
-
-            const rowRef = collection(this.fireStore, "parking-lot/row-"+ rows[i]+"/col")
+        
+        for (let i = 0; i < 7 + 1; i++) {
+            const rowLetter = String.fromCharCode(64 + i).toLowerCase()
+            const rowRef = collection(this.fireStore, "parking-lot/row-"+ rowLetter + "/col")
             const rowSnap = await getDocs(rowRef)   
             const row =  rowSnap.docs.map( doc =>  {
                 return new SpaceData(doc.id, SpaceFB.fromJSON(doc.data()) ) 
@@ -49,7 +59,19 @@ export class ParkinLotService {
                 )
             }
         }
-    
-      }
+    }
+
+    private getMatrizlength(){
+        return getDoc(doc(this.fireStore, "parking-lot/length")).then((value) => {
+            return value.data()!['length'] as number
+        })   
+    }
+
+
+    private getRowlength(row: string) {
+        return getDoc(doc(this.fireStore, `parking-lot/row-${row.toLowerCase()}`)).then((value) => {
+            return value.data()!['length'] as number
+        })
+    }
     
 }

@@ -92,15 +92,17 @@
             class="py-2 px-2 sm:py-3 sm:px-4 text-center flex flex-col sm:flex-row justify-center gap-2 sm:gap-4"
           >
             <button
+              *ngIf="user && user.user.rol === 'C'"
+              (click)="onClick(userData)"
+              class="flex items-center gap-2 px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
+            >
+              Actualizar
+            </button>
+            <button
               (click)="onClick(userData)"
               class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
             >
               Seleccionar
-            </button>
-            <button
-              class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
-            >
-              Desactivar
             </button>
           </td>
         </tr>
@@ -109,13 +111,10 @@
   </div>
 
   <div *ngIf="user" class="w-full">
-
     <h2 class="font-bold text-xl sm:text-2xl mb-2">
       Listado de Automoble del Cliente
     </h2>
-    <app-list-automobile 
-      [userData]="user">
-    </app-list-automobile>
+    <app-list-automobile [userData]="user"> </app-list-automobile>
 
     <h2 class="font-bold text-xl sm:text-2xl mb-2">
       Listado de Contratos del Cliente

@@ -6,6 +6,6 @@
   <option value="" disabled selected>Seleccionar una tarifa</option>
   
   <option *ngFor="let rateData of listFilter" [value]="rateData.id">
-    {{ rateData.rateFB.name }} - {{ rateData.rateFB.unitRate }}$ Mes
+    {{ rateData.rateFB.name }} - {{ rateData.rateFB.unitRate }}$ 
   </option>
 </select>

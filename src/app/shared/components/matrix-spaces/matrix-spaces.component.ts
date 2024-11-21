@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { SpaceData } from '../../../core/models/space';
+import { SpaceData,  } from '../../../core/models/space';
 import { CommonModule } from '@angular/common';
 import { NgModel } from '@angular/forms';
 import { ParkinLotService } from '../../services/space/parkink-lot.service';
@@ -33,6 +33,27 @@ export class MatrixSpacesComponent implements OnInit {
    
   onCLickEmiter(spaceData: SpaceData){
     this.eventEmitrSpace.emit(spaceData)
+  }
+  
+  getLetterFromIndex(index: number): string {
+    return String.fromCharCode(65 + index); 
+}
+
+  getMatrizFilter(): SpaceData[][]{
+    if(!this.matrizSpaces){
+      return []
+    }
+    const matrizFilter: SpaceData[][] = []
+    this.matrizSpaces.forEach((row)=> {
+      const rowData : SpaceData [] = []
+      row.forEach((space)=> {
+        if (space.spaceFB.state !== "NP") {
+          rowData.push(space)
+        }
+      })
+      matrizFilter.push(rowData)
+    })
+    return matrizFilter
   }
 }
 

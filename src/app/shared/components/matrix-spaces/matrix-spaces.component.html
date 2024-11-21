@@ -1,30 +1,37 @@
-<div class="p-4   overflow-y-auto max-w-full sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1200px] mx-auto">
-        
-    <div 
-        *ngIf="matrizSpaces"
-        class="grid grid-cols-8 gap-2 text-center  pb-3 mb-3 font-semibold text-gray-700">
-        <span></span> 
-        <span *ngFor="let column of [1, 2, 3, 4, 5, 6, 7]" class="px-2">{{ column }}</span>
-    </div>
+<div class="p-4 w-full sm:max-w-[600px] md:max-w-[725px] mx-auto overflow-hidden">
+  <div *ngFor="let rowOfMatriz of getMatrizFilter(); let i = index" 
+        class="flex gap-2 items-start mb-2 overflow-x-auto overflow-y-hidden custom-scroll">
+      <div *ngFor="let space of rowOfMatriz" 
+            class="w-32 h-20 flex justify-center items-center flex-shrink-0">
+        <div
+          (click)="onCLickEmiter(space)"
+          class="w-full h-full flex flex-col justify-center items-center rounded-lg cursor-pointer"
+          [ngClass]="{
+            'bg-green-400 hover:bg-green-300': space.spaceFB.state === 'Y', 
+            'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N',
+            'bg-yellow-300 hover:bg-yellow-200': space.spaceFB.state === 'O',
+          }"
+        >
+          <span class="text-sm font-medium w-full text-white bg-gray-950 px-2 py-1 mb-2">
+            {{ space.spaceFB.location }}
+          </span>
 
-    <div *ngFor="let rowOfMatriz of matrizSpaces; let i = index" class="grid grid-cols-8 gap-2 items-center mb-2">
-        <span class="font-semibold text-gray-700 text-center px-2">{{ getRowHeader(i) }}</span> 
-
-        <div *ngFor="let space of rowOfMatriz" class="w-full h-20 flex justify-center items-center">
-            <div 
-                (click)="onCLickEmiter(space)"
-                class="w-full h-full flex flex-col justify-center items-center rounded-lg  cursor-pointer"
-                [ngClass]="{
-                    'bg-green-400 hover:bg-green-300': space.spaceFB.state === 'Y', 
-                    'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N',
-                    'bg-yellow-300 hover:bg-yellow-200': space.spaceFB.state === 'O',
-                }">
-                
-                <i *ngIf="space.spaceFB.state === 'Y'" class="fas fa-car text-xl text-black"></i>
-                <i *ngIf="space.spaceFB.state === 'N'" class="fas fa-ban text-xl text-black"></i>
-                <i *ngIf="space.spaceFB.state === 'O'" class="fas fa-clock text-xl text-black"></i>
-                <span class="text-xs font-medium text-gray-800 mt-1">{{ space.spaceFB.location }}</span>
-            </div>
+          <div class="flex justify-center items-center">
+            <i *ngIf="space.spaceFB.state === 'Y'" class="fas fa-car text-xl text-black"></i>
+            <i *ngIf="space.spaceFB.state === 'N'" class="fas fa-ban text-xl text-black"></i>
+            <i *ngIf="space.spaceFB.state === 'O'" class="fas fa-clock text-xl text-black"></i>
+          </div>
         </div>
     </div>
 </div>
+
+<style>
+  .custom-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scroll {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }
+</style>

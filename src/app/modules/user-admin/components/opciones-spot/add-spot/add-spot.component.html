@@ -1,0 +1,29 @@
+<div class="p-6 max-w-lg mx-auto space-y-4">
+    <div class="space-y-2">
+        <label for="selectRow" class="block text-lg font-medium text-gray-700">Seleccionar una FILA</label>
+        <select
+            id="selectRow"
+            [(ngModel)]="selectRow"
+            class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-700 transition ease-in-out duration-300"
+        >
+            <option value="" disabled selected>Seleccionar una FILA</option>
+            <option *ngFor="let letter of listRows" [value]="letter">
+                {{ letter }}
+            </option>
+        </select>
+    </div>
+
+    <div class="text-gray-700 flex justify-between items-center">
+        <span class="block">FILA SELECCIONADA:</span>
+        <span class="font-bold text-blue-500">{{ selectRow }}</span>
+    </div>
+
+    <div>
+        <button
+            (click)="onAddSpot()"
+            class="w-full max-w-xs mx-auto flex items-center gap-2 px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition duration-200"
+        >
+            Añadir
+        </button>
+    </div>
+</div>

@@ -5,6 +5,10 @@ import { CommonModule } from '@angular/common';
 import { HeaderServiceComponent } from "../../../../shared/components/header-service/header-service.component";
 import { EditSpotComponent } from "../../components/edit-spot/edit-spot.component";
 import { SpaceData } from '../../../../core/models/space';
+import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddSpotComponent } from '../../components/opciones-spot/add-spot/add-spot.component';
+import { UpdateStateComponent } from '../../components/opciones-spot/update-state/update-state.component';
 
 @Component({
   selector: 'app-space-inventory',
@@ -12,27 +16,18 @@ import { SpaceData } from '../../../../core/models/space';
   imports: [MatrixSpacesComponent, FormsModule, CommonModule, HeaderServiceComponent, EditSpotComponent, CommonModule],
   templateUrl: './space-inventory.component.html',
 })
-export class SpaceInventoryComponent implements OnInit{
+export class SpaceInventoryComponent {
   spaceData !: SpaceData | null
 
   @ViewChild("parkingLot") parkingLot ! : MatrixSpacesComponent
-
-  query: string = '';
-  results: string[] = [];
-  items: string[] = ['Apple', 'Banana', 'Orange', 'Pineapple', 'Strawberry'];
-
-  search() {
-    if (this.query) {
-      this.results = this.items.filter(item => 
-        item.toLowerCase().includes(this.query.toLowerCase())
-      );
-    } else {
-      this.results = [];
-    }
-  }
   
 
-  reloarParkingLot(){
+  constructor(
+    private parkingLotService: ParkinLotService,
+    private dialog: MatDialog
+  ){}
+
+  reloadParkingLot(){
     this.parkingLot.initParkingLotService()
   }
 
@@ -40,9 +35,54 @@ export class SpaceInventoryComponent implements OnInit{
     this.spaceData = spaceData;
   }
 
-  async ngOnInit(): Promise<void> {
+
+  addSpot(){
+    const dialogRef = this.dialog.open(AddSpotComponent)
+    const instance = dialogRef.componentInstance
+    instance.sendLetterRow.subscribe((letterRow : string)=> {
+      console.log(letterRow)
+      if(letterRow !== ""){
+        console.log("add new spot", letterRow)
+        this.parkingLotService.addNewSpot(letterRow!)
+        this.reloadParkingLot()
+        this.dialog.closeAll()
+      }
+    })
    
   }
+
+
+  onDisable(){
+    const dialogRef = this.dialog.open(UpdateStateComponent)
+    const instance = dialogRef.componentInstance
+    instance.mapSlot = this.parkingLot.matrizSpaces.slice(1, 8)
+    instance.filterForddDisable()
+    instance.sendSlot.subscribe((slot)=>{
+      if(slot.spaceFB.state === "NP"){
+        const space = {...slot}
+        space.spaceFB.state = "Y"
+        this.parkingLotService.updateParkigSpace(space.spaceFB.location,space.spaceFB)
+        this.reloadParkingLot()
+        this.dialog.closeAll()
+      }
+    })
+  }
+
+  onEnable(){
+    const dialogRef = this.dialog.open(UpdateStateComponent)
+    const instance = dialogRef.componentInstance
+    instance.mapSlot = this.parkingLot.matrizSpaces.slice(1, 8)
+    instance.filterForEnable()
+    instance.sendSlot.subscribe((slot)=>{
+      if(slot.spaceFB.state === "Y"){
+        const space = {...slot}
+        space.spaceFB.state = "NP"
+        this.parkingLotService.updateParkigSpace(space.spaceFB.location,space.spaceFB)
+        this.reloadParkingLot()
+        this.dialog.closeAll()
+      }
+    })
+  }
   
-  
+    
 }

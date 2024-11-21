@@ -1,8 +1,12 @@
 <div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
-  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+  <h2
+    *ngIf="userFB" 
+    class="text-center font-bold text-gray-800 border-b-2 mb-4">
     Datos del Cliente
   </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+  <div 
+    *ngIf="userFB"   
+    class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userFB }"
@@ -51,10 +55,13 @@
     </div>
   </div>
 
-  <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
-    Datos del Contrato
-  </h2>
-  <div class="grid grid-cols-1 gap-6 p-4">
+  
+  <div 
+    *ngIf="contractFB"
+    class="grid grid-cols-1 gap-6 p-4">
+    <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
+      Datos del Contrato
+    </h2>
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': contractFB }"
