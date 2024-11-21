@@ -34,7 +34,7 @@
         <small *ngIf="isRequired('password')" class="text-red-500">Este campo es requerido </small>
     </div>
 
-    <button type="submit" class="w-full mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg mt-4" [disabled]="registerForm.invalid">Iniciar sesion</button>
+    <button type="submit" class="w-full mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg mt-3" [disabled]="registerForm.invalid">Iniciar sesion</button>
 
   </form>
     <app-button-w-google (onClickEvent)="onSubmitWithGoogle()"></app-button-w-google>

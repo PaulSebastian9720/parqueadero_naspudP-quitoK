@@ -27,7 +27,6 @@ export class PayParkingComponent {
     this.listRate = await this.rateServices.getListRate()
     this.listFilter = this.listRate
       .filter(value => value.rateFB.timeUnit != 'month')
-    console.log(this.listFilter)
   }
 
 

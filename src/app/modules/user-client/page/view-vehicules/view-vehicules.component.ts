@@ -38,7 +38,6 @@ export class ViewVehiculesComponent {
         if(userData){
           this.user = new UserData(currentUserUID,userData)
           this.vehiculos = this.user.user.listAutomobile || []
-          console.log(this.user)
         } else {
           this.vehiculos = []
         }

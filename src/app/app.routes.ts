@@ -4,6 +4,7 @@ import { privateGuard, privateGuardAdmin, publicGuard } from './core/auth/auth-g
 import { WelcomingComponent } from './shared/page/welcoming/welcoming.component';
 import { NotFoudComponent } from './shared/page/not-foud/not-foud.component';
 import { ProfileComponent } from './shared/page/profile/profile.component';
+import { ContactUsComponent } from './shared/section/contact-us/contact-us.component';
 
 
 export const routes: Routes = [
@@ -41,8 +42,11 @@ export const routes: Routes = [
         loadChildren : () => import('./modules/user-admin/admin.routing')
     },
     {
+        path: "contact-us",
+        component : ContactUsComponent
+    },
+    {
         path: '**',
         component : NotFoudComponent
     },
-    
 ];
