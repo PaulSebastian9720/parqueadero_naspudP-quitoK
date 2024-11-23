@@ -72,7 +72,7 @@ export class EditSchedulesComponent {
       this.selectStartTime = ""
       this.selectedEndDay = ""
       this.selectedStartDay = ""
-      this.notyfyService.notify(`Horario actualizaco}`, 'success', 4000)
+      this.notyfyService.notify(`Horario actualizaco`, 'success', 4000)
 
       this.eventUpdateSchedule.emit()
     }catch(e){}

@@ -94,11 +94,11 @@ export class CreateContractComponent implements OnChanges{
       this.spaceData.spaceFB.state === 'NP' ||
       this.spaceData.spaceFB.state === 'O'
     ) {
-      this.notyfyService.notify(`El espacion no esta disponible}`, 'error', 4000)
+      this.notyfyService.notify(`El espacion no esta disponible`, 'error', 4000)
       return;
     }
     if (this.endDate.getTime() === this.startDate.getTime()) {
-      this.notyfyService.notify(`Seleccione por los menos un mes}`, 'warning', 3000)
+      this.notyfyService.notify(`Seleccione por los menos un mes`, 'warning', 3000)
       return;
     }
 
@@ -144,10 +144,10 @@ export class CreateContractComponent implements OnChanges{
       this.spaceData = null
       this.automobile = null
       this.rateData = null
-      this.notyfyService.notify(`Transacción realizado con exito}`, 'success', 3000)
+      this.notyfyService.notify(`Transacción realizado con exito`, 'success', 3000)
 
     } catch (e) {
-      this.notyfyService.notify(`Al parecer hubo un error}`, 'error', 3000)
+      this.notyfyService.notify(`Al parecer hubo un error`, 'error', 3000)
 
     }
   }

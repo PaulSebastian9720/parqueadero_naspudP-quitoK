@@ -114,7 +114,7 @@ export class CreateRentedComponent implements OnChanges {
 
   async onClickSaveContract() {
     if (!this.userData || !this.spaceData || !this.rateData) {
-      this.notyfyService.notify(`Seleccione todos los datos nescesarios}`, 'info', 4000)
+      this.notyfyService.notify(`Seleccione todos los datos nescesarios`, 'info', 4000)
       return;
     }
 
@@ -123,7 +123,7 @@ export class CreateRentedComponent implements OnChanges {
       this.spaceData.spaceFB.state === 'NP' ||
       this.spaceData.spaceFB.state === 'O' 
     ) {
-      this.notyfyService.notify(`El espacion no esta disponible}`, 'error', 4000)
+      this.notyfyService.notify(`El espacion no esta disponible`, 'error', 4000)
       return;
     }
 
@@ -180,10 +180,10 @@ export class CreateRentedComponent implements OnChanges {
       this.spaceData = null;
       this.automobile = null;
       this.rateData = null;
-      this.notyfyService.notify(`Transacción realizado con exito}`, 'success', 3000)
+      this.notyfyService.notify(`Transacción realizado con exito`, 'success', 3000)
 
     } catch (e) {
-      this.notyfyService.notify(`Al parecer hubo un error}`, 'error', 3000)
+      this.notyfyService.notify(`Al parecer hubo un error`, 'error', 3000)
 
     }
   }

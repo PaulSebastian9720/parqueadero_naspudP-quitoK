@@ -68,7 +68,7 @@ export class EditRateComponent implements OnInit, OnChanges  {
   async onSubmit() {
     
     if(this.quantity <  0  || this.unitRate< 0){
-      this.notyfyService.notify(`Ingrese valores reales}`, 'warning', 3000)
+      this.notyfyService.notify(`Ingrese valores reales`, 'warning', 3000)
       return
     }
     try {
@@ -84,13 +84,13 @@ export class EditRateComponent implements OnInit, OnChanges  {
         await this.rateService.updateRate(this.rateData.id, rateRef)
         this.eventUpdateRates.emit()
         this.clearCamps()
-        this.notyfyService.notify(`Se actualizo correctamente}`, 'success', 4000)
+        this.notyfyService.notify(`Se actualizo correctamente`, 'success', 4000)
         return
       }
 
       await this.rateService.createRate( rateRef)
       this.eventUpdateRates.emit()
-      this.notyfyService.notify(`Creo una nueva tarifa}`, 'success', 4000)
+      this.notyfyService.notify(`Creo una nueva tarifa`, 'success', 4000)
       this.clearCamps()
     }catch(e){
       console.error(e)

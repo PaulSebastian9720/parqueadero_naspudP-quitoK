@@ -23,40 +23,50 @@
                     (click)="setActiveRoute('/services-admin')" 
                     routerLink="/services-admin"
                     [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin' }"
-                    class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-                >Gestión de Espacios</a>
+                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
+                >
+                    <i class="fa fa-building mr-3"></i> Gestión de Espacios
+                </a>
             </li>
             <li>
                 <a  
                     (click)="setActiveRoute('/services-admin/about-client')" 
                     routerLink="/services-admin/about-client"
                     [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/about-client' }"
-                    class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-                >Gestión de Clientes</a>
+                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
+                >
+                    <i class="fa fa-users mr-3"></i> Gestión de Clientes
+                </a>
             </li>
             <li>
                 <a 
                     (click)="setActiveRoute('/services-admin/contract-management')" 
                     routerLink="/services-admin/contract-management"
                     [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/contract-management' }"
-                    class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-                >Contrato con Clientes</a>
+                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
+                >
+                    <i class="fa fa-file-contract mr-3"></i> Gestiòn de Contrato 
+                </a>
             </li>
             <li>
                 <a 
                     (click)="setActiveRoute('/services-admin/parking-schedules')" 
                     routerLink="/services-admin/parking-schedules"
                     [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/parking-schedules' }"
-                    class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-                >Horarios</a>
+                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
+                >
+                    <i class="fa fa-clock mr-3"></i> Gestiòn de Horarios
+                </a>
             </li>
             <li>
                 <a 
                     (click)="setActiveRoute('/services-admin/parking-rates')" 
                     routerLink="/services-admin/parking-rates"
                     [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/parking-rates' }"
-                    class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-                >Tarifas</a>
+                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
+                >
+                    <i class="fa fa-money-bill-wave mr-3"></i>Gestiòn de Tarifas
+                </a>
             </li>
         </ul>
     </nav>

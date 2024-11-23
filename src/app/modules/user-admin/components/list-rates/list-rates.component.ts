@@ -62,9 +62,9 @@ export class ListRatesComponent implements OnInit {
         if (confirmed) {
           this.rateServices.deleteRate(rateData.id)
           this.initListRates()
-          this.notyfyService.notify(`Se elimino una tarifa}`, 'error', 3000)
+          this.notyfyService.notify(`Se elimino una tarifa`, 'error', 3000)
         } else {
-          this.notyfyService.notify(`No se elimino la tarifa}`, 'info', 4000)
+          this.notyfyService.notify(`No se elimino la tarifa`, 'info', 4000)
 
         }
       });

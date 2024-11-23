@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative"> 
   <button
     (click)="toggleSidebar()"
     class="top-10 left-10 text-gray-700 text-2xl focus:outline-none lg:hidden p-5 z-30"
@@ -23,9 +23,11 @@
           (click)="setActiveRoute('/services-client')"
           routerLink="/services-client"
           [ngClass]="{ 'bg-blue-300': activeRoute === '/services-client' }"
-          class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-          >Ver Vehículos</a
+          class="text-black font-semibold flex items-center gap-3 block p-3 rounded transition hover:bg-gray-300"
         >
+          <i class="fa fa-car text-lg"></i>
+          Ver Vehículos
+        </a>
       </li>
 
       <li>
@@ -36,9 +38,11 @@
             'bg-blue-300':
               activeRoute === '/services-client/reservation-history'
           }"
-          class="text-black font-semibold block p-3 rounded transition hover:bg-gray-300"
-          >Historial de Reservas</a
+          class="text-black font-semibold flex items-center gap-3  p-3 rounded transition hover:bg-gray-300"
         >
+          <i class="fa fa-history text-lg"></i>
+          Historial de Reservas
+        </a>
       </li>
     </ul>
   </nav>
