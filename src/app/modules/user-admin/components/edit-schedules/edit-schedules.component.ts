@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WorkDayFB } from '../../../../core/models/shedule';
 import { ScheduleFbService } from '../../../../shared/services/schedule/schedule.service';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-edit-schedules',
@@ -19,7 +20,11 @@ export class EditSchedulesComponent {
   selectStartTime : string  = ""
   selectEndTime   : string  = ""
 
-  constructor(private scheduleService: ScheduleFbService){}
+  constructor(
+    private scheduleService: ScheduleFbService,
+    private notyfyService: NotificationService
+
+  ){}
 
   getFilteredEndDays(): string[] {
     if (this.selectedStartDay === null) return this.daysOfWeek;
@@ -30,16 +35,13 @@ export class EditSchedulesComponent {
 
   async onCLickSetDay(){
     if(!this.selectedStartDay) {
-      console.log("Please select start day");
       return 
     }
     if(!this.selectStartTime || !this.selectEndTime){
-      console.log("Please select start and end time");
       return
     }
 
     if(this.selectStartTime > this.selectEndTime ){
-      console.log("start > end ");
       return
     }
 
@@ -70,6 +72,7 @@ export class EditSchedulesComponent {
       this.selectStartTime = ""
       this.selectedEndDay = ""
       this.selectedStartDay = ""
+      this.notyfyService.notify(`Horario actualizaco}`, 'success', 4000)
 
       this.eventUpdateSchedule.emit()
     }catch(e){}

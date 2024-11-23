@@ -6,11 +6,12 @@ import { HeaderComponent } from './shared/section/header/header.component';
 import { FooterComponent } from './shared/section/footer/footer.component';
 import { SidebarComponent } from "./modules/user-client/components/sidebar/sidebar.component";
 import { SideBarComponent } from "./modules/user-admin/components/side-bar/side-bar.component";
+import { NotificationComponent } from "./shared/components/notification/notification.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, RouterModule, SidebarComponent, SideBarComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, RouterModule, SidebarComponent, SideBarComponent, NotificationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

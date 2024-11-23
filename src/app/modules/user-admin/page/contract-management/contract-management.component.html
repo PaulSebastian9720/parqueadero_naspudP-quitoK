@@ -57,25 +57,6 @@
           Buscar Cliente
         </h2>
         <div class="flex w-full gap-2">
-          <button
-            class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            Registrar
-          </button>
           <app-select-user
             #selectUser
             class="flex-grow"
@@ -83,7 +64,9 @@
           ></app-select-user>
         </div>
 
-        <h2 class="text-lg font-semibold mt-4 text-gray-700">
+        <h2
+          *ngIf="userFb" 
+          class="text-lg font-semibold mt-4 text-gray-700">
           {{userFb ? "Seleccione un Automóvil (Opcional)" : "Seleccione un Cliente para seleccionar un Automóvil"}}
         </h2>
         <div *ngIf="userFb" class="flex w-full gap-2 mt-2">
@@ -111,8 +94,8 @@
             #selectAutomobile
             class="flex-grow"
             (eventAutomobile)="onClinkAutomobile($event)"
-            [listAutomobile]="userFb.user!.listAutomobile!"
-          ></app-select-automobile>
+            [listAutomobile]="userFb.user!.listAutomobile ? userFb.user!.listAutomobile : []">
+          </app-select-automobile>
         </div>
 
         <h2 class="text-lg font-semibold mt-4 text-gray-700">Elige una Tarifa</h2>

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { UserFB } from '../../../../core/models/user';
 import { UserCacheService } from '../../../../shared/services/user/user-cache.service';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class CreateAccountComponent implements OnInit {
     private authService : AuthFbService,
     private router : Router,
     private userService : UserfbService,
-    private currenUserCanche : UserCacheService
+    private currenUserCanche : UserCacheService,
+    private noficationService : NotificationService
   ) {}
 
 
@@ -100,7 +102,10 @@ export class CreateAccountComponent implements OnInit {
   
   
 async onSubmit() {
-      if (this.registerForm.invalid) return;
+      if (this.registerForm.invalid){
+        this.noficationService.notify("Llene todos los campor nescesarios",'warning',3000)
+        return
+      };
     
       const { name, last_name, correo, password, confirmPassword, birthDay } = this.registerForm.value;
     
@@ -113,6 +118,7 @@ async onSubmit() {
       try {
 
         const userCredential = await this.authService.createAccount({ correo, password });
+
         const user = userCredential.user;
         if (user) {
           const userData : UserFB = {
@@ -128,14 +134,13 @@ async onSubmit() {
             correoS: "",
             listAutomobile: [],
             listManagement: [],
-          }
-
+          } 
           await this.userService.createUserInFirestore(user.uid,userData);
           this.router.navigateByUrl('/auth/sign-in')
+        } else {
+          this.noficationService.notify('Erroe al crear la cuenta', 'error', 3000);
         }
-      } catch (error) {
-        console.error(error);
-    }
+      } catch (error) {}
   }
     
 }

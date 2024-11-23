@@ -16,7 +16,7 @@ export class SelectAutomobileComponent {
   @Input() listAutomobile : Automobile[] = []
   @Output() eventAutomobile = new EventEmitter<Automobile>()
 
-  onClickRate(){
+  onClickAutmovile(){
     if (!this.selectAutomovile) {
       return
     }

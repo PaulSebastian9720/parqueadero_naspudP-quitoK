@@ -37,7 +37,6 @@ export class RateService {
         try {
           const rateDocRef = doc(this.fireStore, 'rates', rateId);
           await deleteDoc(rateDocRef);
-          console.log('Documento eliminado exitosamente');
         } catch (error) {
           console.error('Error al eliminar el documento:', error);
           throw error;

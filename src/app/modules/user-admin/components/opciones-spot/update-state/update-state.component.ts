@@ -56,7 +56,6 @@ export class UpdateStateComponent {
 
   selcetRowList() {
     this.listRowPosibilies = this.mapSlotFilter[this.selectRow];
-    console.log(this.listRowPosibilies);
   }
 
   selectSpace() {

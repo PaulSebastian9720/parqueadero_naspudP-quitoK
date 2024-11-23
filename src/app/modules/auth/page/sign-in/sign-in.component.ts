@@ -9,6 +9,7 @@ import {  Router, RouterModule } from '@angular/router';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { UserFB } from '../../../../core/models/user';
 import { UserCacheService } from '../../../../shared/services/user/user-cache.service';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -24,8 +25,8 @@ export class SignInComponent implements OnInit{
     private authService : AuthFbService,
     private router: Router,
     private userService : UserfbService,
-    private currenUserCanche: UserCacheService
-
+    private currenUserCanche: UserCacheService,
+    private notificationService: NotificationService
   ){}
 
   isRequired(fiel : "password" | "correo"  ){
@@ -75,23 +76,32 @@ export class SignInComponent implements OnInit{
             const currenUser = await this.userService.getUser(user.uid)
             this.currenUserCanche.setUser(currenUser as UserFB)
         }
-        
+        this.notificationService.notify("Ingreso correctamente", 'success', 3000);
         this.router.navigateByUrl('/');
     } catch (error) {}
   }
 
 
   async onSubmit(){
-    if (this.registerForm.invalid) return
-    const {correo, password} = this.registerForm.value
-    if( !correo || !password ) return
+    if (this.registerForm.invalid){
+      this.notificationService.notify("Ingrese todos los datos", 'warning', 3000);
+      return
+    }
 
+    const {correo, password} = this.registerForm.value
+   
     try {
-      const credential = await this.authService.signIn({correo,password})
-      if(!credential.user) return
-      const currentUser = await this.userService.getUser(credential.user.uid)
-      this.currenUserCanche.setUser(currentUser as UserFB)
-      this.router.navigateByUrl('/')
-    }catch(error){}
+      const credential = await this.authService.signIn({ correo, password });
+      const currentUser = await this.userService.getUser(credential.user.uid);
+      this.currenUserCanche.setUser(currentUser as UserFB);
+      this.router.navigateByUrl('/');
+    } catch (error: any) {
+      this.notificationService.notify(
+         "Correo o Contraseña incorrectos",
+        'error',
+        3000
+      );
+    }
+    
   }
 }

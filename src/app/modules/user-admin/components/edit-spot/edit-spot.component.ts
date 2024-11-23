@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-edit-spot',
@@ -29,7 +30,7 @@ import { Timestamp } from '@angular/fire/firestore';
   templateUrl: './edit-spot.component.html',
 })
 export class EditSpotComponent implements OnChanges {
-  @Input() spaceData!: SpaceData;
+  @Input() spaceData!: SpaceData | null;
   userFB!: UserFB | null;
   contractFB!: ManagementFB | null;
   dateToday!: Date;
@@ -40,39 +41,39 @@ export class EditSpotComponent implements OnChanges {
     private userService: UserfbService,
     private contracService: ContractManFBService,
     private spotService: ParkinLotService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private notyfyService: NotificationService
+
   ) {}
 
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    if (!this.spaceData) return;
     if (changes['spaceData'] && changes['spaceData'].currentValue) {
-      if (!this.spaceData) return;
+      this.notyfyService.notify(`Spot seleccionado ${this.spaceData.spaceFB.location}`, 'info', 3000)
       if (this.spaceData.spaceFB.state === 'Y') {
         this.userFB = null;
         this.contractFB = null;
         return;
       }
       await this.reloadData();
+      if(this.contractFB?.type === 'R'){
       const startDate =  new Date((this.contractFB?.startDate as any).seconds * 1000)
       this.totalPrice =this.calculateCost(
                 startDate, this.contractFB?.rate.timeUnit!,
                 this.contractFB?.rate.quantity!, 
                 this.contractFB?.rate.unitRate!
-      ) 
-
+      )} 
     }
   }
 
   async reloadData() {
     try {
-      const userUID = this.spaceData.spaceFB.idFBCliente;
-      const contractID = this.spaceData.spaceFB.idFBManagement;
+      const userUID = this.spaceData!.spaceFB.idFBCliente;
+      const contractID = this.spaceData!.spaceFB.idFBManagement;
       this.userFB = await this.userService.getUser(userUID);
       this.contractFB = await this.contracService.getContract(contractID);
-    } catch (e) {
-      console.error('Error al cargar datos del parqueadero o cliente', e);
-      return;
-    }
+    } catch (e) {}
   }
 
   formatDate(firebaseTimestamp: any): string {
@@ -126,7 +127,7 @@ export class EditSpotComponent implements OnChanges {
 
   async onClickPay() {
     if (!this.spaceData || !this.contracService || !this.userFB) {
-      console.log('Faltan datos');
+      this.notyfyService.notify(`Error con los datos`, 'warning', 3000)
       return;
     }
 
@@ -140,10 +141,10 @@ export class EditSpotComponent implements OnChanges {
       .then((confirmed) => {
         if (confirmed) {
           const contractUpdate = { ...this.contractFB };
-          const spaceOfParking = { ...this.spaceData.spaceFB };
+          const spaceOfParking = { ...this.spaceData!.spaceFB };
 
-          const contracID = this.spaceData.spaceFB.idFBManagement;
-          const spaceID = this.spaceData.spaceFB.location;
+          const contracID = this.spaceData!.spaceFB.idFBManagement;
+          const spaceID = this.spaceData!.spaceFB.location;
 
           spaceOfParking.state = 'Y';
           spaceOfParking.idFBCliente = '';
@@ -162,26 +163,24 @@ export class EditSpotComponent implements OnChanges {
                 this.contractFB?.rate.quantity!, 
                 this.contractFB?.rate.unitRate!
               )     
-              contractUpdate.totalPrice =  Math.round(costTotal * 100) / 100
+              contractUpdate.totalPrice =  costTotal
               contractUpdate.endDate = new Date(Date.now())
               this.contracService.updatoContract(contracID, contractUpdate);
               this.spotService.updateParkigSpace(spaceID, spaceOfParking);
-
-              console.log("Update correcto")
+              this.spaceData = null;
+              this.userFB = null;
+              this.contractFB = null;
+              this.totalPrice = 0
+              this.notyfyService.notify(`Spot Actualizado y Pago correctamente`, 'success', 5000)
+              this.eventReloadMatriz.emit();
             }
-          } catch (e) {
-            console.error(
-              'Error al actualizar datos del parqueadero o cliente',
-              e
-            );
-          }
-
-          this.spaceData == null;
-          this.userFB == null;
-          this.contractFB == null;
-          this.eventReloadMatriz.emit();
+          } catch (e) {}
+        }else {
+          this.notyfyService.notify(`No se realizaron cambios`, 'warning', 5000)
         }
+
       });
+    
   }
 
   calculateCost(
@@ -206,11 +205,11 @@ export class EditSpotComponent implements OnChanges {
     } else if (timeUnit === "hours") {
         totalUnits = Math.ceil(elapsedMinutes / (unitValue * 60));
     } else {
-        throw new Error("La unidad de tiempo debe ser 'minutes' o 'hours'.");
+        return 0.00
     }
 
     const totalCost: number = totalUnits * ratePerUnit;
-    Math.round(totalCost * 100) / 100
-    return totalCost;
+    
+    return Number(totalCost.toFixed(2));
 }
 }

@@ -16,6 +16,7 @@ import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-create-rented',
@@ -35,7 +36,9 @@ export class CreateRentedComponent implements OnChanges {
   constructor(
     private userService: UserfbService,
     private contractService: ContractManFBService,
-    private parkinkLot: ParkinLotService
+    private parkinkLot: ParkinLotService,
+    private notyfyService: NotificationService
+
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -111,7 +114,7 @@ export class CreateRentedComponent implements OnChanges {
 
   async onClickSaveContract() {
     if (!this.userData || !this.spaceData || !this.rateData) {
-      console.log('Faltas los datos');
+      this.notyfyService.notify(`Seleccione todos los datos nescesarios}`, 'info', 4000)
       return;
     }
 
@@ -120,7 +123,7 @@ export class CreateRentedComponent implements OnChanges {
       this.spaceData.spaceFB.state === 'NP' ||
       this.spaceData.spaceFB.state === 'O' 
     ) {
-      console.log('El espacio no esta disponible, ya esta ocupado');
+      this.notyfyService.notify(`El espacion no esta disponible}`, 'error', 4000)
       return;
     }
 
@@ -166,22 +169,22 @@ export class CreateRentedComponent implements OnChanges {
       );
 
       await this.contractService.createContract(managementId, contractFb);
-      console.log('contract created');
       userFB?.listManagement?.push(managementId);
       await this.userService.updateUser(userID, userFB!);
-      console.log('client updated');
       await this.parkinkLot.updateParkigSpace(
         this.spaceData.spaceFB.location,
         spaceUpdate
       );
-      console.log('space updated');
       this.updateMapEvent.emit();
       this.userData = null;
       this.spaceData = null;
       this.automobile = null;
       this.rateData = null;
+      this.notyfyService.notify(`Transacción realizado con exito}`, 'success', 3000)
+
     } catch (e) {
-      console.error('Error ', e);
+      this.notyfyService.notify(`Al parecer hubo un error}`, 'error', 3000)
+
     }
   }
 }

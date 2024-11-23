@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormsModule } from '@angular/forms';
 import { RateService } from '../../../../shared/services/rate/rate.service';
 import { RateData, RateFB } from '../../../../core/models/rate';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-edit-rate',
@@ -21,7 +22,11 @@ export class EditRateComponent implements OnInit, OnChanges  {
   @Input() rateData !: RateData | null
   @Output() eventUpdateRates = new EventEmitter<void>
 
-  constructor(private rateService: RateService) {}
+  constructor(
+    private rateService: RateService,
+    private notyfyService: NotificationService
+
+  ) {}
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,13 +66,9 @@ export class EditRateComponent implements OnInit, OnChanges  {
    
 
   async onSubmit() {
-    if(!this.rateName){
-      console.log("Ingrese nombre")
-      return
-    }
-
-    if(this.quantity <  0){
-      console.log("Cantidad no puede ser negativa")
+    
+    if(this.quantity <  0  || this.unitRate< 0){
+      this.notyfyService.notify(`Ingrese valores reales}`, 'warning', 3000)
       return
     }
     try {
@@ -83,12 +84,13 @@ export class EditRateComponent implements OnInit, OnChanges  {
         await this.rateService.updateRate(this.rateData.id, rateRef)
         this.eventUpdateRates.emit()
         this.clearCamps()
-        console.log("se actualizo")
+        this.notyfyService.notify(`Se actualizo correctamente}`, 'success', 4000)
         return
       }
 
       await this.rateService.createRate( rateRef)
       this.eventUpdateRates.emit()
+      this.notyfyService.notify(`Creo una nueva tarifa}`, 'success', 4000)
       this.clearCamps()
     }catch(e){
       console.error(e)

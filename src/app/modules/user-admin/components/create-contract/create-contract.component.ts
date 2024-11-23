@@ -8,6 +8,7 @@ import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { RateData } from '../../../../core/models/rate';
 import { Automobile } from '../../../../core/models/automobile';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-create-contract',
@@ -29,7 +30,9 @@ export class CreateContractComponent implements OnChanges{
   constructor(
     private userService: UserfbService,
     private contractService: ContractManFBService,
-    private parkinkLot: ParkinLotService
+    private parkinkLot: ParkinLotService,
+    private notyfyService: NotificationService
+
   ) {}
 
  
@@ -82,26 +85,21 @@ export class CreateContractComponent implements OnChanges{
 
   async onClickSaveContract() {
     if (!this.userData || !this.spaceData || !this.rateData) {
-      console.log('Faltas los datos');
+      this.notyfyService.notify(`Seleccione todos los datos nescesarios}`, 'info', 4000)
       return;
     }
 
     if (
       this.spaceData.spaceFB.state === 'N' ||
-      this.spaceData.spaceFB.state === 'NP'
+      this.spaceData.spaceFB.state === 'NP' ||
+      this.spaceData.spaceFB.state === 'O'
     ) {
-      console.log('El espacio no esta disponible, ya esta ocupado');
+      this.notyfyService.notify(`El espacion no esta disponible}`, 'error', 4000)
       return;
     }
     if (this.endDate.getTime() === this.startDate.getTime()) {
-      console.log('Seleccione por lo menos un mes');
+      this.notyfyService.notify(`Seleccione por los menos un mes}`, 'warning', 3000)
       return;
-    }
-
-    if (this.spaceData.spaceFB.state === 'O') {
-      console.log(
-        'El espacio esta ocupado, pero disponible proximanente desea ocuparlo'
-      )
     }
 
     try {
@@ -127,8 +125,6 @@ export class CreateContractComponent implements OnChanges{
         automobile
       )
 
-      console.log(contractFb.autmobile)
-
       const spaceUpdate =  new SpaceFB(
         this.spaceData.spaceFB.location,
         'N',
@@ -137,22 +133,22 @@ export class CreateContractComponent implements OnChanges{
       )
 
       await this.contractService.createContract(managementId, contractFb)
-      console.log('contract created')
       userFB?.listManagement?.push(managementId)
       await this.userService.updateUser(userID, userFB!)
-      console.log('client updated')
       await this.parkinkLot.updateParkigSpace(
         this.spaceData.spaceFB.location,
         spaceUpdate
       )
-      console.log('space updated')
       this.updateMapEvent.emit()
       this.userData = null
       this.spaceData = null
       this.automobile = null
       this.rateData = null
+      this.notyfyService.notify(`Transacción realizado con exito}`, 'success', 3000)
+
     } catch (e) {
-      console.error('Error ', e)
+      this.notyfyService.notify(`Al parecer hubo un error}`, 'error', 3000)
+
     }
   }
 }

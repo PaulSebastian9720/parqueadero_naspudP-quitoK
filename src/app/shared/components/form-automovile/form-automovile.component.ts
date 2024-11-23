@@ -33,11 +33,9 @@ export class FormAutomovileComponent {
 
   async onSubmit() {
     if(!this.userData){
-      console.log("No hay usario")
       return
     }
     if (!this.automobile.model || !this.automobile.plate || !this.automobile.brand) {
-      console.log("Llene los campos")
     }
 
     if(!this.automobileData){
@@ -53,7 +51,6 @@ export class FormAutomovileComponent {
       }
       userFb.listAutomobile?.push(automobileData)      
       await this.userService.updateUser(this.userData.crendentialUserUID, userFb)
-      console.log("create new")
       this.eventUpateUser.emit()
       return
     }     

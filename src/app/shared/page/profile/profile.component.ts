@@ -26,12 +26,22 @@ export class ProfileComponent implements OnInit{
   ){}
 
   async ngOnInit(): Promise<void> {
+    this.initUser()
+  }
+
+  async initUser(){
     const currentUserUID = await this.authService.credentialUserUID
     if(currentUserUID){
       const userCurrent = await  this.userFBSerivce.getUser(currentUserUID!)
       const userData : UserFB = userCurrent as UserFB
       this.user = new UserData(currentUserUID,userData)
     }
+  }
+
+  async reloadUser(){
+    this.initUser().then(()=> {
+      this.toggleEdit()
+    })
   }
 
   toggleEdit() {

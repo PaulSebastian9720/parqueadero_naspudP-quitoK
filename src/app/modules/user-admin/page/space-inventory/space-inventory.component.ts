@@ -9,6 +9,7 @@ import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.
 import { MatDialog } from '@angular/material/dialog';
 import { AddSpotComponent } from '../../components/opciones-spot/add-spot/add-spot.component';
 import { UpdateStateComponent } from '../../components/opciones-spot/update-state/update-state.component';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-space-inventory',
@@ -24,7 +25,8 @@ export class SpaceInventoryComponent {
 
   constructor(
     private parkingLotService: ParkinLotService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notyfyService: NotificationService
   ){}
 
   reloadParkingLot(){
@@ -40,12 +42,11 @@ export class SpaceInventoryComponent {
     const dialogRef = this.dialog.open(AddSpotComponent)
     const instance = dialogRef.componentInstance
     instance.sendLetterRow.subscribe((letterRow : string)=> {
-      console.log(letterRow)
       if(letterRow !== ""){
-        console.log("add new spot", letterRow)
         this.parkingLotService.addNewSpot(letterRow!)
         this.reloadParkingLot()
         this.dialog.closeAll()
+        this.notyfyService.notify(`Nuevo Spot en la ROW-${letterRow}`, 'info', 3000)
       }
     })
    
@@ -64,6 +65,8 @@ export class SpaceInventoryComponent {
         this.parkingLotService.updateParkigSpace(space.spaceFB.location,space.spaceFB)
         this.reloadParkingLot()
         this.dialog.closeAll()
+        this.notyfyService.notify(`Habilitado ${slot.spaceFB.location}`, 'success', 3000)
+
       }
     })
   }
@@ -80,6 +83,7 @@ export class SpaceInventoryComponent {
         this.parkingLotService.updateParkigSpace(space.spaceFB.location,space.spaceFB)
         this.reloadParkingLot()
         this.dialog.closeAll()
+        this.notyfyService.notify(`Desabilitado ${slot.spaceFB.location}`, 'warning', 3000)
       }
     })
   }

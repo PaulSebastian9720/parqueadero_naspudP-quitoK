@@ -35,11 +35,9 @@ export class AuthStateService implements OnInit {
                     const isAdmin = userData?.rol === 'A' 
                     this.isAdminSubject.next(isAdmin)
                 }).catch(() => {
-                    console.log('Error al obtener el rol del usuario')
                     this.isAdminSubject.next(false) 
                 })
             } else {
-                console.log('No hay usuario autenticado')
                 this.isAdminSubject.next(false)
             }
         })

@@ -30,6 +30,7 @@
     <app-update-form-user 
         [userData]="user"
         [isEditing]="isEditing"	
+        (updateTable)="reloadUser()"
     ></app-update-form-user>
     
 </div>

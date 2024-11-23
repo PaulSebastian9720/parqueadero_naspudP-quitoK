@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { isShortParameter, isRequired, isNumberPhone } from '../../../modules/auth/utils/validator';
 import { UserfbService } from '../../services/user/userfb.service';
 import { CommonModule } from '@angular/common';
@@ -31,19 +31,13 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (changes['userData'] && changes['userData'].currentValue) {
-        this.registerForm.patchValue({
-          name: this.userData.user.name || '',
-          last_name: this.userData.user.last_name || '',
-          correo: this.userData.user.correo || '',
-          birthday: this.userData.user.birthDay || new Date(),
-          phone: this.userData.user.phone || "",
-          direction : this.userData.user.direction || "",
-          city: this.userData.user.city || "",
-          correoS: this.userData.user.correoS || "",
-        });
-  
-      }
+    if(!this.registerForm) return
+    if (changes['userData'] && changes['userData'].currentValue) {
+      this.uploadForm()
+    }
+    if(changes['isEditing']){
+      this.uploadForm()
+    }
   }
   
   ngOnInit(): void {
@@ -60,20 +54,12 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       direction:       this.form.control(''), 
       city:       this.form.control('',),
       phone:       this.form.control('',),
-      birthday:        this.form.control(new Date()) || null
+      birthday: this.form.control(new Date())
+ 
     }, { });
-
     if(this.userData){
-      this.registerForm.patchValue({
-        name: this.userData.user.name || '',
-        last_name: this.userData.user.last_name || '',
-        correo: this.userData.user.correo || '',
-        birthday: this.userData.user.birthDay || new Date(),
-        phone: this.userData.user.phone || "",
-        direction : this.userData.user.direction || "",
-        city: this.userData.user.city || "",
-        correoS: this.userData.user.correoS || "",
-      });
+
+      this.uploadForm()
     }
   }
 
@@ -93,14 +79,16 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
     if(!this.userData) return
     
     if (this.registerForm.invalid) return;
+
+    if(!this.isEditing){
+      this.notiticationService.notify("No se puede editar", 'warning', 3000);
+      return
+    }
     
-    const { name, last_name, correo,  birthDay, correoS, direction, city, phone } = this.registerForm.value;
-    
-    if (!name || !correo || !last_name) return;
-    
+    const { name, last_name, birthDay, correoS, direction, city, phone } = this.registerForm.value;    
   
     if (name.length < 3 || last_name.length < 3 || (phone && phone.length != 10) ) return;
-    
+
     try {
       const userData : UserFB = {
         name: name,
@@ -109,20 +97,45 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
         rol: this.userData.user.rol, 
         state: this.userData.user.state,
         birthDay: birthDay || null,
-        city: city || null,
-        phone: phone || null,
-        direction: direction || null,
-        correoS: correoS || null,
+        city: city || "",
+        phone: phone || "",
+        direction: direction || "",
+        correoS: correoS || "",
       }
 
       await this.userService.updateUser(this.userData.crendentialUserUID,userData);
+      this.notiticationService.notify("Se actualizado correctamente", 'success', 3000);
+
       this.updateTable.emit()
-      this.notiticationService.showNotification("USUARIO ACTUALIZADO CORRECTAMENTE")
     } catch (error) {
-      console.log("Error: " + error)
     }
   }
 
+  uploadForm() {
+    const datebirthDay = this.userData.user.birthDay ? 
+      new Date((this.userData.user.birthDay as any).seconds * 1000).toISOString().split('T')[0]   
+      : new Date("2001-01-01").toISOString().split('T')[0]; 
+    this.registerForm.patchValue({
+      name: this.userData.user.name || '',
+      last_name: this.userData.user.last_name || '',
+      correo: this.userData.user.correo || '',
+      birthday: datebirthDay,
+      phone: this.userData.user.phone || "",
+      direction: this.userData.user.direction || "",
+      city: this.userData.user.city || "",
+      correoS: this.userData.user.correoS || "",
+    });
   
+  }
+  
+}
 
+interface RegisterForm {
+  last_name: FormControl<string>;
+  correo: FormControl<string>;
+  correoS: FormControl<string>;
+  direction: FormControl<string>;
+  city: FormControl<string>;
+  phone: FormControl<string>;
+  birthday: FormControl<Date>;
 }

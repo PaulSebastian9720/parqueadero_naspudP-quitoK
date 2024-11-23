@@ -16,6 +16,7 @@ import { SelectAutomobileComponent } from "../../components/select-automobile/se
 import { FormAutomovileComponent } from '../../../../shared/components/form-automovile/form-automovile.component';
 import { Automobile } from '../../../../core/models/automobile';
 import { CreateRentedComponent } from "../../components/create-rented/create-rented.component";
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 
 
 @Component({
@@ -47,8 +48,12 @@ export class ContractManagementComponent {
   @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent
   @ViewChild('selecttarifa') selectTarifa!: SelectRateComponent
   @ViewChild('selectUser') selectUser!: SelectUserComponent
+  @ViewChild('selectAutomobile') selectAutomobile!: SelectAutomobileComponent
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private notyfyService: NotificationService
+  ) {}
 
   selectOption(option: number) {
     if (option === 1) {
@@ -58,17 +63,21 @@ export class ContractManagementComponent {
         listRate.filter(value => value.rateFB.timeUnit === 'month')
       this.selectUser.listUserFBFilter = this.selectUser.
         listUserFb.filter(value => value.user.rol !== "CF")
-
+      if(this.userFb?.user.rol === "CF"){
+        this.userFb = null
+        this.automobile = null
+      }
     } else if (option === 2) {
       this.isSelected1 = false
       this.isSelected2 = true
+      
       this.selectTarifa.listFilter = this.selectTarifa.
         listRate.filter(value => value.rateFB.timeUnit !== 'month')
       this.selectUser.listUserFBFilter = this.selectUser.listUserFb
+      
     }
+
     this.rateFb = null
-    this.userFb = null
-    this.automobile = null
     this.spaceFB = null
   }
 
@@ -98,6 +107,8 @@ export class ContractManagementComponent {
     instance.eventUpdateRates.subscribe(()=>{
       this.selectTarifa.initrates()
       this.dialog.closeAll()
+      this.notyfyService.notify(`Agregado una nueva tarifa}`, 'success', 3000)
+
     })
   }
 
@@ -108,9 +119,11 @@ export class ContractManagementComponent {
     instance.userData = this.userFb!
     instance.eventUpateUser.subscribe(()=>{
       this.selectUser.initListUsers()
-      this.selectUser.selectedUser = ""
+      const userFbAux = this.userFb
       this.userFb = null
+      this.userFb = this.selectUser.listUserFb.find(user => user.crendentialUserUID === userFbAux?.crendentialUserUID)!
       this.dialog.closeAll()
+      this.notyfyService.notify(`Agregado un nueco Automvil}`, 'success', 3000)
     })
   }
 

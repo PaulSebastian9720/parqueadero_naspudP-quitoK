@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private snackBar: MatSnackBar) { }
+  // Observable para transmitir notificaciones
+  private notificationSubject = new Subject<{ message: string; type: 'success' | 'error' | 'info' | 'warning'; duration: number }>();
+  notification$ = this.notificationSubject.asObservable();
 
-  showNotification(message: string, action: string = 'Cerrar', duration: number = 3000) {
-    this.snackBar.open(message, action, {
-      duration: duration,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
+  /**
+   * Envía una notificación.
+   * @param message El mensaje a mostrar.
+   * @param type El tipo de notificación (success, error, info, warning).
+   * @param duration Tiempo en milisegundos antes de desaparecer.
+   */
+  notify(message: string, type: 'success' | 'error' | 'info' | 'warning', duration: number) {
+    this.notificationSubject.next({ message, type, duration });
   }
+  
 }

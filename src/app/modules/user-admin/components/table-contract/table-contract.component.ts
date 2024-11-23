@@ -66,7 +66,6 @@ export class TableContractComponent implements OnChanges {
     
     let listContractAux : ManagementFB [] = []
     const client = await this.userService.getUser(this.userData.crendentialUserUID)
-    console.log(client)
     if(client){
       for( let i = 0; i < client?.listManagement!.length; i++){
         const contract = await this.contracService.getContract(client.listManagement![i])
