@@ -18,7 +18,7 @@ import { ListAutomobileComponent } from "../../../../shared/components/list-auto
 export class AboutClientComponent implements OnInit {
   constructor(private userService: UserfbService){}
 
-  user!: UserData
+  user!: UserData | null
   users: UserData[] = []
   filteredUsers: UserData[] = []  
   wordFilter: string = ""
@@ -47,11 +47,16 @@ export class AboutClientComponent implements OnInit {
     this.users = users
     this.filteredUsers = users
     this.isEditing = false
+    if(this.user){
+      const userAux = this.user
+      this.user = null
+      this.user = this.filteredUsers.find(user => user.crendentialUserUID === userAux.crendentialUserUID)!
+    }
   }
 
   toggleEdit() {
     if(!this.user) return
-    if(this.user.user.rol === 'A') return
+    if(this.user.user.rol === 'A' || this.user.user.rol === 'CF') return
     this.isEditing = !this.isEditing
   }
 }

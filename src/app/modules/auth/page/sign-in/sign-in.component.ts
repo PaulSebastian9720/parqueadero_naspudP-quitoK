@@ -62,7 +62,7 @@ export class SignInComponent implements OnInit{
                 correo: user.email || "",
                 rol: 'C',
                 state: true,
-                birthDay: null,
+                birthDay: "",
                 direction: "",
                 city: "",
                 phone: "",

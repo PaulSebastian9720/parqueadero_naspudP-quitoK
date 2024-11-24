@@ -8,7 +8,7 @@ export class UserFB {
       public last_name: string,
       public correo: string,
       public rol: 'C' | 'A' |'CF',
-      public birthDay?: Date | null,
+      public birthDay?: Date | "",
       public direction?: string,
       public city?: string,
       public phone?: string,

@@ -54,7 +54,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       direction:       this.form.control(''), 
       city:       this.form.control('',),
       phone:       this.form.control('',),
-      birthday: this.form.control(new Date())
+      birthday: this.form.control('')
  
     }, { });
     if(this.userData){
@@ -85,8 +85,8 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       return
     }
     
-    const { name, last_name, birthDay, correoS, direction, city, phone } = this.registerForm.value;    
-  
+    const { name, last_name, birthday, correoS, direction, city, phone } = this.registerForm.value;    
+    
     if (name.length < 3 || last_name.length < 3 || (phone && phone.length != 10) ) return;
 
     try {
@@ -96,7 +96,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
         correo: this.userData.user.correo,
         rol: this.userData.user.rol, 
         state: this.userData.user.state,
-        birthDay: birthDay || null,
+        birthDay: new Date(birthday) || "",
         city: city || "",
         phone: phone || "",
         direction: direction || "",
@@ -114,7 +114,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   uploadForm() {
     const datebirthDay = this.userData.user.birthDay ? 
       new Date((this.userData.user.birthDay as any).seconds * 1000).toISOString().split('T')[0]   
-      : new Date("2001-01-01").toISOString().split('T')[0]; 
+      : ""; 
     this.registerForm.patchValue({
       name: this.userData.user.name || '',
       last_name: this.userData.user.last_name || '',
@@ -128,14 +128,4 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   
   }
   
-}
-
-interface RegisterForm {
-  last_name: FormControl<string>;
-  correo: FormControl<string>;
-  correoS: FormControl<string>;
-  direction: FormControl<string>;
-  city: FormControl<string>;
-  phone: FormControl<string>;
-  birthday: FormControl<Date>;
 }

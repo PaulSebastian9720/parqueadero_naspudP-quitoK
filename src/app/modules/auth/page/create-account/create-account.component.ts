@@ -4,7 +4,7 @@ import { AuthFbService } from '../../services/auth-fb/auth-fb.service';
 import { IUsernAuth } from '../../utils/interfaceRegisterFom';
 import { isRequired, hasEmailError, isNotSamePassword, isShortParameter } from '../../utils/validator';
 import { NgModel } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { ButtonWGoogleComponent } from "../../ui/button-w-google/button-w-google.component";
 import { Router } from '@angular/router';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
@@ -58,7 +58,7 @@ export class CreateAccountComponent implements OnInit {
       ]), 
       password:       this.form.control('', Validators.required), 
       confirmPassword: this.form.control('', Validators.required),
-      birthday:        this.form.control(null,)
+      birthday:        this.form.control('')
     }, { });
   }
 
@@ -78,7 +78,7 @@ export class CreateAccountComponent implements OnInit {
                 correo: user.email || "",
                 rol: 'C',
                 state: true,
-                birthDay: null,
+                birthDay: new Date(),
                 direction: "",
                 city: "",
                 phone: "",
@@ -92,10 +92,10 @@ export class CreateAccountComponent implements OnInit {
             const currenUser = await this.userService.getUser(user.uid)
             this.currenUserCanche.setUser(currenUser as UserFB)
         }
-        
         this.router.navigateByUrl('/');
+        this.noficationService.notify('Bienvenido a Auto Spot', 'success', 4000)
     } catch (error) {
-        console.error("Error during Google sign-in:", error)
+      this.noficationService.notify('Error al ingresar', 'error', 4000)
     }
 }
     
@@ -103,12 +103,13 @@ export class CreateAccountComponent implements OnInit {
   
 async onSubmit() {
       if (this.registerForm.invalid){
-        this.noficationService.notify("Llene todos los campor nescesarios",'warning',3000)
         return
       };
     
-      const { name, last_name, correo, password, confirmPassword, birthDay } = this.registerForm.value;
-    
+      const { name, last_name, correo, password, confirmPassword} = this.registerForm.value;
+      const birthday = this.registerForm.get('birthday')?.value;
+      
+
       if (!name || !correo || !password || !confirmPassword || !last_name) return;
     
       if (password !== confirmPassword) return;
@@ -127,7 +128,7 @@ async onSubmit() {
             correo: correo,
             rol: 'C', 
             state: true,
-            birthDay: birthDay || null,
+            birthDay: birthday ? new Date(birthday) : "",
             direction: "",
             city: "",
             phone: "",

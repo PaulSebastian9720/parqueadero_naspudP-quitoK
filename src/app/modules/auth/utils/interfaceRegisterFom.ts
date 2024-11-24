@@ -7,7 +7,7 @@ export interface IUsernAuth {
     correo: FormControl<string | null>;
     password : FormControl<string | null>;
     confirmPassword : FormControl<string | null>;
-    birthday  : FormControl<Date | null>;
+    birthday  : FormControl<Date | string | null>;
 }
 
 export interface IUserSingIn {
