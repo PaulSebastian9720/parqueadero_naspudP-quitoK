@@ -10,10 +10,14 @@ import { ListWorkdayComponent } from "../../../../shared/components/list-workday
   templateUrl: './parking-schedules.component.html',
 })
 export class ParkingSchedulesComponent {
-  @ViewChild("schedule") schedule! : ListWorkdayComponent
+  @ViewChild("schedule") schedule!: ListWorkdayComponent;  // Referencia al componente de la lista de horarios
 
-  updateSchedule(){
-    this.schedule.initWorkDayList()
+  /**
+   * Método para actualizar la lista de horarios.
+   * Llama al método 'initWorkDayList' del componente 'schedule' para actualizar la lista de horarios de trabajo.
+   */
+  updateSchedule() {
+    this.schedule.initWorkDayList();  // Actualiza la lista de horarios de trabajo
   }
-  
 }
+
