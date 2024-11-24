@@ -103,14 +103,14 @@ export class EditRateComponent implements OnInit, OnChanges {
         await this.rateService.updateRate(this.rateData.id, rateRef)
         this.eventUpdateRates.emit()  // Emite el evento de actualización
         this.clearCamps()  // Limpia los campos del formulario
-        this.notyfyService.notify(`Se actualizo correctamente`, 'success', 4000)  // Muestra una notificación de éxito
+        this.notyfyService.notify(`Se actualizó correctamente`, 'success', 4000)  // Muestra una notificación de éxito
         return
       }
 
       // Si no existe una tarifa, crea una nueva
       await this.rateService.createRate(rateRef)
       this.eventUpdateRates.emit()  // Emite el evento de creación
-      this.notyfyService.notify(`Creo una nueva tarifa`, 'success', 4000)  // Muestra una notificación de éxito
+      this.notyfyService.notify(`Se creó una nueva tarifa`, 'success', 4000)  // Muestra una notificación de éxito
       this.clearCamps()  // Limpia los campos del formulario
     }catch(e){
       console.error(e)  // Si hay un error, lo muestra en la consola

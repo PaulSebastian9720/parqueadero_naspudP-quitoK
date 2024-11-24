@@ -130,7 +130,7 @@ export class ContractManagementComponent {
     instance.eventUpdateRates.subscribe(() => {
       this.selectTarifa.initrates();  // Inicializa las tarifas
       this.dialog.closeAll();  // Cierra todos los diálogos
-      this.notyfyService.notify('Agregado una nueva tarifa', 'success', 3000);  // Muestra una notificación de éxito
+      this.notyfyService.notify('Se agregó una nueva tarifa', 'success', 3000);  // Muestra una notificación de éxito
     });
   }
 

@@ -139,7 +139,7 @@ async onSubmit() {
           await this.userService.createUserInFirestore(user.uid,userData);
           this.router.navigateByUrl('/auth/sign-in')
         } else {
-          this.noficationService.notify('Erroe al crear la cuenta', 'error', 3000);
+          this.noficationService.notify('Error al crear la cuenta', 'error', 3000);
         }
       } catch (error) {}
   }
