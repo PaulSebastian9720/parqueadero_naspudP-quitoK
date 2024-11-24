@@ -1,0 +1,18 @@
+/* Tailwind already handles most of the layout and spacing, but you can add custom styles */
+
+.loading-spinner {
+  /* Tailwind spinner handling, but if you want more custom styling, use this */
+  margin-bottom: 16px; /* Margin for the spinner */
+}
+
+.additional-message.success {
+  color: #4caf50; /* Success color */
+}
+
+.additional-message.error {
+  color: #f44336; /* Error color */
+}
+
+.additional-message.info {
+  color: #2196f3; /* Info color */
+}

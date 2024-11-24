@@ -1,0 +1,22 @@
+<div *ngIf="isLoading" class="loading-container flex flex-col justify-center items-center  bg-gray-100 rounded-lg w-full h-full p-16">
+  <mat-progress-spinner
+    diameter="50"
+    mode="indeterminate"
+    color="accent"
+    class="loading-spinner mb-4"
+  ></mat-progress-spinner>
+
+  <p class="loading-message text-xl font-semibold text-blue-600 text-center">{{ message }}</p>
+</div>
+
+<div *ngIf="!isLoading" class="transaction-result flex flex-col items-center bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center">
+  <i [ngClass]="iconClass" class="fa text-4xl mb-4" aria-hidden="true"></i>
+
+  <p class="result-message text-xl font-semibold mb-3">{{ message }}</p>
+
+  <span class="additional-message text-sm" [ngStyle]="{'color': status === 'success' ? 'blue' : 'red'}">
+    {{ additionalMessage }}
+  </span>
+  
+  <button (click)="closeDialog()" class="close-button bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600">Cerrar</button>
+</div>

@@ -17,6 +17,7 @@ import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { LoadingService } from '../../../../shared/services/dialog/dialogLoading.service';
 
 @Component({
   selector: 'app-create-rented',
@@ -37,7 +38,9 @@ export class CreateRentedComponent implements OnChanges {
     private userService: UserfbService,
     private contractService: ContractManFBService,
     private parkinkLot: ParkinLotService,
-    private notyfyService: NotificationService
+    private notyfyService: NotificationService,
+    private loadingService: LoadingService
+
 
   ) {}
 
@@ -129,6 +132,7 @@ export class CreateRentedComponent implements OnChanges {
 
 
     try {
+      this.loadingService.open("Realizando la Transacción, espere un momento");
       const userID: string = this.userData.crendentialUserUID;
       const userFB = await this.userService.getUser(userID);
       const idUserForManagent = this.userData.crendentialUserUID.slice(0, 4);
@@ -175,6 +179,7 @@ export class CreateRentedComponent implements OnChanges {
         this.spaceData.spaceFB.location,
         spaceUpdate
       );
+      this.loadingService.closeDialog();
       this.updateMapEvent.emit();
       this.userData = null;
       this.spaceData = null;
@@ -183,8 +188,7 @@ export class CreateRentedComponent implements OnChanges {
       this.notyfyService.notify(`Transacción realizado con exito`, 'success', 3000)
 
     } catch (e) {
-      this.notyfyService.notify(`Al parecer hubo un error`, 'error', 3000)
-
+      this.loadingService.updateTransactionStatus("error", "Transaccion erronea", "Error: " + e as string)
     }
   }
 }

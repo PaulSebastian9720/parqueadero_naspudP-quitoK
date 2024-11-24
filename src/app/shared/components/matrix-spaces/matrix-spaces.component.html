@@ -1,4 +1,11 @@
 <div class="p-4 w-full sm:max-w-[600px] md:max-w-[725px] mx-auto overflow-hidden">
+  <div *ngIf="isLoading;" class="flex justify-center items-center h-[425px]">
+    <mat-progress-spinner
+      color="primary"
+      mode="indeterminate"
+      [diameter]="50">
+    </mat-progress-spinner>
+  </div>
   <div *ngFor="let rowOfMatriz of getMatrizFilter(); let i = index" 
         class="flex gap-2 items-start mb-2 overflow-x-auto overflow-y-hidden custom-scroll">
       <div *ngFor="let space of rowOfMatriz" 

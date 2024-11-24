@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { Timestamp } from '@angular/fire/firestore';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { LoadingService } from '../../../../shared/services/dialog/dialogLoading.service';
 
 @Component({
   selector: 'app-edit-spot',
@@ -42,7 +43,8 @@ export class EditSpotComponent implements OnChanges {
     private contracService: ContractManFBService,
     private spotService: ParkinLotService,
     private dialogService: DialogService,
-    private notyfyService: NotificationService
+    private notyfyService: NotificationService,
+    private loadingService: LoadingService
 
   ) {}
 
@@ -127,61 +129,68 @@ export class EditSpotComponent implements OnChanges {
 
   async onClickPay() {
     if (!this.spaceData || !this.contracService || !this.userFB) {
-      this.notyfyService.notify(`Error con los datos`, 'warning', 3000)
+      this.notyfyService.notify(`Error con los datos`, 'warning', 3000);
       return;
     }
-
-    this.dialogService
-      .confirm({
-        title: '¡Advertencia!',
-        question: '¿Estás seguro de continuar con esta acción?',
-        highlight: `Esto realiza cambios al Spot ${this.spaceData.spaceFB.location}`,
-        icon: 'fa fa-refresh',
-      })
-      .then((confirmed) => {
-        if (confirmed) {
-          const contractUpdate = { ...this.contractFB };
-          const spaceOfParking = { ...this.spaceData!.spaceFB };
-
-          const contracID = this.spaceData!.spaceFB.idFBManagement;
-          const spaceID = this.spaceData!.spaceFB.location;
-
-          spaceOfParking.state = 'Y';
-          spaceOfParking.idFBCliente = '';
-          spaceOfParking.idFBManagement = '';
-          contractUpdate.state = 'I';
-
-          try {
-            if (this.contractFB?.type == 'M') {
-              this.contracService.updatoContract(contracID, contractUpdate);
-              this.spotService.updateParkigSpace(spaceID, spaceOfParking);
-            } else if (this.contractFB?.type == 'R') {
-              
-              const startDate =  new Date((this.contractFB?.startDate as any).seconds * 1000)
-              const costTotal =this.calculateCost(
-                startDate, this.contractFB?.rate.timeUnit!,
-                this.contractFB?.rate.quantity!, 
-                this.contractFB?.rate.unitRate!
-              )     
-              contractUpdate.totalPrice =  costTotal
-              contractUpdate.endDate = new Date(Date.now())
-              this.contracService.updatoContract(contracID, contractUpdate);
-              this.spotService.updateParkigSpace(spaceID, spaceOfParking);
-              this.spaceData = null;
-              this.userFB = null;
-              this.contractFB = null;
-              this.totalPrice = 0
-              this.notyfyService.notify(`Spot Actualizado y Pago correctamente`, 'success', 5000)
-              this.eventReloadMatriz.emit();
-            }
-          } catch (e) {}
-        }else {
-          this.notyfyService.notify(`No se realizaron cambios`, 'warning', 5000)
+  
+    const confirmed = await this.dialogService.confirm({
+      title: '¡Advertencia!',
+      question: '¿Estás seguro de continuar con esta acción?',
+      highlight: `Esto realiza cambios al Spot ${this.spaceData.spaceFB.location}`,
+      icon: 'fa fa-refresh',
+    });
+  
+    if (confirmed) {
+      this.loadingService.open("Realizando la Transacción, espere un momento");
+  
+      const contractUpdate = { ...this.contractFB };
+      const spaceOfParking = { ...this.spaceData!.spaceFB };
+      const contracID = this.spaceData!.spaceFB.idFBManagement;
+      const spaceID = this.spaceData!.spaceFB.location;
+  
+      spaceOfParking.state = 'Y';
+      spaceOfParking.idFBCliente = '';
+      spaceOfParking.idFBManagement = '';
+      contractUpdate.state = 'I';
+  
+      try {
+        if (this.contractFB?.type === 'M') {
+          await this.contracService.updatoContract(contracID, contractUpdate);
+          await this.spotService.updateParkigSpace(spaceID, spaceOfParking);
+        } 
+        else if (this.contractFB?.type === 'R') {
+          const startDate = new Date((this.contractFB?.startDate as any).seconds * 1000);
+          const costTotal = this.calculateCost(
+            startDate,
+            this.contractFB?.rate.timeUnit!,
+            this.contractFB?.rate.quantity!,
+            this.contractFB?.rate.unitRate!
+          );
+  
+          contractUpdate.totalPrice = costTotal;
+          contractUpdate.endDate = new Date(Date.now());
+  
+          await this.contracService.updatoContract(contracID, contractUpdate);
+          await this.spotService.updateParkigSpace(spaceID, spaceOfParking);
+  
+          this.spaceData = null;
+          this.userFB = null;
+          this.contractFB = null;
+          this.totalPrice = 0;
+          this.eventReloadMatriz.emit();
         }
-
-      });
-    
+  
+        this.loadingService.closeDialog();
+  
+      } catch (e) {
+        this.loadingService.updateTransactionStatus("error", "Transaccion erronea", "Error: " + e as string)
+        this.notyfyService.notify("Hubo un error en la transacción", 'error', 5000);
+      }
+    } else {
+      this.notyfyService.notify("No se realizaron cambios", 'warning', 5000);
+    }
   }
+  
 
   calculateCost(
     startDate: Date, 

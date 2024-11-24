@@ -9,6 +9,7 @@ import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { RateData } from '../../../../core/models/rate';
 import { Automobile } from '../../../../core/models/automobile';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { LoadingService } from '../../../../shared/services/dialog/dialogLoading.service';
 
 @Component({
   selector: 'app-create-contract',
@@ -31,7 +32,9 @@ export class CreateContractComponent implements OnChanges{
     private userService: UserfbService,
     private contractService: ContractManFBService,
     private parkinkLot: ParkinLotService,
-    private notyfyService: NotificationService
+    private notyfyService: NotificationService,
+    private loadingService: LoadingService
+
 
   ) {}
 
@@ -103,6 +106,7 @@ export class CreateContractComponent implements OnChanges{
     }
 
     try {
+      this.loadingService.open("Realizando la Transacción, espere un momento");
       const userID: string = this.userData.crendentialUserUID;
       const userFB = await this.userService.getUser(userID);
       const idUserForManagent = this.userData.crendentialUserUID.slice(0, 4);
@@ -144,9 +148,11 @@ export class CreateContractComponent implements OnChanges{
       this.spaceData = null
       this.automobile = null
       this.rateData = null
+      this.loadingService.closeDialog();
       this.notyfyService.notify(`Transacción realizado con exito`, 'success', 3000)
 
     } catch (e) {
+      this.loadingService.updateTransactionStatus("error", "Transaccion erronea", "Error: " + e as string)
       this.notyfyService.notify(`Al parecer hubo un error`, 'error', 3000)
 
     }

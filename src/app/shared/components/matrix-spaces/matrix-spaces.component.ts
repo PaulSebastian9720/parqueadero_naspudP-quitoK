@@ -3,19 +3,20 @@ import { SpaceData,  } from '../../../core/models/space';
 import { CommonModule } from '@angular/common';
 import { NgModel } from '@angular/forms';
 import { ParkinLotService } from '../../services/space/parkink-lot.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 @Component({
   selector: 'app-matrix-spaces',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './matrix-spaces.component.html',
 })
 export class MatrixSpacesComponent implements OnInit {
   matrizSpaces! :  SpaceData[][] 
   @Output() eventEmitrSpace= new EventEmitter<SpaceData>()
-
-  
+  isLoading : boolean = true
 
   constructor(private parkingLotService :ParkinLotService){}
   async ngOnInit(): Promise<void> {
@@ -27,7 +28,11 @@ export class MatrixSpacesComponent implements OnInit {
   }
 
   async initParkingLotService(){
-    const matrix = await this.parkingLotService.getParkingLot()
+    const matrix = await this.parkingLotService.getParkingLot().then((matrixData) =>{
+      this.isLoading = false
+      return matrixData
+    })
+
     this.matrizSpaces = matrix
   }
    
