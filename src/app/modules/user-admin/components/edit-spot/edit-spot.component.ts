@@ -172,14 +172,13 @@ export class EditSpotComponent implements OnChanges {
   
           await this.contracService.updatoContract(contracID, contractUpdate);
           await this.spotService.updateParkigSpace(spaceID, spaceOfParking);
-  
-          this.spaceData = null;
-          this.userFB = null;
-          this.contractFB = null;
-          this.totalPrice = 0;
-          this.eventReloadMatriz.emit();
         }
-  
+        this.spaceData = null;
+        this.userFB = null;
+        this.contractFB = null;
+        this.totalPrice = 0;
+        this.eventReloadMatriz.emit();
+
         this.loadingService.closeDialog();
   
       } catch (e) {
