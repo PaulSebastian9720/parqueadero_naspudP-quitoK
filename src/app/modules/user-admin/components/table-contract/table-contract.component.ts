@@ -50,6 +50,7 @@ export class TableContractComponent implements OnChanges {
 
   
   showMenssageState(contrac:ManagementFB){
+    console.log(contrac.state)
     if(!contrac){
       return""
     }
@@ -57,7 +58,9 @@ export class TableContractComponent implements OnChanges {
       return "Activo"
     } else if (contrac.state === "I"){
       return "Inactivo"
-    }else {
+    }else if (contrac.state === "C") {
+      return "Cancelado"
+    } else {
       return "Pendiente"
     }
   }

@@ -23,6 +23,7 @@ import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.
 import { Timestamp } from '@angular/fire/firestore';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 import { LoadingService } from '../../../../shared/services/dialog/dialogLoading.service';
+import { RateFB } from '../../../../core/models/rate';
 
 @Component({
   selector: 'app-edit-spot',
@@ -127,6 +128,50 @@ export class EditSpotComponent implements OnChanges {
     }
   }
 
+  async onDisable(){
+    if (!this.spaceData || !this.contracService || !this.userFB) {
+      this.notyfyService.notify(`Error con los datos`, 'warning', 3000);
+      return;
+    }
+  
+    const confirmed = await this.dialogService.confirm({
+      title: '¡Advertencia!',
+      question: '¿Estás seguro de continuar con esta acción?',
+      highlight: `Se anulara este contrato con ${this.userFB.name} ${this.userFB.last_name}`,
+      icon: 'fa fa-file-alt',
+    });
+
+    if (confirmed) {
+      this.loadingService.open("Realizando la Transacción, espere un momento");
+  
+      const contractUpdate = { ...this.contractFB };
+      const spaceOfParking = { ...this.spaceData!.spaceFB };
+      const contracID = this.spaceData!.spaceFB.idFBManagement;
+      const spaceID = this.spaceData!.spaceFB.location;
+      contractUpdate.state = 'C'
+      contractUpdate.endDate = new Date(Date.now());
+      contractUpdate.totalPrice = 0
+      spaceOfParking.state = 'Y';
+      spaceOfParking.idFBCliente = '';
+      spaceOfParking.idFBManagement = '';
+      try {
+        await this.contracService.updatoContract(contracID, contractUpdate);
+        await this.spotService.updateParkigSpace(spaceID, spaceOfParking);
+        
+        this.spaceData = null;
+        this.userFB = null;
+        this.contractFB = null;
+        this.totalPrice = 0;
+        this.loadingService.closeDialog()
+        this.eventReloadMatriz.emit();
+      }catch (e) {
+        this.loadingService.updateTransactionStatus('error', 'Error en la transacción', "Error: " + e as string)
+      }
+    }else {
+      this.notyfyService.notify(`Operación cancelada`, 'info', 3000);
+    }
+  }
+
   async onClickPay() {
     if (!this.spaceData || !this.contracService || !this.userFB) {
       this.notyfyService.notify(`Error con los datos`, 'warning', 3000);
@@ -190,7 +235,6 @@ export class EditSpotComponent implements OnChanges {
     }
   }
   
-
   calculateCost(
     startDate: Date, 
     timeUnit: string, 

@@ -4,11 +4,12 @@ import { TableContractComponent } from "../../../user-admin/components/table-con
 import { UserData } from '../../../../core/models/user';
 import { AuthStateService } from '../../../../shared/services/user/auth-state.service';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-historial',
   standalone: true,
-  imports: [HeaderServiceComponent, TableContractComponent],
+  imports: [HeaderServiceComponent, TableContractComponent, RouterModule],
   templateUrl: './reservation-historial.component.html',
   styleUrl: './reservation-historial.component.scss'
 })

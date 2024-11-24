@@ -28,7 +28,8 @@
             [ngClass]="{
               'bg-green-400': contracData.state === 'A' ,
               'bg-gray-400': contracData.state === 'I' ,
-              'bg-yellow-400': contracData.state === 'W' ,
+              'bg-yellow-400': contracData.state === 'W',
+              'bg-red-400': contracData.state === 'C',
             }"
             class="inline-block text-center text-white rounded-lg px-6 py-1">
             {{ showMenssageState(contracData) }}

@@ -20,7 +20,7 @@ export class ManagementFB {
         public startDate: Date,
         public endDate: Date,
         public totalPrice: number,
-        public state: "A"| "I" |"W",
+        public state: "A"| "I" |"W" | "C",
         public uidSpaces: string,
         public rate : RateFB,
         public benefits?: string[],
