@@ -7,7 +7,9 @@
           id="name"
           type="text" 
           formControlName="name" 
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [class.border-red-500]="!isEditing" 
+          [class.border-green-500]="isEditing" 
           placeholder="Tu nombre"
           [readonly]="!isEditing"
         />
@@ -22,7 +24,9 @@
           type="text" 
           formControlName="last_name"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+
           placeholder="Tu apellido"
         >
         <small *ngIf="isRequired('last_name')" class="text-red-500">Este campo es requerido.</small>
@@ -36,7 +40,7 @@
           type="email" 
           formControlName="correo"
           [readonly]="true" 
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border border-red-500 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
           placeholder="example@gmail.com"
         >   
       </div>
@@ -46,11 +50,12 @@
       <div class="mb-4">
         <label for="correoO" class="block text-gray-500 font-semibold mb-2">Correo Secundario</label>
         <input 
-          id="correoO"
+          id="correoS"
           type="email" 
           formControlName="correoS"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
           placeholder="example@gmail.com"
         >   
       </div>
@@ -58,11 +63,13 @@
       <div class="mb-4">
         <label for="direccion" class="block text-gray-500 font-semibold mb-2">Dirección</label>
         <input 
-          id="direccion"
+          id="direction"
           type="text" 
           formControlName="direction"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+
           placeholder="Tu dirección"
         />
       </div>
@@ -74,7 +81,8 @@
           type="text" 
           formControlName="city"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
           placeholder="Tu ciudad"
         />
       </div>
@@ -86,7 +94,8 @@
           type="text" 
           formControlName="phone"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
           placeholder="Número de teléfono"
         />
         <small *ngIf="isNotNumber()" class="text-red-500">Se necesita por lo menos 10 caracteres</small>
@@ -99,7 +108,8 @@
           type="date"
           [readonly]="!isEditing"
           formControlName="birthday" 
-          class="w-full mt-1 p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          class="w-full mt-1 p-3 border rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
         >
       </div>
     </div>

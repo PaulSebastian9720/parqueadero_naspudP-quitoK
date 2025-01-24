@@ -1,73 +1,102 @@
-<div class="relative">
-    <button 
-        (click)="toggleSidebar()" 
-        class="top-10 left-10 text-gray-700 text-2xl focus:outline-none lg:hidden p-5 z-30"
-    >
-        <i class="fa" [ngClass]="{ 'fa-times': isOpen, 'fa-bars': !isOpen }"></i>
-    </button>
+<div class="h-full w-auto ">
+  <button
+    (click)="toggleSidebar()"
+    class="absolute top-1/2 transform -translate-y-1/2 text-white focus:outline-none py-8 px-2 rounded-r-full shadow- bg-blue-400 hover:bg-blue-300 z-20 transition-all duration-300 ease-in-out"
+    [ngClass]="{
+      'left-64': isSidebarVisible,
+      'left-0': !isSidebarVisible
+    }"
+  >
+    <i
+      class="fa"
+      [ngClass]="{
+        'fa-chevron-left text-sm': isSidebarVisible,
+        'fa-chevron-right text-sm': !isSidebarVisible
+      }"
+    ></i>
+  </button>
 
-    <div 
-        class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden" 
-        *ngIf="isOpen"
-        (click)="toggleSidebar()"
-    ></div>
+  <div
+    class="max-md:fixed max-md:inset-0 max-md:z-30 bg-black bg-opacity-50"
+    *ngIf="isSidebarVisible"
+    (click)="toggleSidebar()"
+  ></div>
 
-    <nav 
-        [ngClass]="{ 'translate-x-0': isOpen, '-translate-x-full': !isOpen }" 
-        class="fixed z-30 top-0 left-0 w-64 h-screen bg-white p-4 border-r border-gray-300 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
-    >
-        <h1 class="text-black text-2xl font-bold mb-6">Admin Service</h1>
-        <ul class="space-y-4">
-            <li>
-                <a 
-                    (click)="setActiveRoute('/services-admin')" 
-                    routerLink="/services-admin"
-                    [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin' }"
-                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
-                >
-                    <i class="fa fa-building mr-3"></i> Gestión de Espacios
-                </a>
-            </li>
-            <li>
-                <a  
-                    (click)="setActiveRoute('/services-admin/about-client')" 
-                    routerLink="/services-admin/about-client"
-                    [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/about-client' }"
-                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
-                >
-                    <i class="fa fa-users mr-3"></i> Gestión de Clientes
-                </a>
-            </li>
-            <li>
-                <a 
-                    (click)="setActiveRoute('/services-admin/contract-management')" 
-                    routerLink="/services-admin/contract-management"
-                    [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/contract-management' }"
-                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
-                >
-                    <i class="fa fa-file-contract mr-3"></i> Gestión de Contrato 
-                </a>
-            </li>
-            <li>
-                <a 
-                    (click)="setActiveRoute('/services-admin/parking-schedules')" 
-                    routerLink="/services-admin/parking-schedules"
-                    [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/parking-schedules' }"
-                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
-                >
-                    <i class="fa fa-clock mr-3"></i> Gestión de Horarios
-                </a>
-            </li>
-            <li>
-                <a 
-                    (click)="setActiveRoute('/services-admin/parking-rates')" 
-                    routerLink="/services-admin/parking-rates"
-                    [ngClass]="{ 'bg-blue-300': activeRoute === '/services-admin/parking-rates' }"
-                    class="text-black font-semibold flex items-center p-3 rounded transition hover:bg-gray-300"
-                >
-                    <i class="fa fa-money-bill-wave mr-3"></i>Gestión de Tarifas
-                </a>
-            </li>
-        </ul>
-    </nav>
+  <nav
+    [ngClass]="{
+      'translate-x-0': isSidebarVisible,
+      '-translate-x-full': !isSidebarVisible
+    }"
+    class="top-0 left-0 w-64 min-h-screen h-full bg-white p-4 shadow-lg border-r  border-gray-200 transform transition-transform duration-300 ease-in-out max-md:fixed max-md:left-0 max-md:z-40"
+  >
+    <h3 class="text-gray-800 text font-bold mb-8 px-3 text-xl">Serivicios de Administrador</h3>
+    <ul class="space-y-2">
+      <li>
+        <a
+          routerLink="/services-admin"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4  border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-building text-gray-900 mr-3"></i>
+          <span>Gestión de Espacios</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-admin/about-client"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-users text-gray-900 mr-3"></i>
+          <span>Gestión de Clientes</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-admin/contract-management"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-file-contract text-gray-900 mr-3"></i>
+          <span>Gestión de Contrato</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-admin/parking-schedules"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-clock text-gray-900 mr-3"></i>
+          <span>Gestión de Horarios</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-admin/parking-rates"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-money-bill-wave text-gray-900 mr-3"></i>
+          <span>Gestión de Tarifas</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-admin/admin-mail"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-mail-bulk text-gray-900 mr-3"></i>
+          <span>Gestion Mail Administrador</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>

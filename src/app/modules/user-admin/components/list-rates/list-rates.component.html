@@ -1,25 +1,22 @@
 <div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
-  <table class="min-w-full shadow-sm">
+  <table class="min-w-full shadow-sm text-sm">
     <thead class="bg-gray-900 text-white">
       <tr>
-        <th class="py-3 px-4  text-center">Nombre</th>
-        <th class="py-3 px-4  text-center">Tarifa</th>
-        <th class="py-3 px-4  text-center">Tiempo</th>
-        <th class="py-3 px-4  text-center">Acciones</th>
+        <th class="py-3 px-4 text-center">Nombre</th>
+        <th class="py-3 px-4 text-center">Tarifa</th>
+        <th class="py-3 px-4 text-center">Tiempo</th>
+        <th class="py-3 px-4 text-center">Acciones</th>
       </tr>
     </thead>
-
     <tbody>
       <tr
-        *ngFor="let rateData of listRate"
+        *ngFor="let rateData of dataSource.filteredData"
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 text-center"
       >
         <td class="py-3 px-4">{{ rateData.rateFB.name }}</td>
         <td class="py-3 px-4">{{ rateData.rateFB.unitRate + " $" }}</td>
         <td class="py-3 px-4">
-          {{
-            getNameSpanish(rateData.rateFB.timeUnit, rateData.rateFB.quantity)
-          }}
+          {{ getNameSpanish(rateData.rateFB.timeUnit, rateData.rateFB.quantity) }}
         </td>
         <td class="py-3 px-4 flex justify-center space-x-4">
           <button
@@ -42,7 +39,6 @@
             </svg>
             Seleccionar
           </button>
-
           <button
             (click)="onClickDeleteRate(rateData)"
             class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
@@ -67,4 +63,11 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- Paginador -->
+  <mat-paginator 
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    class="mt-4"
+  ></mat-paginator>
 </div>

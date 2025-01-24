@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-reservation-historial',
   standalone: true,
-  imports: [HeaderServiceComponent, TableContractComponent, RouterModule],
+  imports: [TableContractComponent, RouterModule],
   templateUrl: './reservation-historial.component.html',
   styleUrl: './reservation-historial.component.scss'
 })

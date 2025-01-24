@@ -6,6 +6,15 @@ export class Automobile {
         public model: string,
     ) {}
 
+
+    public static fromJSON(json: any): Automobile {
+        return new Automobile(
+            json.idAutomobile,
+            json.plate,
+            json.licensePlate,
+            json.model
+        );
+    }
 }
 
 

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthFbService } from '../../services/auth-fb/auth-fb.service';
 import { IUsernAuth } from '../../utils/interfaceRegisterFom';
 import { isRequired, hasEmailError, isNotSamePassword, isShortParameter } from '../../utils/validator';
-import { NgModel } from '@angular/forms';
 import { CommonModule, formatDate } from '@angular/common';
 import { ButtonWGoogleComponent } from "../../ui/button-w-google/button-w-google.component";
 import { Router } from '@angular/router';

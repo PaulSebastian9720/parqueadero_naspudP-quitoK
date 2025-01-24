@@ -20,7 +20,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
   registerForm!: FormGroup;
 
   @Input() userData!: UserData;  // Datos del usuario que se recibirán desde el componente padre
-  @Input() isEditing = false;    // Bandera que indica si se está editando un usuario
+  @Input() isEditing : boolean = false;    // Bandera que indica si se está editando un usuario
   @Output() updateTable = new EventEmitter<void>();  // Emite un evento para actualizar la tabla después de un cambio
 
   constructor(
@@ -112,7 +112,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
     
     // Validación de datos mínimos
     if (name.length < 3 || last_name.length < 3 || (phone && phone.length != 10)) return;
-
+    console.log(birthday)
     try {
       const userData: UserFB = {
         name: name,
@@ -131,9 +131,7 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
       this.notiticationService.notify("Se actualizado correctamente", 'success', 3000);
 
       this.updateTable.emit();  // Emite un evento para actualizar la tabla
-    } catch (error) {
-      // Manejo de errores si ocurre algún fallo
-    }
+    } catch (error) {}
   }
 
   /**
@@ -157,3 +155,5 @@ export class UpdateFormUserComponent implements OnInit, OnChanges {
     });
   }
 }
+
+

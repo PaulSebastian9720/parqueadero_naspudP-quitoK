@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, deleteDoc, doc, Firestore, getDoc, getDocs, setDoc } from "@angular/fire/firestore";
+import { addDoc, collection, doc, Firestore, getDoc, getDocs, setDoc } from "@angular/fire/firestore";
 import { CommentData, CommentFB } from '../../../core/models/comment';
 
 

@@ -14,8 +14,17 @@ import { FormAutomovileComponent } from '../form-automovile/form-automovile.comp
   imports: [CommonModule, FormsModule],
   templateUrl: './list-automobile.component.html',
 })
-export class ListAutomobileComponent implements OnChanges {
-  listAutomobile: Automobile[] = [];  // Lista de automóviles asociada al usuario
+export class ListAutomobileComponent implements OnChanges, OnInit {
+  listAutomobile: Automobile[] = automobiles;  // Lista de automóviles asociada al usuario
+  listFilterAutomobile : Automobile[] = []; // Lista de automóviles
+
+  isOpen = false;
+  currentPage: number = 1;
+  totalPages: number = 0; 
+  itemsPerPage: number = 4;
+  itemsPerPageOptions: number[] = [4, 6, 8];
+  pages: number[] = [];
+
 
   @Input() userData!: UserData;  // Datos del usuario recibidos como entrada
 
@@ -23,7 +32,9 @@ export class ListAutomobileComponent implements OnChanges {
     private userService: UserfbService,  // Servicio para interactuar con la base de datos del usuario
     private dialogService: DialogService,  // Servicio para manejar diálogos de confirmación
     private dialog: MatDialog  // Servicio para manejar los diálogos de Material
-  ) { }
+  ) {
+    
+   }
 
   @Output() eventGetRateDate = new EventEmitter<void>();  // Evento para obtener la tasa de fecha (sin usar en el código actual)
 
@@ -36,6 +47,13 @@ export class ListAutomobileComponent implements OnChanges {
     if (changes["userData"] && changes["userData"].currentValue) {
       this.initList();  // Actualiza la lista de automóviles si 'userData' ha cambiado
     }
+  }
+
+  ngOnInit(): void {
+    this.initList();  
+    this.totalPages = Math.ceil(this.listAutomobile.length / this.itemsPerPage);
+    this.listFilterAutomobile = this.getPaginatedData(); 
+    this.updatePages();
   }
 
   /**
@@ -60,8 +78,9 @@ export class ListAutomobileComponent implements OnChanges {
    * Utiliza el servicio de usuario para obtener los automóviles asociados al usuario.
    */
   async initList() {
-    const userFB = await this.userService.getUser(this.userData.crendentialUserUID);  // Obtiene los datos del usuario
-    this.listAutomobile = userFB?.listAutomobile!;  // Asigna la lista de automóviles del usuario
+    // const userFB = await this.userService.getUser(this.userData.crendentialUserUID);  // Obtiene los datos del usuario
+    this.listAutomobile = automobiles;  // Asigna la lista de automóviles del usuario
+    
   }
 
   /**
@@ -86,9 +105,64 @@ export class ListAutomobileComponent implements OnChanges {
           userUpdate.listAutomobile = newList;  // Actualiza la lista de automóviles del usuario
           this.userService.updateUser(this.userData.crendentialUserUID, userUpdate);  // Actualiza el usuario en la base de datos
           this.initList();  // Recarga la lista de automóviles
-        } else {
-          // Si no se confirma la acción, no se hace nada
-        }
+        } 
       });
   }
+
+
+  getPaginatedData() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const  endIndex = startIndex + this.itemsPerPage;
+    return this.listAutomobile.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.listFilterAutomobile = this.getPaginatedData();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.listFilterAutomobile = this.getPaginatedData();
+    }
+  }
+
+  updatePages() {
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.listFilterAutomobile =  this.getPaginatedData();
+  }
+
+  updateItemsPerPage() {
+    this.currentPage = 1; 
+    this.itemsPerPage = Number(this.itemsPerPage);
+    this.totalPages = Math.ceil(this.listAutomobile.length / this.itemsPerPage);
+    this.listFilterAutomobile = this.getPaginatedData()
+    this.updatePages();
+  }
 }
+
+
+const automobiles: Automobile[] = [
+  new Automobile('1', 'ABC1234', 'Toyota', 'Corolla'),
+  new Automobile('2', 'XYZ5678', 'Honda', 'Civic'),
+  new Automobile('3', 'LMN9101', 'Ford', 'Fiesta'),
+  new Automobile('4', 'DEF2345', 'Chevrolet', 'Sonic'),
+  new Automobile('5', 'GHI6789', 'Nissan', 'Altima'),
+  new Automobile('6', 'JKL3456', 'BMW', '320i'),
+  new Automobile('7', 'MNO1234', 'Mercedes-Benz', 'A-Class'),
+  new Automobile('8', 'PQR4567', 'Audi', 'A3'),
+  new Automobile('9', 'STU7890', 'Volkswagen', 'Golf'),
+  new Automobile('10', 'VWX5678', 'Kia', 'Optima'),
+  new Automobile('11', 'YZA1234', 'Hyundai', 'Elantra'),
+  new Automobile('12', 'BCD6789', 'Mazda', 'Mazda3'),
+  new Automobile('13', 'EFG3456', 'Jeep', 'Cherokee'),
+  new Automobile('14', 'HIJ2345', 'Chrysler', 'Pacifica'),
+  new Automobile('15', 'KLM7890', 'Dodge', 'Charger')
+];

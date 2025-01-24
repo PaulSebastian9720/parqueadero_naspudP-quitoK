@@ -9,13 +9,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './side-bar.component.html',
 })
 export class SideBarComponent {
-  activeRoute: string = "/services-admin"
-  isOpen = false;
+  isSidebarVisible = true;
 
-  setActiveRoute(route: string) {
-    this.activeRoute = route;
-  }
   toggleSidebar() {
-    this.isOpen = !this.isOpen;
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
+
 }

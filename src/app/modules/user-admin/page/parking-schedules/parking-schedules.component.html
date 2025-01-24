@@ -1,34 +1,54 @@
-<div class="overflow-x-auto flex flex-col p-6 lg:p-10 space-y-8 mb-7">
-  
-    <app-header-service
-      titlePage="Edita Horarios y Tarifas de Trabajo"
-      description="Configura tus horarios de trabajo para días específicos o para rangos de días como lunes a viernes.">
-    </app-header-service>
-  
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
+<div class="flex lg:flex-row sm:flex-row h-auto">
+  <div class="flex-col w-full max-h-full p-6 mb-7 min-h-screen">
+    <div class="flex">
+      <button
+        class="py-2 px-5 rounded-t-xl transition-all duration-200"
+        [ngClass]="{
+          'bg-gray-800 text-white ': container === 'calendar',
+          'bg-gray-200 text-gray-800 hover:bg-gray-300':
+            container !== 'calendar'
+        }"
+        (click)="toggleContainer('calendar')"
+      >
+        Calendario Anual
+      </button>
+      <button
+        class="py-2 px-5 rounded-t-xl transition-all duration-200"
+        [ngClass]="{
+          'bg-gray-800 text-white': container === 'table',
+          'bg-gray-200 text-gray-800 hover:bg-gray-300': container !== 'table'
+        }"
+        (click)="toggleContainer('table')"
+      >
+        Horario General
+      </button>
+    </div>
 
-      <div class="p-6 shadow-md rounded-lg bg-white ">
-        <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center ">
-          Establece un Horario de Trabajo
-      </h2>        
-      <div class="mt-4">
-          <app-edit-schedules
-            (eventUpdateSchedule)="updateSchedule()">
-          </app-edit-schedules>
-        </div>
+    <div class="flex-col border-t-2 bg-white shadow-md lg:w-[1150px] md:w-[650px] sm:w-[610px]">
+      <div class="p-6 w-full">
+        <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
+          {{ container === "table" ? "Horario Estandar" : "" }}
+        </h2>
+
+        <app-spot-calender
+          (sendDateEvevnt)="eventSelectDay($event)"
+          *ngIf="container === 'calendar'"
+          #calendar
+        ></app-spot-calender>
+
+        <app-list-workday *ngIf="container === 'table'" #schedule>
+        </app-list-workday>
       </div>
-  
-      <div class="p-6 shadow-md rounded-lg bg-white ">
-        <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center ">
-          Mira los horarios actuales
-      </h2>        
-      <div class="mt-4">
-          <app-list-workday
-            #schedule>
-          </app-list-workday>
-        </div>
-      </div>
-  
     </div>
   </div>
-  
+
+  <div
+    class="flex flex-col justify-center items-center w-full min-h-full bg-white p-6 shadow-lg "
+  >
+    <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
+      Establece un Horario de Trabajo
+    </h2>
+    <app-edit-schedules (eventUpdateSchedule)="updateSchedule()">
+    </app-edit-schedules>
+  </div>
+</div>

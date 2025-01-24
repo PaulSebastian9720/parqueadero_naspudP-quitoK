@@ -1,10 +1,8 @@
 import { Automobile } from "./automobile";
-import { Client } from "./client";
 import { RateFB } from "./rate";
 
 export class Management {
     constructor(
-        public client: Client,
         public startDate: Date,
         public endDate: Date,
         public totalPrice: number,

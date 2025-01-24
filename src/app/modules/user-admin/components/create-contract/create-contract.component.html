@@ -1,14 +1,14 @@
-<div class="container mx-auto my-4 p-4 max-w-2xl w-full h-auto overflow-y-auto">
+<div class="container mx-auto p-4 max-w-2xl w-full h-auto overflow-y-auto flex flex-col gap-2">
   <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
     Datos del Cliente
   </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-2">
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700"> Nombre </span>
-      <span class="text-gray-900 font-medium mt-1 block">
+      <span class="font-semibold text-gray-700 text-sm"> Nombre </span>
+      <span class="text-gray-900 mt-1 block text-sm">
         {{ userData ? userData.user.name : "" }}
       </span>
     </div>
@@ -16,8 +16,8 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700">Apellido</span>
-      <span class="text-gray-900 font-medium mt-1 block">
+      <span class="font-semibold text-gray-700 text-sm">Apellido</span>
+      <span class="text-gray-900 text-sm mt-1 block">
         {{ userData ? userData.user.last_name : "" }}
       </span>
     </div>
@@ -25,8 +25,8 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700">Correo</span>
-      <span class="text-gray-900 font-medium mt-1 block">
+      <span class="font-semibold text-gray-700 text-sm">Correo</span>
+      <span class="text-gray-900 text-sm mt-1 block">
         {{ userData ? userData.user.correo : "" }}
       </span>
     </div>
@@ -34,8 +34,8 @@
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': userData }"
     >
-      <span class="font-semibold text-gray-700">Teléfono</span>
-      <span class="text-gray-900 font-medium mt-1 block">
+      <span class="font-semibold text-gray-700 text-sm">Teléfono</span>
+      <span class="text-gray-900 text-sm mt-1 block">
         {{ userData ? userData.user.phone : "" }}
       </span>
     </div>
@@ -44,23 +44,23 @@
   <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
     Datos del Automóvil
   </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-2">
     <div
       [ngClass]="{ 'border border-green-500': automobile }"
       class="p-4 shadow-md rounded-lg"
     >
-      <span class="font-semibold text-gray-700">Placa</span>
-      <span class="text-gray-900 font-medium mt-1 block">{{
-        automobile?.plate ? automobile?.plate : "AAAA-000"
+      <span class="font-semibold text-gray-700 text-sm">Placa</span>
+      <span class="text-gray-900 text-sm mt-1 block">{{
+        automobile?.plate ? automobile?.plate : ""
       }}</span>
     </div>
     <div
       [ngClass]="{ 'border border-green-500': automobile }"
       class="p-4 shadow-md rounded-lg"
     >
-      <span class="font-semibold text-gray-700">Marca</span>
-      <span class="text-gray-900 font-medium mt-1 block">{{
-        automobile?.brand ? automobile?.brand : "GENERICA"
+      <span class="font-semibold text-gray-700 text-sm">Marca</span>
+      <span class="text-gray-900 text-sm mt-1 block">{{
+        automobile?.brand ? automobile?.brand : ""
       }}</span>
     </div>
   </div>
@@ -68,51 +68,49 @@
   <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
     Datos del Spot
   </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-2">
     <div
       [ngClass]="{ 'border border-green-500': spaceData }"
       class="p-4 shadow-md rounded-lg"
     >
-      <span class="font-semibold text-gray-700">Posición</span>
-      <span class="text-gray-900 font-medium mt-1 block">{{
+      <span class="font-semibold text-gray-700 text-sm">Posición</span>
+      <span class="text-gray-900 text-sm mt-1 block">{{
         spaceData ? spaceData.spaceFB.location : ""
       }}</span>
     </div>
-  <div
-    [ngClass]="{
+    <div
+      [ngClass]="{
       'border-green-500': spaceData? spaceData.spaceFB.state === 'Y' : false,
       'border-red-500': spaceData? spaceData.spaceFB.state === 'N' : false,
       'border-yellow-500': spaceData? spaceData.spaceFB.state === 'O' : false,
     }"
-    class="border p-4 shadow-md rounded-lg"
-  >
-  <span class="font-semibold text-gray-700">Estado</span>
-  <span class="text-gray-900 font-medium mt-1 block">
-    {{ getMenssage() }}
-  </span>
-</div>
-
+      class="border p-4 shadow-md rounded-lg"
+    >
+      <span class="font-semibold text-gray-700 text-sm">Estado</span>
+      <span class="text-gray-900 text-sm mt-1 block">
+        {{ getMenssage() }}
+      </span>
+    </div>
   </div>
 
   <h2 class="text-center font-bold text-gray-800 border-b-2 mb-4">
     Datos de la Tarifa
   </h2>
-  <div class="grid grid-cols-1 gap-6 p-4">
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-2">
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': rateData }"
     >
-      <span class="font-semibold text-gray-700">Fecha de inicio</span>
-      <span class="text-gray-900 font-medium mt-1 block">{{
-        getStartDate()
-      }}</span>
+      <span class="font-semibold text-gray-700 text-sm">Fecha de inicio</span>
+      <span class="text-gray-900 text-sm mt-1 block">{{ getStartDate() }}</span>
     </div>
     <div
       class="p-4 shadow-md rounded-lg"
       [ngClass]="{ 'border border-green-500': rateData }"
     >
       <div class="flex justify-between items-center">
-        <span class="font-semibold text-gray-700">Fecha de fin</span>
+        <span class="font-semibold text-gray-700 text-sm">Fecha de fin</span>
         <div class="flex gap-2">
           <button
             class="hover:text-red-500 text-2xl"
@@ -128,30 +126,25 @@
           </button>
         </div>
       </div>
-      <span class="text-gray-900 font-medium mt-2 block">{{
-        getEndDate()
-      }}</span>
-    </div>
-    <div
-      class="p-4 shadow-md rounded-lg"
-      [ngClass]="{ 'border border-green-500': rateData }"
-    >
-      <span class="font-semibold text-gray-700">Pago Mensual</span>
-      <span class="text-gray-900 font-medium mt-1 block">
-        {{rateData ? rateData.rateFB.unitRate : "0.00"}}$
-        </span>
+      <span class="text-gray-900 text-sm mt-2 block">{{ getEndDate() }}</span>
     </div>
   </div>
-
-  <div class="p-4 shadow-md rounded-lg mt-6">
-    <div class="flex justify-between">
-      <span class="font-semibold text-gray-700">Total del Pago</span>
-      <span class="text-gray-900 font-bold">{{ price }} $</span>
-    </div>
+  <div
+    class="px-4 shadow-md rounded-lg py-6"
+    [ngClass]="{ 'border border-green-500': rateData }"
+  >
+    <span class="font-semibold text-gray-700 text-sm">Pago Mensual</span>
+    <span class="text-gray-900 text-sm mt-1 block">
+      {{ rateData ? rateData.rateFB.unitRate : "0.00" }}$
+    </span>
+  </div>
+  <div class="px-4 shadow-md rounded-lg mt-6 flex justify-between py-6">
+    <span class="font-semibold text-gray-700 text-sm">Total del Pago</span>
+    <span class="text-gray-900 font-bold">{{ price }} $</span>
   </div>
 
   <button
-    class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-4 w-full"
+    class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 mt-4 w-full"
     [ngClass]="{
       'cursor-not-allowed': !spaceData || !userData || !rateData || price <= 0
     }"

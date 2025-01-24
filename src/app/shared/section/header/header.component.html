@@ -1,27 +1,40 @@
 <header class="bg-gray-900 text-white">
-  <div class="container mx-auto flex justify-between items-center py-6">
-    <a routerLink="/" class="px-4 text-2xl text-white font-extrabold font">
-      AUTO
-      <span class="text-black bg-white px-2 rounded-lg transform">SPOT</span>
+  <div class="container mx-auto flex justify-between items-center py-2 md:px-10 sm:px-4 ">
+    <a routerLink="/" class="px-4 sm:px-2 md:text-lg sm:text-sm text-white font-extrabold">
+      AUTO  
+      <span class="text-black bg-white px-2 rounded-lg">SPOT</span>
     </a>
 
     <nav class="hidden md:flex space-x-6">
-      <a routerLink="/" class="hover:text-gray-400 text-lg">
-        <i class="fa fa-home"> Inicio</i></a
+      <a
+        routerLink="/"
+        routerLinkActive="text-yellow-500 font-bold border-b-2 border-yellow-500"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:text-gray-400 py-1 md:text-sm sm:text-xs"
       >
-      <a routerLink="/services-client" class="hover:text-gray-400 text-lg">
-        <i class="fa fa-car"> Servicios</i></a
+        <i class="fa fa-home md:text-sm sm:text-xs"> Inicio</i></a
+      >
+      <a
+        routerLink="/services-client"
+        routerLinkActive="text-yellow-500 font-bold border-b-2 border-yellow-500"
+        class="hover:text-gray-400 py-1 md:text-sm sm:text-xs"
+      >
+        <i class="fa fa-car md:text-sm sm:text-xs"> Servicios</i></a
       >
       <a
         routerLink="/services-admin"
+        routerLinkActive="text-yellow-500 font-bold border-b-2 border-yellow-500"
         *ngIf="isAdmin"
-        class="hover:text-gray-400 text-lg"
+        class="hover:text-gray-400 py-1  text-sm"
       >
         <i class="fa fa-cogs"> Administrador</i></a
       >
-      <a routerLink="contact-us" 
-      class="hover:text-gray-400 text-lg">
-        <i class="fa fa-globe"> Contactanos</i>
+      <a
+        routerLink="contact-us"
+        routerLinkActive="text-yellow-500 font-bold border-b-2 border-yellow-500"
+        class="hover:text-gray-400 py-1  text-sm"
+      >
+        <i class="fa fa-globe"> Con tactanos</i>
       </a>
     </nav>
 
@@ -29,29 +42,38 @@
       <a
         *ngIf="!isAuthenticated"
         routerLink="auth/sign-in"
-        class="text-black bg-white font-semibold px-4 py-2 rounded hover:bg-yellow-500 hover:text-white text-lg"
+        class="text-black bg-white font-semibold px-4 py-2 rounded hover:bg-yellow-500 hover:text-white"
       >
-        <i class="fa fa-sign-in"></i> Inicio de Sesión
+        <i class="fa fa-sign-in md:text-sm sm:text-xs"></i> Inicio de Sesión
       </a>
 
       <div *ngIf="isAuthenticated" class="flex flex-col relative">
         <button
           (click)="toggleMenuAuth()"
-          class="mb-2 py-2 px-4 text-white rounded hover:bg-yellow-500 flex items-center"
+          class="mb-2 py-2 px-4 text-white rounded flex items-center hover:bg-gray-600"
         >
-          <i class="fa fa-user"> Tu</i>
+          <i class="fa fa-user-circle text-2xl"></i>
         </button>
 
         <div
           *ngIf="isMenuOpenAuth"
-          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-10 w-48 right-0"
+          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-30 right-1"
         >
           <a
             routerLink="/profile"
+            (click)="toggleClosingMenu()"
             class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
           >
             <i class="fa fa-user-circle"></i>
             <h3>Perfil</h3>
+          </a>
+          <a
+            routerLink="/services-client/mail"
+            (click)="toggleClosingMenu()"
+            class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
+          >
+            <i class="fa fa-bell"></i>
+            <h3>Mensajes</h3>
           </a>
           <button
             (click)="logOut()"
@@ -62,33 +84,93 @@
           </button>
         </div>
       </div>
+      <div *ngIf="isAuthenticated" class="flex flex-col relative">
+        <button
+          (click)="toggleMenuNotify()"
+          class="mb-2 py-2 px-4 rounded flex items-center hover:bg-gray-600"
+        >
+          <i class="fa fa-bell text-white text-2xl"></i>
+        </button>
+
+        <div
+          *ngIf="menuNotify"
+          class="absolute top-full mt-1 border bg-white shadow-lg rounded-lg p-1 z-30 right-1 w-96 max-h-[450px] overflow-y-scroll"
+        >
+          <div
+            *ngFor="let _ of [].constructor(20); let i = index"
+            class="flex items-center justify-between py-1 px-2 my-1 bg-gray-100 hover:bg-slate-300 rounded-md transition-colors duration-200"
+          >
+            <h3 class="text-sm font-bold truncate text-black w-[100px]">
+              Mail
+            </h3>
+
+            <p class="text-sm text-gray-600 truncate w-[200px]">
+              Este es un ejemplo de Mail
+            </p>
+
+            <p class="text-sm text-gray-400 text-right w-[100px]">
+              {{ "16:59 23/12/2004" }}
+            </p>
+          </div>
+
+          <a
+            routerLink="/services-client/mail"
+            (click)="toggleClosingMenu()"
+            class="block py-1 text-blue-600 text-center hover:text-blue-800"
+          >
+            Mostrar más...
+          </a>
+        </div>
+      </div>
 
       <div class="hidden max-md:flex flex-col relative">
         <button
           (click)="toggleMenu()"
-          class="mb-2 py-2 px-4 hover:bg-yellow-500 rounded-full hover:text-black right-0"
+          class="mb-2 py-2 px-4 rounded flex items-center hover:bg-gray-600"
         >
-          <i class="fa fa-bars"></i>
+          <i class="fa fa-bars text-2xl"></i>
         </button>
         <div
           *ngIf="isMenuOpen"
-          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-10 right-1 w-40"
+          class="absolute top-full mt-1 border bg-gray-900 shadow-lg rounded-lg p-4 z-30 right-1"
         >
-          <a routerLink="/" class="block hover:text-gray-400">
+          <a
+            routerLink="/"
+            class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
+            (click)="toggleClosingMenu()"
+          >
             <i class="fa fa-home"></i> Inicio
           </a>
-          <a routerLink="/services-client" class="block hover:text-gray-400">
+          <a
+            routerLink="/services-client"
+            class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
+            (click)="toggleClosingMenu()"
+          >
             <i class="fa fa-car"></i> Servicios
-          </a> 
-          <a routerLink="/services-admin" *ngIf="isAdmin" class="block hover:text-gray-400">
+          </a>
+          <a
+            routerLink="/services-admin"
+            *ngIf="isAdmin"
+            class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
+            (click)="toggleClosingMenu()"
+          >
             <i class="fa fa-cogs"></i> Administrador
           </a>
-          <a routerLink="contact-us" class="block hover:text-gray-400">
+          <a
+            routerLink="contact-us"
+            class="mb-2 py-2 px-4 text-white hover:bg-yellow-500 rounded w-full flex gap-2 items-center"
+            (click)="toggleClosingMenu()"
+          >
             <i class="fa fa-globe"></i> Contactanos
           </a>
         </div>
       </div>
-      
     </div>
   </div>
+
+  <div
+    class="fixed inset-0 z-20"
+    *ngIf="isMenuOpenAuth || isMenuOpen || menuNotify"
+    (click)="toggleClosingMenu()"
+  ></div>
 </header>

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-slider-img',
   standalone: true,
-  imports: [ScheduleComponent, CommentsComponent, MensaggeComponent,CommonModule ],
+  imports: [CommonModule ],
   templateUrl: './slider-img.component.html',
   styleUrl: './slider-img.component.scss'
 })

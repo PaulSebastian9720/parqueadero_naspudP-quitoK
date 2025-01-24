@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
 
   // Propiedades del componente
   user!: UserData;  // Datos del usuario, inicialmente no definidos.
-  isEditing = false;  // Bandera para controlar si el perfil está en modo de edición.
+  isEditing = true;  // Bandera para controlar si el perfil está en modo de edición.
 
   constructor(
     private userFBSerivce: UserfbService,  // Servicio para obtener datos del usuario desde Firebase.
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
    * Si la propiedad 'user' no está definida, no realiza ninguna acción.
    */
   toggleEdit() {
-    if (!this.user) return;  // Si no se tienen datos de usuario, no hace nada.
+    // if (!this.user) return;  // Si no se tienen datos de usuario, no hace nada.
     this.isEditing = !this.isEditing;  // Cambia el estado de la bandera 'isEditing' entre 'true' y 'false'.
   }
 }

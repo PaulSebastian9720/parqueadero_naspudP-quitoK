@@ -49,23 +49,23 @@ export class EditSchedulesComponent {
       if(this.selectedEndDay){
         const indexStart = this.daysOfWeek.indexOf(this.selectedStartDay)
         const indexEnd = this.daysOfWeek.indexOf(this.selectedEndDay)
-        for (let i = indexStart; i < indexEnd + 1; i++){
-          const day = this.daysOfWeek[i]
-          const workDay: WorkDayFB = {
-            dayOfWeek: day,
-            open: this.selectStartTime,
-            close: this.selectEndTime,
-          }
+        // for (let i = indexStart; i < indexEnd + 1; i++){
+        //   const day = this.daysOfWeek[i]
+        //   const workDay: WorkDayFB = {
+        //     dayOfWeek: day,
+        //     open: this.selectStartTime,
+        //     close: this.selectEndTime,
+        //   }
 
-          await this.scheduleService.updateDay(day.toLowerCase(), workDay)
-        }
+        //   await this.scheduleService.updateDay(day.toLowerCase(), workDay)
+        //}
       }else {
-        const workDay: WorkDayFB = {
-          dayOfWeek: this.selectedStartDay,
-          open: this.selectStartTime,
-          close: this.selectEndTime,
-        }
-        await this.scheduleService.updateDay(this.selectedStartDay.toLowerCase(), workDay)
+        // const workDay: WorkDayFB = {
+        //   dayOfWeek: this.selectedStartDay,
+        //   open: this.selectStartTime,
+        //   close: this.selectEndTime,
+        // }
+        // await this.scheduleService.updateDay(this.selectedStartDay.toLowerCase(), workDay)
         
       }
       this.selectEndTime = ""

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthStateService } from '../../services/user/auth-state.service';
 import { UserCacheService } from '../../services/user/user-cache.service';
-
 
 @Component({
   selector: 'app-header',
@@ -13,16 +14,16 @@ import { UserCacheService } from '../../services/user/user-cache.service';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  isMenuOpen = false
-  isMenuOpenAuth = false
-  isAuthenticated = false
-  isAdmin = false
+  isMenuOpen = false;
+  isMenuOpenAuth = false;
+  isAuthenticated = true;
+  menuNotify = false;
+  isAdmin = true;
 
-  constructor (
-    private authState : AuthStateService,
-    private currentUser: UserCacheService,
-
-  ){}
+  constructor(
+    private authState: AuthStateService,
+    private currentUser: UserCacheService
+  ) {}
 
   ngOnInit(): void {
     this.authState.authState$.subscribe(
@@ -33,27 +34,40 @@ export class HeaderComponent implements OnInit {
         if(user?.rol === 'A') this.isAdmin = true
       }
     })
-      
   }
 
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen
-    this.isMenuOpenAuth = this.isMenuOpenAuth ? !this.isMenuOpenAuth : this.isMenuOpenAuth
+    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpenAuth = this.isMenuOpenAuth
+      ? !this.isMenuOpenAuth
+      : this.isMenuOpenAuth;
 
+    this.menuNotify = this.menuNotify ? !this.menuNotify : this.menuNotify;
   }
-  
+
   toggleMenuAuth() {
-    this.isMenuOpenAuth = !this.isMenuOpenAuth
-    this.isMenuOpen = this.isMenuOpen ? !this.isMenuOpen : this.isMenuOpen
+    this.isMenuOpenAuth = !this.isMenuOpenAuth;
+    this.isMenuOpen = this.isMenuOpen ? !this.isMenuOpen : this.isMenuOpen;
+
+    this.menuNotify = this.menuNotify ? !this.menuNotify : this.menuNotify;
   }
 
-  goToProfile(){
-
+  toggleMenuNotify() {
+    this.menuNotify = !this.menuNotify;
+    this.isMenuOpen = this.isMenuOpen ? !this.isMenuOpen : this.isMenuOpen;
+    this.isMenuOpen = this.isMenuOpen ? !this.isMenuOpen : this.isMenuOpen;
   }
 
-  async logOut(){
-    await this.authState.logOut()
-    location.reload()
-    this.currentUser.removeUser()
+  toggleClosingMenu() {
+    this.isMenuOpen = false;
+    this.isMenuOpenAuth = false;
+    this.menuNotify = false;
+  }
+
+  async logOut() {
+    await this.authState.logOut();
+    location.reload();
+    this.currentUser.removeUser();
+    this.toggleClosingMenu();
   }
 }

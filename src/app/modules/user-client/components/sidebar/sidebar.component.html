@@ -1,47 +1,86 @@
-<div class="relative"> 
+<div class="h-full w-auto max-md:absolute">
   <button
     (click)="toggleSidebar()"
-    class="top-10 left-10 text-gray-700 text-2xl focus:outline-none lg:hidden p-5 z-30"
+    class="absolute top-1/2 transform -translate-y-1/2 text-white focus:outline-none py-8 px-2 rounded-r-full shadow- bg-blue-400 hover:bg-blue-300 z-50 transition-all duration-300 ease-in-out"
+    [ngClass]="{
+      'left-64': isSidebarVisible,
+      'left-0': !isSidebarVisible
+    }"
   >
-    <i class="fa" [ngClass]="{ 'fa-times': isOpen, 'fa-bars': !isOpen }"></i>
+    <i
+      class="fa"
+      [ngClass]="{
+        'fa-chevron-left text-sm': isSidebarVisible,
+        'fa-chevron-right text-sm': !isSidebarVisible
+      }"
+    ></i>
   </button>
 
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-    *ngIf="isOpen"
+    class="max-md:fixed max-md:inset-0 max-md:z-30 bg-black bg-opacity-50"
+    *ngIf="isSidebarVisible"
     (click)="toggleSidebar()"
   ></div>
 
   <nav
-    [ngClass]="{ 'translate-x-0': isOpen, '-translate-x-full': !isOpen }"
-    class="fixed z-30 top-0 left-0 w-64 h-screen bg-white p-4 border-r border-gray-300 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
+    [ngClass]="{ 'translate-x-0': isSidebarVisible, '-translate-x-full': !isSidebarVisible }"
+    class="top-0 left-0 w-64 min-h-screen h-full bg-white p-6 shadow-lg border-r border-gray-200 transform transition-transform duration-300 ease-in-out max-md:fixed max-md:left-0 max-md:z-40"
   >
-    <h1 class="text-black text-2xl font-bold mb-6">Parking Service</h1>
+    <h1 class="text-gray-800 text-xl font-bold mb-8 px-3">Servicios del Cliente</h1>
     <ul class="space-y-4">
       <li>
         <a
-          (click)="setActiveRoute('/services-client')"
           routerLink="/services-client"
-          [ngClass]="{ 'bg-blue-300': activeRoute === '/services-client' }"
-          class="text-black font-semibold flex items-center gap-3 p-3 rounded transition hover:bg-gray-300"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
         >
-          <i class="fa fa-car text-lg"></i>
-          Ver Vehículos
+          <i class="fa fa-database text-gray-900 mr-3"></i>
+          <span>Informacion del Usuario</span>
+        </a>
+      </li> 
+      <li>
+        <a
+          routerLink="/services-client/rent-space"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-house-user text-gray-900 mr-3"></i>
+          <span>Rentar Espacio</span>
         </a>
       </li>
-
+      <li>
+        <a
+          routerLink="/services-client/pay-parking"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-money-check text-gray-900 mr-3"></i>
+          <span>Pagar Espacio</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/services-client/mail"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
+        >
+          <i class="fa fa-mail-bulk text-gray-900 mr-3"></i>
+          <span>Mensajes de Correo</span>
+        </a>
+      </li>
       <li>
         <a
           routerLink="/services-client/reservation-history"
-          (click)="setActiveRoute('/services-client/reservation-history')"
-          [ngClass]="{
-            'bg-blue-300':
-              activeRoute === '/services-client/reservation-history'
-          }"
-          class="text-black font-semibold flex items-center gap-3  p-3 rounded transition hover:bg-gray-300"
+          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
         >
-          <i class="fa fa-history text-lg"></i>
-          Historial de Reservas
+          <i class="fa fa-history text-gray-900 mr-3"></i>
+          <span>Historial de Reservas</span>
         </a>
       </li>
     </ul>

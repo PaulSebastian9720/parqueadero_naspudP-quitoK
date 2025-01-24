@@ -72,10 +72,10 @@ export const privateGuardAdmin = (): CanActivateFn => {
 
         return userCache.getUser().pipe(
             map(user => {
-                if (!user || user.rol !== 'A') {
-                    router.navigateByUrl("/");
-                    return false;
-                }
+                // if (!user || user.rol !== 'A') {
+                //     router.navigateByUrl("/");
+                //     return false;
+                // }
 
                 return true;
             })

@@ -10,14 +10,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent {
-  isOpen = false;
-  activeRoute: string = "/services-client"
+  isSidebarVisible = true;
 
-  setActiveRoute(route: string) {
-    this.activeRoute = route;
-  }
-  
   toggleSidebar() {
-    this.isOpen = !this.isOpen;
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
 }

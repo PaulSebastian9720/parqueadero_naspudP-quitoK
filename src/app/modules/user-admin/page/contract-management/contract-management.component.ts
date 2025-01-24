@@ -45,6 +45,8 @@ export class ContractManagementComponent {
   isSelected1 = true;  // Bandera para la opción 1 seleccionada
   isSelected2 = false;  // Bandera para la opción 2 seleccionada
   automobile!: Automobile | null;  // Automóvil seleccionado o null si no hay ninguno
+  worldFilter : string = ""
+  
 
   // Referencias a componentes hijos
   @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent;  // Componente para mostrar el mapa de espacios
@@ -162,5 +164,10 @@ export class ContractManagementComponent {
     this.userFb = null;  // Resetea el usuario seleccionado
     this.spaceFB = null;  // Resetea el espacio seleccionado
     this.mapa.initParkingLotService();  // Inicializa el servicio del mapa
+  }
+
+
+  filterSpace(){
+
   }
 }

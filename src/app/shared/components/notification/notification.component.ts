@@ -37,5 +37,13 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.notificationSub.unsubscribe();
     }
   }
+
+
+  getMessage(): string {
+    return this.type === 'warning' ? "Posible Error":
+           this.type === 'success' ? "Accion Exitosa": 
+           this.type === 'info' ? "Atencion":
+           "Error" ;
+  }
 }
 

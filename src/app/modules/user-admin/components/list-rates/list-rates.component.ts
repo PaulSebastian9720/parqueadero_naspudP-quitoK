@@ -1,19 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { RateData } from '../../../../core/models/rate';
 import { RateService } from '../../../../shared/services/rate/rate.service';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-list-rates',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,  MatPaginator],
   templateUrl: './list-rates.component.html',
 })
 export class ListRatesComponent implements OnInit {
   
   listRate : RateData [] = []
+
+  dataSource = new MatTableDataSource(this.listRate);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private rateServices : RateService,
@@ -25,7 +31,8 @@ export class ListRatesComponent implements OnInit {
   @Output() eventGetRateDate = new EventEmitter<RateData>;
 
   async ngOnInit(): Promise<void> {
-      this.initListRates()
+    this.initListRates()
+    this.dataSource.paginator = this.paginator;
   }
 
 

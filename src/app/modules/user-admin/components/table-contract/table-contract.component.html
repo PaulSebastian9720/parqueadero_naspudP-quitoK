@@ -1,41 +1,45 @@
 <div class="overflow-x-auto w-full mb-6 shadow-lg">
-  <table *ngIf="listContract.length > 0" class="min-w-full text-center text-sm sm:text-base">
+  <table 
+    *ngIf="listContract.length > 0"
+    class="min-w-full table-auto text-sm"
+    style="table-layout: fixed"
+    >
     <thead class="bg-gray-900 text-white">
       <tr>
-        <th class="py-3 px-4 font-semibold">Contrato</th>
-        <th class="py-3 px-4 font-semibold">Espacio</th>
-        <th class="py-3 px-4 font-semibold">Fecha de Inicio</th>
-        <th class="py-3 px-4 font-semibold">Fecha de Vencimiento</th>
-        <th class="py-3 px-4 font-semibold">Estado</th>
-        <th class="py-3 px-4 font-semibold">Total a Cancelar</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Contrato</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Espacio</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Fecha de Inicio</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Fecha de Vencimiento</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Estado</th>
+        <th class="md:px-4 sm:px1 py-3 sm:px-4 text-left">Total a Cancelar</th>
       </tr>
     </thead>
     <tbody>
       <tr 
-        *ngFor="let contracData of listContract" 
+        *ngFor="let contracData of listFilterContract" 
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300">
-        <td class="py-3 px-4">{{ contracData.type === "M" ? "Contrato Mensual" : "Renta temporal" }}</td>
-        <td class="py-3 px-4">{{ contracData.uidSpaces }}</td>
-        <td class="py-3 px-4">{{ formatDate(contracData.startDate, contracData.rate.timeUnit) }}</td>
-        <td class="py-3 px-4">
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">{{ contracData.type === "M" ? "Contrato Mensual" : "Renta temporal" }}</td>
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">{{ contracData.uidSpaces }}</td>
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">{{ formatDate(contracData.startDate, contracData.rate.timeUnit) }}</td>
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">
           {{
             contracData.type === "M"  ? formatDate(contracData.endDate, contracData.rate.timeUnit) 
             : contracData.state === "A" ?  "Tiempo indefinido" : formatDate(contracData.endDate, contracData.type)
           }}  
         </td>
-        <td class="py-3 px-4">
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">
           <span
             [ngClass]="{
-              'bg-green-400': contracData.state === 'A' ,
-              'bg-gray-400': contracData.state === 'I' ,
-              'bg-yellow-400': contracData.state === 'W',
-              'bg-red-400': contracData.state === 'C',
+              'bg-green-500': contracData.state === 'A' ,
+              'bg-gray-500': contracData.state === 'I' ,
+              'bg-yellow-500': contracData.state === 'W',
+              'bg-red-500': contracData.state === 'C',
             }"
-            class="inline-block text-center text-white rounded-lg px-6 py-1">
+            class="inline-block text-center text-white rounded-lg px-2 py-1 min-w-16">
             {{ showMenssageState(contracData) }}
           </span>
         </td>
-        <td class="py-3 px-4">
+        <td class="md:py-2 md:px-4 sm:py-3 sm:px-4 text-left">
           {{ 
             contracData.type === "M" ? contracData.totalPrice + "$" :  
             contracData.state === "A" ?  "No calculado" : contracData.totalPrice + "$" 
@@ -44,7 +48,43 @@
       </tr>
     </tbody>
   </table>
-  <p *ngIf="listContract.length === 0" class="text-gray-500 mt-4 text-center">
-    No hay contratos disponibles.
-  </p>
+  <div class="flex items-center justify-center py-2 space-x-2 bg-gray-200">
+    <ng-container *ngFor="let page of pages">
+      <button
+        class="px-3 py-1 rounded"
+        [ngClass]="{
+          'bg-gray-900   text-white': page === currentPage,
+          'bg-white hover:bg-gray-300': page !== currentPage
+        }"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <select
+      class="px-3 py-1 border border-gray-300 rounded"
+      [(ngModel)]="itemsPerPage"
+      (change)="updateItemsPerPage()"
+    >
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+    <button
+      class="px-3 py-1 bg-white rounded hover:bg-gray-300"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >
+      &#10094;
+    </button>
+    <span class="px-4 py-1">{{ currentPage }} / {{ totalPages }}</span>
+    <button
+      class="px-3 py-1 bg-white rounded hover:bg-gray-300"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      &#10095;
+    </button>
+  </div>
 </div>

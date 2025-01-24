@@ -1,12 +1,79 @@
-<div class="overflow-x-auto flex flex-col p-6 lg:p-10 space-y-8">
-  <app-header-service
+<div class="overflow-x-auto flex flex-col p-6 lg:p-10 space-y-8 h-screen">
+  <!-- <app-header-service
     titlePage="Gestión de Espacios"
     description="Administra la disponibilidad de los espacios y selecciona el que deseas gestionar desde el mapa."
   >
-  </app-header-service>
+  </app-header-service> -->
 
-  <div class="flex flex-col lg:flex-row gap-8 lg:gap-6">
-    <div class="flex-1 flex flex-col bg-white p-6 rounded-lg shadow-md">
+  <div class="flex flex-col lg:flex-row gap-8 lg:gap-6 h-screen">
+    <div class="flex-1 flex flex-col p-6 bg-white rounded-lg shadow-lg">
+      <div class="flex flex-col">
+        <h2 class="text-xl lg:text-2xl font-semibold mb-4 ">
+          Opciones de el Espacio
+        </h2>
+
+        <div class="flex flex-row w-full gap-2 py-2 overflow-x-auto custom-scroll">
+          <button
+            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+            (click)="addSpot()"
+          >
+            <i class="fa fa-plus-circle"></i>
+            Añadir
+          </button>
+
+          <button
+            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+            (click)="onDisable()"
+          >
+            <i class="fa fa-parking"></i>
+            Habilitar
+          </button>
+
+          <button
+            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+            (click)="onEnable()"
+          >
+            <i class="fa fa-ban"></i>
+            Deshabilitar
+          </button>
+          <select
+            class="flex justify-center items-center gap-1 w-auto px-4 py-2 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md appearance-none"
+            [(ngModel)]="selectWorld"
+            (change)="filterListPerWorld()"
+          >
+            <option value="" disabled selected>Filtros</option>
+            <option value="">Sin Filtros</option>
+            <option value="Y">Libres</option>
+            <option value="N">C. Mensuales</option>
+            <option value="O">C. Temporales</option>
+          </select>
+
+          <div
+            class="flex items-center border-2 border-gray-300 rounded-md focus-within:border-gray-800"
+          >
+            <i class="fa fa-search text-gray-500 px-3"></i>
+            <input
+              type="text"
+              placeholder="Buscar spot"
+              class="w-full px-4 py-2 focus:outline-none"
+              [(ngModel)]="wordFilter"
+              (ngModelChange)="filterListPerWorld()"
+            />
+          </div>
+        </div>
+
+        <h2 class="text-xl lg:text-2xl font-semibold mb-4  mt-4">
+          Mapa del Parqueadero
+        </h2>
+        <app-matrix-spaces 
+          #parkingLot 
+          (eventEmitrSpace)="editSpot($event)"
+          >
+        </app-matrix-spaces>
+      </div>
+    </div>
+
+    <div class="flex-1 flex flex-col bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
         Información Sobre el Estado Actual Del Espacio
       </h2>
@@ -15,42 +82,6 @@
         [spaceData]="spaceData!"
       >
       </app-edit-spot>
-    </div>
-
-    <div class="flex-1 flex flex-col bg-white p-6 rounded-lg shadow-md">
-      <div class="flex flex-col">
-        <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
-            Opciones
-        </h2>
-
-        <div class="flex flex-row w-full gap-2">
-            <button
-            class="flex items-center justify-center gap-2 py-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 mt-2 w-full"
-            (click)="addSpot()"
-          >
-           
-            Agregar
-          </button>
-          <button
-            class="flex items-center justify-center gap-2 py-4 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 mt-2 w-full"
-            (click)="onDisable()"
-          >
-            Habilitar
-          </button>
-          <button
-            class="flex items-center justify-center gap-2 py-4 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 mt-2 w-full"
-            (click)="onEnable()"
-          >
-            Desabilitar
-          </button>
-          
-      </div>
-
-      <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center mt-4">
-        Mapa del Parqueadero
-      </h2>
-      <app-matrix-spaces #parkingLot (eventEmitrSpace)="editSpot($event)">
-      </app-matrix-spaces>
     </div>
   </div>
 </div>

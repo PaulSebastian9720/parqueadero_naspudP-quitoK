@@ -1,0 +1,14 @@
+.compose-mail-container {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compose-mail-container input,
+.compose-mail-container textarea {
+  font-size: 14px;
+}
+
+.compose-mail-container .header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

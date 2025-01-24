@@ -1,27 +1,47 @@
-<div class="flex flex-col items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500 px-8 py-14 rounded-lg shadow-lg text-center lg:h-[475px] md:h-auto">
-  <h2 class="text-white font-bold text-xl uppercase tracking-wider mb-2">
-    HORARIOS DE ATENCIÓN
-  </h2>
-  <h1 class="text-white font-extrabold text-4xl mb-4">
-    ¡Estamos aquí para ti!
-  </h1>
+<div
+  class="relative flex flex-col items-center justify-center px-6 py-14 h-[475px]"
+  style="background: radial-gradient(circle, #8F9EFB, #6A77D7, #4A57F3);"
+>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/4727/4727459.png"
+    alt="Fondo"
+    class="absolute md:right-48 top-10 w-5/12 h-auto z-10 sm:right-2/4 sm:min-w-3/5"
+  />
 
-  <p class="text-white text-lg mb-4">
-    Nuestra atención es personalizada y dedicada. Asegúrate de visitarnos en los siguientes horarios:
-  </p>
+  <div class="relative z-10 flex flex-col items-center justify-center">
+    <h2 class="text-white font-bold text-xl uppercase tracking-wider mb-2">
+      HORARIOS DE ATENCIÓN
+    </h2>
+    <h2 class="text-yellow-300 font-extrabold text-4xl mb-4">
+      ¡Estamos aquí para ti!
+    </h2>
 
-  <div class="flex flex-wrap justify-center gap-4 mb-6 w-full">
-    <div *ngFor="let group of groupedDays" class="bg-white p-4 rounded-lg shadow-lg w-48 h-28 flex flex-col justify-center items-center text-center">
-      <p class="text-gray-800 font-semibold">{{ group.days.join(', ') }}</p>
-      <p class="text-2xl font-extrabold text-teal-600">
-        {{ (group.open === "00:00" && group.close === "00:00") ? 'No Abierto' : (group.open + ' - ' + group.close)  }}
-      </p>
-          </div>
+    <p class="text-red-600 text-lg mb-4 font-bold">
+      Nuestra atención es personalizada y dedicada. Asegúrate de visitarnos en
+      los siguientes horarios:
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4 mb-6 w-full">
+      <div
+        *ngFor="let group of groupedDays"
+        class="bg-white p-4 rounded-lg shadow-lg w-48 h-28 flex flex-col justify-center items-center text-center"
+      >
+        <p class="text-gray-800 font-semibold md:text-lg sm:text-sm">{{ group.days.join(", ") }}</p>
+        <p class="md:text-2xl sm:text-sm font-extrabold text-teal-600">
+          {{
+            group.open === "00:00" && group.close === "00:00"
+              ? "No Abierto"
+              : group.open + " - " + group.close
+          }}
+        </p>
+      </div>
+    </div>
+
+    <a
+      href="#schedule"
+      class="bg-yellow-400 text-black font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-yellow-500 transition"
+    >
+      ¡PLANIFICA TU VISITA!
+    </a>
   </div>
-
-  <a
-    href="#schedule"
-    class="bg-yellow-400 text-black font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-yellow-500 transition">
-    ¡PLANIFICA TU VISITA!
-</a>
 </div>

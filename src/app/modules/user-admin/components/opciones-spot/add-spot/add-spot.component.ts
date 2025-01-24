@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ParkinLotService } from '../../../../../shared/services/space/parkink-lot.service';
-import { FormsModule } from '@angular/forms';
+  import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-spot',

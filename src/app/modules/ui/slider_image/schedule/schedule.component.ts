@@ -22,7 +22,7 @@ export class ScheduleComponent implements OnInit {
   constructor(private scheduleService: ScheduleFbService) {}
 
   async ngOnInit(): Promise<void> {
-    this.listWorkDays = await this.scheduleService.getListDay()
+    this.listWorkDays = CANCHE_LIST_DAT
     this.getDayCommon()
   }
 
@@ -45,5 +45,15 @@ export class ScheduleComponent implements OnInit {
     this.groupedDays.sort((a, b) => this.dayOrder.indexOf(a.days[0].toLowerCase()) - this.dayOrder.indexOf(b.days[0].toLowerCase()))
   }
 }
+
+const CANCHE_LIST_DAT  = [ 
+  new WorkDayFB(1, 'R', 'lunes', '08:00', '17:00'),
+  new WorkDayFB(2, 'R', 'martes', '08:00', '17:00'),
+  new WorkDayFB(3, 'R', 'miércoles', '08:00', '17:00'),
+  new WorkDayFB(4, 'R', 'jueves', '08:00', '21:00'),
+  new WorkDayFB(5, 'R', 'viernes', '08:00', '17:00'),
+  new WorkDayFB(6, 'R', 'sábado', '08:00', '12:00'),
+  new WorkDayFB(7, 'R', 'domingo', '07:00', '14:00'),
+]
 
 

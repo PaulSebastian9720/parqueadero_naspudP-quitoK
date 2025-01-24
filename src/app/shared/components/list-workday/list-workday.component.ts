@@ -19,11 +19,11 @@ export class ListWorkdayComponent implements OnInit {
   }
 
   async initWorkDayList() {
-    const listDays = await this.scheduler.getListDay()
-    const weekOrder = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    this.workDays = listDays.sort((a, b) => {
-      return weekOrder.indexOf(a.dayOfWeek) - weekOrder.indexOf(b.dayOfWeek)
-    });
-  }
+  //   const listDays = await this.scheduler.getListDay()
+  //   const weekOrder = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+  //   this.workDays = listDays.sort((a, b) => {
+  //     return weekOrder.indexOf(a.dayOfWeek) - weekOrder.indexOf(b.dayOfWeek)
+  //   });
+   }
   
 } 
