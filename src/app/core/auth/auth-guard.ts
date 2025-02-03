@@ -1,8 +1,8 @@
 import { inject } from "@angular/core"
 import { CanActivateFn, Router } from "@angular/router"
-import { AuthStateService } from "../../shared/services/user/auth-state.service"
 import { map } from "rxjs"
-import { UserCacheService } from "../../shared/services/user/user-cache.service"
+import { UserCurrentService } from "../../shared/services/user/user-cache.service"
+import { AuthService } from "../../shared/services/auth/auth/auth.service"
 /** 
  * `privateGuard` es un guardia de rutas utilizado para proteger rutas que solo deben ser accesibles por usuarios autenticados.
  * Asegura que si el usuario no está autenticado, se le redirija a la página de inicio de sesión.
@@ -16,8 +16,8 @@ import { UserCacheService } from "../../shared/services/user/user-cache.service"
 export const privateGuard = (): CanActivateFn => {
     return () => {
         const router = inject(Router);
-        const authState = inject(AuthStateService);
-        return authState.authState$.pipe(
+        const authState = inject(AuthService);
+        return authState.isAuthenticated.pipe(
             map(state => {
                 if (!state) {
                     router.navigateByUrl('/auth/sign-in');
@@ -42,8 +42,8 @@ export const privateGuard = (): CanActivateFn => {
 export const publicGuard = (): CanActivateFn => {
     return () => {
         const router = inject(Router);
-        const authState = inject(AuthStateService);
-        return authState.authState$.pipe(
+        const authState = inject(AuthService);
+        return authState.isAuthenticated.pipe(
             map(state => {
                 if (state) {
                     router.navigateByUrl('/welcoming');
@@ -68,14 +68,14 @@ export const publicGuard = (): CanActivateFn => {
 export const privateGuardAdmin = (): CanActivateFn => {
     return () => {
         const router = inject(Router);
-        const userCache = inject(UserCacheService);
+        const userCache = inject(UserCurrentService);
 
         return userCache.getUser().pipe(
             map(user => {
-                // if (!user || user.rol !== 'A') {
-                //     router.navigateByUrl("/");
-                //     return false;
-                // }
+                if (!user || user.role !== 'A') {
+                    router.navigateByUrl("/");
+                    return false;
+                }
 
                 return true;
             })

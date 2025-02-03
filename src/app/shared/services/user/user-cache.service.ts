@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core'
+import { Injectable, OnInit } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
 import { UserFB } from '../../../core/models/user'
+import { User } from '../../../core/interfaces/person';
 
 
 /** 
@@ -18,19 +19,22 @@ import { UserFB } from '../../../core/models/user'
 @Injectable({
   providedIn: 'root'
 })
-export class UserCacheService {
+export class UserCurrentService implements OnInit {
 
   private storageKey = 'cachedUser';
-  private userSubject = new BehaviorSubject<UserFB | null>(null); 
+  private userSubject = new BehaviorSubject<User | null>(null); 
 
   /** 
    * Constructor que intenta cargar un usuario desde el almacenamiento local y lo emite si existe.
    */
   constructor() {
+    
+  }
+  ngOnInit(): void {
     const userJson = localStorage.getItem(this.storageKey);
     if (userJson) {
       const userObject = JSON.parse(userJson);
-      this.userSubject.next(userObject as UserFB);
+      this.userSubject.next(userObject as User);
     }
   }
 
@@ -39,7 +43,7 @@ export class UserCacheService {
    * 
    * @param {UserFB} user El usuario a guardar en el almacenamiento.
    */
-  setUser(user: UserFB): void {
+  setUser(user: User): void {
     localStorage.setItem(this.storageKey, JSON.stringify(user));
     this.userSubject.next(user);
   }
@@ -49,7 +53,7 @@ export class UserCacheService {
    * 
    * @returns {Observable<UserFB | null>} El estado actual del usuario.
    */
-  getUser(): Observable<UserFB | null> {
+  getUser(): Observable<User | null> {
     return this.userSubject.asObservable();
   }
 

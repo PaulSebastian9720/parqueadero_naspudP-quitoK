@@ -6,29 +6,44 @@ import { AuthStateService } from '../../../../shared/services/user/auth-state.se
 import { ListAutomobileComponent } from '../../../../shared/components/list-automobile/list-automobile.component';
 import { CommonModule } from '@angular/common';
 import { TableContractComponent } from '../../../user-admin/components/table-contract/table-contract.component';
-import { AutomobileService } from '../../../../shared/services/automovile/automobile.service';
+import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
+import { AutomobileService } from '../../../../shared/services/api/automovile/automobile.service';
+import { UserCurrentService } from '../../../../shared/services/user/user-cache.service';
 
 @Component({
   selector: 'app-abount-user',
   standalone: true,
-  imports: [CommonModule, ListAutomobileComponent, TableContractComponent],
+  imports: [CommonModule, ListAutomobileComponent, TableContractComponent, FormsModule],
   templateUrl: './abount-user.component.html',
   styleUrl: './abount-user.component.scss',
 })
 export class AbountUserComponent {
   user!: UserData;
-  vehiculos!: Automobile[];
+  vehiculos: Automobile[] = [];
+  viewPage :  "/viewAutomobiles" |  "/viewContracts" = "/viewAutomobiles"
+  loading: boolean = false
 
   constructor(
-    private userFBSerivce: UserfbService,
-    private authService: AuthStateService,
+    private userCurrent: UserCurrentService,
     private automobileService: AutomobileService,
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    await this.fetchAutomobiles();
-    const automobiles = await this.automobileService.getAutomobileByIdPerson(2)
-    console.log(automobiles)
+   ngOnInit(): void {
+    this.loading = true;
+    this.userCurrent.getUser().subscribe(user=> {
+      if(user){
+        this.automobileService.getAutomobileListByIdPerson(user.idPerson!).pipe(
+          finalize(()=> this.loading = false)
+        ).subscribe((results) => {
+          this.vehiculos = results;
+        })
+      }
+    }
+  )
+    
+  
+    
 
     // try {
     //   const currentUserUID = await this.authService.credentialUserUID;
@@ -62,4 +77,9 @@ export class AbountUserComponent {
     //   });
     // }
   }
+
+  public changePage(namePage: "/viewContracts"   | "/viewAutomobiles"){
+    this.viewPage = namePage;
+  }
+
 }

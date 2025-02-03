@@ -1,4 +1,4 @@
-<div class="flex lg:flex-row sm:flex-row h-auto">
+<div class="flex flex-col lg:flex-row h-auto">
   <div class="flex-col w-full max-h-full p-6 mb-7 min-h-screen">
     <div class="flex">
       <button
@@ -24,7 +24,9 @@
       </button>
     </div>
 
-    <div class="flex-col border-t-2 bg-white shadow-md lg:w-[1150px] md:w-[650px] sm:w-[610px]">
+    <div
+      class="flex-col border-t-2 bg-white shadow-md lg:w-[1050px] md:w-[650px] sm:w-[610px]"
+    >
       <div class="p-6 w-full">
         <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
           {{ container === "table" ? "Horario Estandar" : "" }}
@@ -43,12 +45,14 @@
   </div>
 
   <div
-    class="flex flex-col justify-center items-center w-full min-h-full bg-white p-6 shadow-lg "
+    class="flex flex-col justify-center items-center w-full min-h-full bg-white p-6 shadow-lg"
   >
     <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
       Establece un Horario de Trabajo
     </h2>
-    <app-edit-schedules (eventUpdateSchedule)="updateSchedule()">
+    <app-edit-schedules
+      (schedulerEdit)= schedule
+      (eventUpdateSchedule)="updateSchedule()">
     </app-edit-schedules>
   </div>
 </div>

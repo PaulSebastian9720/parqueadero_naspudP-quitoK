@@ -4,8 +4,9 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthStateService } from '../../services/user/auth-state.service';
-import { UserCacheService } from '../../services/user/user-cache.service';
+import { UserCurrentService } from '../../services/user/user-cache.service';
+import { AuthService } from '../../services/auth/auth/auth.service';
+
 
 @Component({
   selector: 'app-header',
@@ -16,22 +17,22 @@ import { UserCacheService } from '../../services/user/user-cache.service';
 export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   isMenuOpenAuth = false;
-  isAuthenticated = true;
+  isAuthenticated = false;
   menuNotify = false;
-  isAdmin = true;
+  isAdmin = false;
 
   constructor(
-    private authState: AuthStateService,
-    private currentUser: UserCacheService
+    private authService: AuthService,
+    private currentUser: UserCurrentService
   ) {}
 
   ngOnInit(): void {
-    this.authState.authState$.subscribe(
-    (state) => this.isAuthenticated = state
+    this.authService.isAuthenticated.subscribe(
+      (state) => this.isAuthenticated = state
     )
     this.currentUser.getUser().subscribe((user)=> {
       if(user){
-        if(user?.rol === 'A') this.isAdmin = true
+        if(user.role === 'A') this.isAdmin = true
       }
     })
   }
@@ -64,8 +65,8 @@ export class HeaderComponent implements OnInit {
     this.menuNotify = false;
   }
 
-  async logOut() {
-    await this.authState.logOut();
+  logOut() {
+    this.authService.logout();
     location.reload();
     this.currentUser.removeUser();
     this.toggleClosingMenu();

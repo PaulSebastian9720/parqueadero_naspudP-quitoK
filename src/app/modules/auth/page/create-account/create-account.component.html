@@ -29,7 +29,7 @@
       </div>
     </div>
   
-    <form (ngSubmit)="onSubmit()"  [formGroup]="registerForm" class="w-full max-w-xl bg-white rounded-lg shadow-md p-8 mt-8 md:mt-0">
+    <form  [formGroup]="registerForm" class="w-full max-w-xl bg-white rounded-lg shadow-md p-8 mt-8 md:mt-0">
       <h3 class="text-2xl font-bold text-center text-gray-700">Formulario de Registro</h3>
       <h6 class="text-center text-gray-500">Crea una cuenta rapido</h6>
       
@@ -107,7 +107,8 @@
       </div>
     
       <button 
-        type="submit" 
+        type="submit"
+        (click)="onSubmit()" 
         class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 rounded-lg my-2" >
         Registrarse
       </button>

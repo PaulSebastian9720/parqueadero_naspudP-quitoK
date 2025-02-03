@@ -2,8 +2,8 @@ import { Automobile } from '../models/automobile';
 import { MessageMail } from '../models/message';
 import { Contract } from './contract';
 
-export interface Person {
-  id?: number;
+export interface User {
+  idPerson?: number;
   documentID?: string;
   name?: string;
   lastName?: string;

@@ -1,6 +1,6 @@
 import { Automobile } from "../models/automobile";
 import { ParkingSpace } from "./parkingSpace";
-import { Person } from "./person";
+import { User } from "./person";
 import { Rate } from "./rate";
 
 export interface Contract {
@@ -10,7 +10,7 @@ export interface Contract {
   prize?: number;
   startDate: Date;
   endDate?: Date;
-  person: Person;
+  person: User;
   parkingSpace: ParkingSpace;
   rates: Rate[];
   automobile?: Automobile;

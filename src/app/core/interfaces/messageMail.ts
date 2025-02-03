@@ -1,4 +1,4 @@
-import { Person } from './person';
+import { User } from './person';
 
 export interface MessageMail {
   idMessageMail?: number;
@@ -8,7 +8,7 @@ export interface MessageMail {
   header?: string;
   shippingDate?: Date;
   status?: 'RD' | 'NR';
-  person?: Person;
+  person?: User;
 
   getPersonId?(): number | null;
   setPersonId?(personId: number | null): void;

@@ -4,6 +4,7 @@ import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/daygrid';
 import { WorkDayFB } from '../../../core/models/shedule';
+import { Schedule } from '../../../core/interfaces/schedule';
 
 @Component({
   selector: 'app-spot-calender',
@@ -17,7 +18,7 @@ export class SpotCalenderComponent implements OnInit {
   calendarOptions!: CalendarOptions;
   currentDate!: Date;
 
-  @Output() sendDateEvevnt = new EventEmitter<{ star: Date; end: Date }>();
+  @Output() sendDateEvevnt = new EventEmitter<Schedule>();
 
   workDays: WorkDayFB[] = [
     new WorkDayFB(1, 'R', 'lunes', '08:00', '17:00'),
@@ -66,10 +67,17 @@ export class SpotCalenderComponent implements OnInit {
         };
       },
       eventClick: (info) => {
-        this.sendDateEvevnt.emit({
-          star: info.event.start!,
-          end: info.event.end!,
-        });
+        
+        const openingTime = new Date(info.event.start!)
+        const closingTime = new Date(info.event.end!)
+        const status : 'R' | 'E' | 'NW' = info.event.title === 'CERRADO' ? 'NW' : info.event.title ===   'EXCEPCIÓN' ? 'E' : 'R'
+        const scheduleEvent : Schedule  =  {
+          status: status ,
+          openingTime: openingTime,
+          closingTime: closingTime,
+        }
+        console.log(scheduleEvent);
+        this.sendDateEvevnt.emit(scheduleEvent);
       },
     };
   }
@@ -226,6 +234,7 @@ const createResponsiveEvent = (
       align-items: center;
       gap: 8px;
       overflow: auto;
+      width: 100%;
     }
 
     .event-title {
@@ -239,9 +248,9 @@ const createResponsiveEvent = (
     .event-time-container {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 2px;
       width: 100%;
-      flex-direction: column; /* Ensures that the time is displayed in column on small screens */
+      flex-direction: column;
     }
 
     .event-time {
@@ -277,7 +286,7 @@ const createResponsiveEvent = (
       }
 
       .event-time-container {
-        flex-direction: column; /* Keeps the time displayed in column layout on small screens */
+        flex-direction: column;
         align-items: center;
       }
     }
@@ -296,7 +305,7 @@ const createResponsiveEvent = (
       }
 
       .event-time-container {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
       }
     }

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Automobile } from '../../../core/models/automobile';
 import { UserData } from '../../../core/models/user';
 import { UserfbService } from '../../services/user/userfb.service';
 import { DialogService } from '../../services/dialog/dialogconfirm.service';
@@ -7,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAutomovileComponent } from '../form-automovile/form-automovile.component';
+import { Automobile } from '../../../core/interfaces/automobile';
 
 @Component({
   selector: 'app-list-automobile',
@@ -15,7 +15,6 @@ import { FormAutomovileComponent } from '../form-automovile/form-automovile.comp
   templateUrl: './list-automobile.component.html',
 })
 export class ListAutomobileComponent implements OnChanges, OnInit {
-  listAutomobile: Automobile[] = automobiles;  // Lista de automóviles asociada al usuario
   listFilterAutomobile : Automobile[] = []; // Lista de automóviles
 
   isOpen = false;
@@ -24,8 +23,8 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
   itemsPerPage: number = 4;
   itemsPerPageOptions: number[] = [4, 6, 8];
   pages: number[] = [];
-
-
+  loading = true
+  @Input() listAutomobile : Automobile[]= [] 
   @Input() userData!: UserData;  // Datos del usuario recibidos como entrada
 
   constructor(
@@ -50,10 +49,13 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
+
+
     this.initList();  
     this.totalPages = Math.ceil(this.listAutomobile.length / this.itemsPerPage);
     this.listFilterAutomobile = this.getPaginatedData(); 
     this.updatePages();
+
   }
 
   /**
@@ -63,14 +65,14 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
    * @param automobile - El automóvil a actualizar
    */
   async onUpdateAutomobile(automobile: Automobile) {
-    const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre un diálogo con el formulario de actualización
-    const instance = dialogRef.componentInstance;
-    instance.automobileData = automobile;  // Pasa el automóvil al formulario
-    instance.userData = this.userData!;  // Pasa los datos del usuario al formulario
-    instance.eventUpateUser.subscribe(() => {
-      this.dialog.closeAll();  // Cierra todos los diálogos
-      this.initList();  // Recarga la lista de automóviles
-    });
+    // const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre un diálogo con el formulario de actualización
+    // const instance = dialogRef.componentInstance;
+    // instance.automobileData = automobile;  // Pasa el automóvil al formulario
+    // instance.userData = this.userData!;  // Pasa los datos del usuario al formulario
+    // instance.eventUpateUser.subscribe(() => {
+    //   this.dialog.closeAll();  // Cierra todos los diálogos
+    //   this.initList();  // Recarga la lista de automóviles
+    // });
   }
 
   /**
@@ -79,8 +81,8 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
    */
   async initList() {
     // const userFB = await this.userService.getUser(this.userData.crendentialUserUID);  // Obtiene los datos del usuario
-    this.listAutomobile = automobiles;  // Asigna la lista de automóviles del usuario
-    
+    // Asigna la lista de automóviles del usuario
+    console.log(this.listFilterAutomobile)
   }
 
   /**
@@ -94,18 +96,18 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
       .confirm({
         title: '¡Advertencia!',
         question: '¿Estás seguro de continuar con esta acción?',
-        highlight: `Esto eliminará  ${automobileDelete.brand}-${automobileDelete.model}-${automobileDelete.plate}`,
+        highlight: `Esto eliminará  ${automobileDelete.brand}-${automobileDelete.model}-${automobileDelete.licensePlate}`,
         icon: 'fas fa-exclamation-circle',
       })
       .then((confirmed) => {
-        if (confirmed) {
-          // Filtra el automóvil a eliminar de la lista
-          const newList = this.listAutomobile.filter(automobile => automobile.id !== automobileDelete.id);
-          const userUpdate = { ...this.userData.user };  // Copia los datos del usuario
-          userUpdate.listAutomobile = newList;  // Actualiza la lista de automóviles del usuario
-          this.userService.updateUser(this.userData.crendentialUserUID, userUpdate);  // Actualiza el usuario en la base de datos
-          this.initList();  // Recarga la lista de automóviles
-        } 
+        // if (confirmed) {
+        //   // Filtra el automóvil a eliminar de la lista
+        //   const newList = this.listAutomobile.filter(automobile => automobile.id !== automobileDelete.id);
+        //   const userUpdate = { ...this.userData.user };  // Copia los datos del usuario
+        //   userUpdate.listAutomobile = newList;  // Actualiza la lista de automóviles del usuario
+        //   this.userService.updateUser(this.userData.crendentialUserUID, userUpdate);  // Actualiza el usuario en la base de datos
+        //   this.initList();  // Recarga la lista de automóviles
+        // } 
       });
   }
 
@@ -147,22 +149,3 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
     this.updatePages();
   }
 }
-
-
-const automobiles: Automobile[] = [
-  new Automobile('1', 'ABC1234', 'Toyota', 'Corolla'),
-  new Automobile('2', 'XYZ5678', 'Honda', 'Civic'),
-  new Automobile('3', 'LMN9101', 'Ford', 'Fiesta'),
-  new Automobile('4', 'DEF2345', 'Chevrolet', 'Sonic'),
-  new Automobile('5', 'GHI6789', 'Nissan', 'Altima'),
-  new Automobile('6', 'JKL3456', 'BMW', '320i'),
-  new Automobile('7', 'MNO1234', 'Mercedes-Benz', 'A-Class'),
-  new Automobile('8', 'PQR4567', 'Audi', 'A3'),
-  new Automobile('9', 'STU7890', 'Volkswagen', 'Golf'),
-  new Automobile('10', 'VWX5678', 'Kia', 'Optima'),
-  new Automobile('11', 'YZA1234', 'Hyundai', 'Elantra'),
-  new Automobile('12', 'BCD6789', 'Mazda', 'Mazda3'),
-  new Automobile('13', 'EFG3456', 'Jeep', 'Cherokee'),
-  new Automobile('14', 'HIJ2345', 'Chrysler', 'Pacifica'),
-  new Automobile('15', 'KLM7890', 'Dodge', 'Charger')
-];

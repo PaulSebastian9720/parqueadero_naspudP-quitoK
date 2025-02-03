@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WorkDayFB } from '../../../../core/models/shedule';
 import { ScheduleFbService } from '../../../../shared/services/schedule/schedule.service';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { Schedule } from '../../../../core/interfaces/schedule';
 
 @Component({
   selector: 'app-edit-schedules',
@@ -11,20 +12,31 @@ import { NotificationService } from '../../../../shared/services/dialog/notifica
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-schedules.component.html',
 })
-export class EditSchedulesComponent {
+export class EditSchedulesComponent implements OnChanges{
 
-  @Output() eventUpdateSchedule = new EventEmitter<void>()
   daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
   selectedStartDay: string  = ""
   selectedEndDay  : string  = ""
   selectStartTime : string  = ""
   selectEndTime   : string  = ""
 
+  @Input() schedulerEdit!: Schedule
+  @Output() eventUpdateSchedule = new EventEmitter<void>()
+
   constructor(
     private scheduleService: ScheduleFbService,
     private notyfyService: NotificationService
 
   ){}
+
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['schedule'] && changes['schedule'].currentValue) {
+      console.log(changes['schedule'].currentValue)
+      this.selectStartTime = this.schedulerEdit.openingTime?.toISOString()?.split('T')[1] || ""
+      this.selectEndTime = this.schedulerEdit.closingTime?.toISOString()?.split('T')[1] || ""
+    }
+  }
 
   getFilteredEndDays(): string[] {
     if (this.selectedStartDay === null) return this.daysOfWeek;
@@ -76,5 +88,15 @@ export class EditSchedulesComponent {
 
       this.eventUpdateSchedule.emit()
     }catch(e){}
+  }
+
+
+  public validators(): boolean {
+    if(this.schedulerEdit) return false
+    const today = new Date()
+    const todayOnlyDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const dateFromSchedule = this.schedulerEdit['openingTime  '] as Date
+    const dateOnlyCompare = new Date(dateFromSchedule.getFullYear(), dateFromSchedule.getMonth(), dateFromSchedule.getDate())
+    return todayOnlyDate.getTime() <= dateOnlyCompare.getTime()
   }
 }

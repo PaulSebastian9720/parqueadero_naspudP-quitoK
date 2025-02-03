@@ -1,16 +1,45 @@
-<div class="overflow-x-auto flex flex-col p-4 sm:p-6 md:p-10">
-  <h2 class="font-bold text-2xl mb-2">
-    Listado de Vehiculos
-  </h2>
+<div class="overflow-x-auto flex flex-col sm:p-4 md:p-6">
+  <div class="flex-col w-full max-h-full p-6 mb-7 min-h-screen">
+    <div class="flex">
+      <button
+        class="py-2 px-5 rounded-t-xl transition-all duration-200"
+        [ngClass]="{
+          'bg-gray-900 text-white ': viewPage === '/viewAutomobiles',
+          'bg-gray-200 text-gray-800 hover:bg-gray-300':
+            viewPage !== '/viewAutomobiles'
+        }"
+        (click)="changePage('/viewAutomobiles')"
+      >
+        Automoviles
+      </button>
+      <button
+        class="py-2 px-5 rounded-t-xl transition-all duration-200"
+        [ngClass]="{
+          'bg-gray-900 text-white': viewPage === '/viewContracts',
+          'bg-gray-200 text-gray-800 hover:bg-gray-300': viewPage !== '/viewContracts'
+        }"
+        (click)="changePage('/viewContracts')"
+      >
+        Contratos
+      </button>
+    </div>
 
-  <div class="overflow-x-auto w-full mb-6">
-    <app-list-automobile [userData]="user"> </app-list-automobile>
-  </div>
+    <ng-container *ngIf="viewPage === '/viewAutomobiles'">
+      <!-- <h2 class="font-bold text-2xl mb-2">Listado de Vehiculos</h2> -->
 
-  <h2 class="font-bold text-2xl mb-2">
-    Listado de Contratos
-  </h2>
-  <div class="overflow-x-auto w-full mb-6">
-    <app-table-contract [userData]="user"> </app-table-contract>
+      <div class="overflow-x-auto w-full mb-6">
+        <app-list-automobile
+          [listAutomobile]="vehiculos"
+            > 
+        </app-list-automobile>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="viewPage === '/viewContracts'">
+      <!-- <h2 class="font-bold text-2xl mb-2">Listado de Contratos</h2> -->
+      <div class="overflow-x-auto w-full mb-6">
+        <app-table-contract [userData]="user"> </app-table-contract>
+      </div>
+    </ng-container>
   </div>
 </div>
