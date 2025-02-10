@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { UserData } from '../../../../core/models/user';
-import { Automobile } from '../../../../core/models/automobile';
-import { UserfbService } from '../../../../shared/services/user/userfb.service';
-import { AuthStateService } from '../../../../shared/services/user/auth-state.service';
+import { Automobile } from '../../../../core/interfaces/automobile';
 import { ListAutomobileComponent } from '../../../../shared/components/list-automobile/list-automobile.component';
 import { CommonModule } from '@angular/common';
 import { TableContractComponent } from '../../../user-admin/components/table-contract/table-contract.component';
@@ -10,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { AutomobileService } from '../../../../shared/services/api/automovile/automobile.service';
 import { UserCurrentService } from '../../../../shared/services/user/user-cache.service';
+import { User } from '../../../../core/interfaces/person';
 
 @Component({
   selector: 'app-abount-user',
@@ -19,7 +17,7 @@ import { UserCurrentService } from '../../../../shared/services/user/user-cache.
   styleUrl: './abount-user.component.scss',
 })
 export class AbountUserComponent {
-  user!: UserData;
+  user!: User;
   vehiculos: Automobile[] = [];
   viewPage :  "/viewAutomobiles" |  "/viewContracts" = "/viewAutomobiles"
   loading: boolean = false

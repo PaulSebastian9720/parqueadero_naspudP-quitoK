@@ -5,19 +5,8 @@ import { BehaviorSubject, Observable } from "rxjs";
 @Injectable({
     providedIn: "root"
 })
-export class JwtService implements OnInit {
+export class JwtService {
     private JWT_KEY = "_jwt";
-    private jwtSubject = new BehaviorSubject<Jwt|null>(null)
-
-    ngOnInit(): void {
-        const jwtJson = localStorage.getItem(this.JWT_KEY);
-        console.log(jwtJson)
-        if(jwtJson){
-            this.jwtSubject.next( 
-                JSON.parse(jwtJson) as Jwt
-            );
-        }
-    }
 
     setToken(jwtUserCurrent: Jwt){
         console.log(jwtUserCurrent)
@@ -27,17 +16,14 @@ export class JwtService implements OnInit {
                 jwtUserCurrent
             )
         )
-        console.log(localStorage.getItem(this.JWT_KEY));
-        this.jwtSubject.next(jwtUserCurrent);
     }
 
-    getToken(): Observable<Jwt | null> {
-        return this.jwtSubject.asObservable();
+    getToken():Jwt | null {
+        return localStorage.getItem(this.JWT_KEY) as Jwt | null
     }
 
     removeToken(){
         localStorage.removeItem(this.JWT_KEY);
-        this.jwtSubject.next(null);
     }
 
     

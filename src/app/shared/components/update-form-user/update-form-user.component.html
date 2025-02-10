@@ -7,9 +7,8 @@
           id="name"
           type="text" 
           formControlName="name" 
-          class="w-full mt-1 p-3 border rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [class.border-red-500]="!isEditing" 
-          [class.border-green-500]="isEditing" 
+          class="w-full mt-1 p-3 border  focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
           placeholder="Tu nombre"
           [readonly]="!isEditing"
         />
@@ -18,14 +17,14 @@
       </div>
       
       <div class="mb-4">
-        <label for="last_name" class="block text-gray-500 font-semibold mb-2">Apellido</label>
+        <label for="lastName" class="block text-gray-600 font-semibold mb-2">Apellido</label>
         <input 
-          id="last_name"
+          id="lastName"
           type="text" 
-          formControlName="last_name"
+          formControlName="lastName"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
 
           placeholder="Tu apellido"
         >
@@ -36,11 +35,11 @@
       <div class="mb-4">
         <label for="correo" class="block text-gray-500 font-semibold mb-2">Correo principal</label>
         <input 
-          id="correo"
+          id="mail"
           type="email" 
-          formControlName="correo"
+          formControlName="mail"
           [readonly]="true" 
-          class="w-full mt-1 p-3 border border-red-500 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          class="w-full mt-1 p-3 border bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed500" 
           placeholder="example@gmail.com"
         >   
       </div>
@@ -50,12 +49,12 @@
       <div class="mb-4">
         <label for="correoO" class="block text-gray-500 font-semibold mb-2">Correo Secundario</label>
         <input 
-          id="correoS"
+          id="mailS"
           type="email" 
-          formControlName="correoS"
+          formControlName="mailS"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
           placeholder="example@gmail.com"
         >   
       </div>
@@ -63,27 +62,27 @@
       <div class="mb-4">
         <label for="direccion" class="block text-gray-500 font-semibold mb-2">Dirección</label>
         <input 
-          id="direction"
+          id="location"
           type="text" 
-          formControlName="direction"
+          formControlName="location"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
 
           placeholder="Tu dirección"
         />
       </div>
 
       <div class="mb-4">
-        <label for="city" class="block text-gray-500 font-semibold mb-2">Ciudad</label>
+        <label for="documentID" class="block text-gray-500 font-semibold mb-2">Documento de Identidad</label>
         <input 
-          id="city"
+          id="documentID"
           type="text" 
-          formControlName="city"
+          formControlName="documentID"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
-          placeholder="Tu ciudad"
+          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
+          placeholder="Documento de ID"
         />
       </div>
 
@@ -94,8 +93,8 @@
           type="text" 
           formControlName="phone"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border  rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
           placeholder="Número de teléfono"
         />
         <small *ngIf="isNotNumber()" class="text-red-500">Se necesita por lo menos 10 caracteres</small>
@@ -108,15 +107,15 @@
           type="date"
           [readonly]="!isEditing"
           formControlName="birthday" 
-          class="w-full mt-1 p-3 border rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'border-red-500':!isEditing, 'border-green-500':isEditing}"
+          class="w-full mt-1 p-3 border  focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
         >
       </div>
     </div>
 
     <button 
       type="submit" 
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 rounded-lg my-2">
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 my-2">
       Actualizar
     </button>
   </form>

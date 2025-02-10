@@ -5,7 +5,5 @@ export interface Automobile {
   licensePlate?: string;
   brand?: string;
   model?: string;
-  person?: User;
-  getPersonId?(): number | null;
-  setPersonId?(personId: number | null): void;
+  idPerson?: number;
 }

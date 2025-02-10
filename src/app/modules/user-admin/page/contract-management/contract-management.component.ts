@@ -144,7 +144,6 @@ export class ContractManagementComponent {
     if (!this.userFb) return;  // Si no hay un usuario seleccionado, no hace nada
     const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre el diálogo para agregar automóvil
     const instance = dialogRef.componentInstance;  // Obtiene la instancia del componente modificado
-    instance.userData = this.userFb!;  // Pasa los datos del usuario seleccionado
     instance.eventUpateUser.subscribe(() => {
       this.selectUser.initListUsers();  // Inicializa la lista de usuarios
       const userFbAux = this.userFb;  // Guarda el usuario previamente seleccionado

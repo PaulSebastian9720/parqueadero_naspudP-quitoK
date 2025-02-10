@@ -69,6 +69,12 @@
             </th>
             <th
               class="py-2 px-2 sm:py-3 sm:px-4 text-left"
+              style="width: 100px"
+            >
+              Documento ID
+            </th>
+            <th
+              class="py-2 px-2 sm:py-3 sm:px-4 text-left"
               style="width: 200px"
             >
               Correo Electrónico
@@ -78,12 +84,6 @@
               style="width: 100px"
             >
               Rol
-            </th>
-            <th
-              class="py-2 px-2 sm:py-3 sm:px-4 text-left"
-              style="width: 150px"
-            >
-              Ciudad
             </th>
             <th
               class="py-2 px-2 sm:py-3 sm:px-4 text-left"
@@ -107,49 +107,50 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let userData of filteredUsers"
+            *ngFor="let user of filteredUsers"
             class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300"
           >
-            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.name }}</td>
+            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ user.name }}</td>
             <td class="py-2 px-2 sm:py-3 sm:px-4">
-              {{ userData.user.last_name }}
+              {{ user.lastName }}
             </td>
             <td class="py-2 px-2 sm:py-3 sm:px-4">
               <span
                 class="px-3 py-1 rounded-full text-xs font-semibold text-white"
                 [ngClass]="{
-                  'bg-green-500': userData.user.state,
-                  'bg-red-500': !userData.user.state
+                  'bg-green-500': user.status === 'A',
+                  'bg-red-500': user.status === 'I'
                 }"
               >
-                {{ userData.user.state ? "ACT" : "INA" }}
+                {{ user.status === "A" ? "ACT" : "INA" }}
               </span>
             </td>
             <td class="py-2 px-2 sm:py-3 sm:px-4">
-              {{ userData.user.correo }}
+              {{ user.documentID }}
             </td>
-            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.rol }}</td>
-            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.city }}</td>
             <td class="py-2 px-2 sm:py-3 sm:px-4">
-              {{ userData.user.direction }}
+              {{ user.mail }}
             </td>
-            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ userData.user.phone }}</td>
+            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ user.role }}</td>
+            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ user.location }}</td>
+            <td class="py-2 px-2 sm:py-3 sm:px-4">{{ user.phone }}</td>
             <td
-              class="py-2 px-2 sm:py-3 sm:px-4 text-center flex flex-col sm:flex-row justify-center gap-2 sm:gap-4"
+              class="py-2 px-2 sm:py-3 sm:px-4 text-center flex flex-col sm:flex-row justify-center sm:gap-1"
             >
               <button
-                (click)="onClick(userData)"
+                (click)="onClick(user)"
                 class="h-8 w-10 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
               >
                 <i class="fas fa-user-check"></i>
               </button>
               <button
-                (click)="toggleSidebar()"
+                (click)="toggleSidebar(user)"
                 class="h-8 w-10 rounded-md bg-green-500 hover:bg-green-600 text-white"
               >
                 <i class="fas fa-user-edit"></i>
               </button>
               <button
+                (click)="btnchangeState(user)"
                 class="h-8 w-10 rounded-md bg-red-500 hover:bg-red-600 text-white"
               >
                 <i class="fas fa-user-lock"></i>
@@ -204,18 +205,22 @@
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de los Automobiles del Cliente
       </h3>
-      <app-list-automobile [userData]="user"></app-list-automobile>
+      <app-list-automobile
+        [isLoading]="isLoadingTAuto"
+        [listAutomobile]="automobiles"
+      >
+      </app-list-automobile>
 
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de Contratos del Cliente
       </h3>
-      <app-table-contract [userData]="user"></app-table-contract>
+      <app-table-contract [user]="user"></app-table-contract>
     </div>
   </div>
   <div
     class="fixed inset-0 z-20 bg-black bg-opacity-50"
     *ngIf="isOpen"
-    (click)="toggleSidebar()"
+    (click)="toggleSidebar(null)"
   ></div>
 </div>
 
@@ -227,28 +232,43 @@
     'translate-x-full': !isOpen
   }"
 >
-  <div class="fixed right-5 flex space-x-4">
-    <button
-      (click)="toggleEdit()"
-      class="px-6 py-2 sm:px-10 font-semibold rounded-lg text-white"
-      [ngClass]="{
-        ' bg-gray-900 hover:bg-gray-700': !isEditing,
-        ' bg-red-500 hover:bg-red-600': isEditing
-      }"
-    >
-      {{ isEditing ? "Cancelar" : "Editar" }}
-    </button>
-    <button
-      (click)="toggleSidebar()"
-      class="text-gray-700 text-2xl p-2 shadow-lg bg-white hover:bg-red-400 hover:text-white"
-    >
-      <i class="fa" [ngClass]="{ 'fa-times': isOpen, 'fa-bars': !isOpen }"></i>
-    </button>
+  <div class="fixed top-5 left-5 right-5 flex justify-between items-center">
+    <div class="flex space-x-4 px-4">
+      <span class="px-4 py-1 bg-gray-200 rounded-lg shadow">
+        {{ this.user?.role === "A" ? "Administrador" : "Cliente" }}
+      </span>
+
+      <span class="px-4 py-1 bg-blue-200 rounded-lg shadow">
+        {{ this.user?.status === "A" ? "Activo" : "Inactivo" }}
+      </span>
+    </div>
+
+    <div class="flex space-x-4">
+      <button
+        (click)="toggleEdit()"
+        class="px-6 py-2 sm:px-10 font-semibold rounded-s text-white"
+        [ngClass]="{
+          ' bg-gray-900 hover:bg-gray-700': !isEditing,
+          ' bg-red-500 hover:bg-red-600': isEditing
+        }"
+      >
+        {{ isEditing ? "Cancelar" : "Editar" }}
+      </button>
+      <button
+        (click)="toggleIsEditing()"
+        class="text-gray-700 text-xl px-2 py-1 shadow-lg bg-white hover:bg-red-400 hover:text-white rounded-lg"
+      >
+        <i
+          class="fa"
+          [ngClass]="{ 'fa-times': isOpen, 'fa-bars': !isOpen }"
+        ></i>
+      </button>
+    </div>
   </div>
 
   <app-update-form-user
-    [userData]="user!"
-    (updateTable)="initUser()"
+    [user]="user!"
+    (sendUser)="receiveData($event)"
     [isEditing]="isEditing"
   ></app-update-form-user>
 </div>

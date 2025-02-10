@@ -1,20 +1,19 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UserData } from '../../../core/models/user';
-import { UserfbService } from '../../services/user/userfb.service';
 import { DialogService } from '../../services/dialog/dialogconfirm.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { FormAutomovileComponent } from '../form-automovile/form-automovile.component';
 import { Automobile } from '../../../core/interfaces/automobile';
+import { AutomobileService } from '../../services/api/automovile/automobile.service';
+import { FormAutomovileComponent } from '../form-automovile/form-automovile.component';
 
 @Component({
   selector: 'app-list-automobile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './list-automobile.component.html',
 })
-export class ListAutomobileComponent implements OnChanges, OnInit {
+export class ListAutomobileComponent implements OnChanges {
   listFilterAutomobile : Automobile[] = []; // Lista de automóviles
 
   isOpen = false;
@@ -23,40 +22,33 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
   itemsPerPage: number = 4;
   itemsPerPageOptions: number[] = [4, 6, 8];
   pages: number[] = [];
-  loading = true
+  @Input() isLoading = true
   @Input() listAutomobile : Automobile[]= [] 
-  @Input() userData!: UserData;  // Datos del usuario recibidos como entrada
 
   constructor(
-    private userService: UserfbService,  // Servicio para interactuar con la base de datos del usuario
-    private dialogService: DialogService,  // Servicio para manejar diálogos de confirmación
-    private dialog: MatDialog  // Servicio para manejar los diálogos de Material
+    private automobileService: AutomobileService,
+    private dialogService: DialogService,
+    private dialog: MatDialog
   ) {
     
    }
 
-  @Output() eventGetRateDate = new EventEmitter<void>();  // Evento para obtener la tasa de fecha (sin usar en el código actual)
-
-  /**
+   /**
    * Método que se ejecuta cuando los datos de entrada (userData) cambian.
    * Llama a 'initList' para actualizar la lista de automóviles cuando el usuario cambia.
    * @param changes - Los cambios de las propiedades de entrada
    */
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["userData"] && changes["userData"].currentValue) {
-      this.initList();  // Actualiza la lista de automóviles si 'userData' ha cambiado
+    if(changes["listAutomobile"]  && changes["listAutomobile"].currentValue){
+      if(this.isLoading) return
+      this.initList()
     }
   }
 
-  ngOnInit(): void {
+  @Output() eventGetRateDate = new EventEmitter<void>();  // Evento para obtener la tasa de fecha (sin usar en el código actual)
 
-
-    this.initList();  
-    this.totalPages = Math.ceil(this.listAutomobile.length / this.itemsPerPage);
-    this.listFilterAutomobile = this.getPaginatedData(); 
-    this.updatePages();
-
-  }
+  
 
   /**
    * Abre un diálogo para actualizar la información de un automóvil.
@@ -65,24 +57,24 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
    * @param automobile - El automóvil a actualizar
    */
   async onUpdateAutomobile(automobile: Automobile) {
-    // const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre un diálogo con el formulario de actualización
-    // const instance = dialogRef.componentInstance;
-    // instance.automobileData = automobile;  // Pasa el automóvil al formulario
-    // instance.userData = this.userData!;  // Pasa los datos del usuario al formulario
-    // instance.eventUpateUser.subscribe(() => {
-    //   this.dialog.closeAll();  // Cierra todos los diálogos
-    //   this.initList();  // Recarga la lista de automóviles
-    // });
+    const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre un diálogo con el formulario de actualización
+    const instance = dialogRef.componentInstance;
+    instance.automobile = automobile;  // Pasa el automóvil al formulario
+    instance.eventUpateUser.subscribe(() => {
+      this.dialog.closeAll();  // Cierra todos los diálogos
+      this.initList();  // Recarga la lista de automóviles
+    });
   }
 
   /**
    * Inicializa la lista de automóviles obteniendo los datos del usuario.
    * Utiliza el servicio de usuario para obtener los automóviles asociados al usuario.
    */
-  async initList() {
-    // const userFB = await this.userService.getUser(this.userData.crendentialUserUID);  // Obtiene los datos del usuario
-    // Asigna la lista de automóviles del usuario
-    console.log(this.listFilterAutomobile)
+  initList() { 
+    this.listFilterAutomobile= []
+    this.totalPages = Math.ceil(this.listAutomobile.length / this.itemsPerPage);
+    this.listFilterAutomobile = this.getPaginatedData(); 
+    this.updatePages();
   }
 
   /**
@@ -91,7 +83,7 @@ export class ListAutomobileComponent implements OnChanges, OnInit {
    * @param automobileDelete - El automóvil que se desea eliminar
    */
   async onClickDeleteAutomobile(automobileDelete: Automobile) {
-    if (!this.userData) return;  // Si no hay datos del usuario, no se realiza ninguna acción
+    if (!automobileDelete.idAutomobile) return; 
     this.dialogService
       .confirm({
         title: '¡Advertencia!',

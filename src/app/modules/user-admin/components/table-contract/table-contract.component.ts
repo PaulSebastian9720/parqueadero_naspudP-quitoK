@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {  ManagementFB } from '../../../../core/models/management';
-import { UserData } from '../../../../core/models/user';
 import { ContractManFBService } from '../../../../shared/services/contract-management/contract-manfb.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgModel } from '@angular/forms';
-import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { RateFB } from '../../../../core/models/rate';
+import { UserService } from '../../../../shared/services/api/user/user.service';
+import { User } from '../../../../core/interfaces/person';
 
 @Component({
   selector: 'app-table-contract',
@@ -15,7 +14,7 @@ import { RateFB } from '../../../../core/models/rate';
   imports: [CommonModule,  FormsModule]
 })
 export class TableContractComponent implements OnChanges {
-  @Input() userData !: UserData
+  @Input() user !: User
   listContract : ManagementFB[] = []
   listFilterContract : ManagementFB[] = []
 
@@ -29,8 +28,9 @@ export class TableContractComponent implements OnChanges {
 
   constructor(
     private contracService : ContractManFBService,
-    private userService : UserfbService,
+    private userService : UserService,
   ) { 
+    
     this.initTable();  
     this.totalPages = Math.ceil(this.listContract.length / this.itemsPerPage);
     this.listFilterContract = this.getPaginatedData(); 

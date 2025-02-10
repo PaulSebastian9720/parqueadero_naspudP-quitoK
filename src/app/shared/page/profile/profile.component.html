@@ -2,14 +2,15 @@
     
     <div class="flex flex-col items-center  w-full max-w-[600px] border-b border-gray-900 p-4  ">
         <img 
-            src="https://cdn.icon-icons.com/icons2/2760/PNG/512/profile_icon_176363.png" 
+            src="https://img.freepik.com/vector-premium/icono-perfil-simple-color-blanco-icono_1076610-50204.jpg?semt=ais_hybrid" 
             alt="profile-photo"
-            class="border-4 border-black rounded-full max-h-52 max-w-52"
+            class="border-4 border-blue-500 rounded-full max-h-52 max-w-52"
+            sizes="52px"
         >
         <div class="flex items-center gap-3 mt-4">
             <h2 class="text-3xl">
                 <span class="font-bold text-blue-600">Hola,</span> 
-                <span id="user-name"> {{user ? user.user.name : "Usario" }}</span>
+                <span id="user-name"> {{user ? user.name : "Usario" }}</span>
             </h2>
             
         </div>
@@ -28,9 +29,9 @@
     </button>
 
     <app-update-form-user 
-        [userData]="user"
+        [user]="user"
         [isEditing]="isEditing"
-        (updateTable)="reloadUser()"
+        (sendUser)="receiveData($event)"
     ></app-update-form-user>
     
 </div>

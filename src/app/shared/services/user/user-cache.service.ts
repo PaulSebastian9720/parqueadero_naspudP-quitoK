@@ -19,7 +19,7 @@ import { User } from '../../../core/interfaces/person';
 @Injectable({
   providedIn: 'root'
 })
-export class UserCurrentService implements OnInit {
+export class UserCurrentService {
 
   private storageKey = 'cachedUser';
   private userSubject = new BehaviorSubject<User | null>(null); 
@@ -28,15 +28,13 @@ export class UserCurrentService implements OnInit {
    * Constructor que intenta cargar un usuario desde el almacenamiento local y lo emite si existe.
    */
   constructor() {
-    
-  }
-  ngOnInit(): void {
     const userJson = localStorage.getItem(this.storageKey);
     if (userJson) {
       const userObject = JSON.parse(userJson);
       this.userSubject.next(userObject as User);
     }
   }
+
 
   /** 
    * Guarda un usuario en el almacenamiento local y emite el nuevo estado del usuario.

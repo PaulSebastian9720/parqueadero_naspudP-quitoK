@@ -149,30 +149,21 @@ export class CreateAccountComponent implements OnInit {
         birthDay: birthday,
       },
     };
-
-    console.log(new Date())
     this.authMyApuService.signUp(authReques).subscribe(
       (response) => {
         if (response) {
           
           this.authMyApuService.setToken(response.jwt);
-          console.log("aquiiiiiii")
           this.noficationService.notify(
             'Cuenta creada con éxito',
             'success',
             4000
           );
-          console.log("acaaaaaaaaa")
-          
           this.currenUserCanche.setUser(response.user);
-          console.log("paul gay")
           this.router.navigate(['/']);
-          console.log("paula gay")
         }
       },
       (error) => {
-        console.log("******************************")
-
         console.log(error);
         this.noficationService.notify(error.error, 'error', 4000);
       }

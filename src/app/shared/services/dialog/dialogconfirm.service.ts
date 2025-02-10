@@ -6,7 +6,7 @@ import { ConfirmDialogComponent } from "../../components/dialog-confirm/dialog-c
     providedIn: "root"
 })
 export class DialogService {
-    constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {}
 
   confirm(data: {
     title: string;
