@@ -10,7 +10,7 @@
           type="text"
           id="name"
           name="name"
-          [(ngModel)]="user"
+          [(ngModel)]="comment.name"
           required
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
           placeholder="Tu nombre"
@@ -18,24 +18,24 @@
       </div>
       
       <div>
-        <label for="correo" class="text-sm font-semibold text-gray-600">Correo</label>
+        <label for="mail" class="text-sm font-semibold text-gray-600">Correo</label>
         <input
-          type="correo"
-          id="correo"
-          name="correo"
-          [(ngModel)]="user_correo"
+          type="email"
+          id="mail"
+          name="mail"
+          [(ngModel)]="comment.mail"
           required
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
           placeholder="correo@ejemplo.com"
         />
       </div>
-      
+
       <div>
         <label for="comment" class="text-sm font-semibold text-gray-600">Comentario</label>
         <textarea
           id="comment"
           name="comment"
-          [(ngModel)]="text"
+          [(ngModel)]="comment.comment"
           required
           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300 focus:border-indigo-500"
           placeholder="Escribe tu comentario aquí..."

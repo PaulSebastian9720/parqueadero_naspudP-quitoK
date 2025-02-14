@@ -14,13 +14,13 @@ class="flex flex-row space-x-4 overflow-x-auto overflow-y-hidden bg-gray-50 pb-6
   *ngFor="let comment of comments"
   class="min-w-[300px] max-h-[200px] flex-shrink-0 border border-gray-300 p-4 rounded-lg shadow-md bg-white"
 >
-  <p class="text-lg font-semibold truncate">{{ comment.commentFB.nombre }}</p>
-  <p class="text-sm text-gray-500 truncate">{{ comment.commentFB.correo }}</p>
+  <p class="text-lg font-semibold truncate">{{ comment.name }}</p>
+  <p class="text-sm text-gray-500 truncate">{{ comment.mail }}</p>
   <textarea
     readonly
     class="w-full h-[100px] mt-2 p-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 resize-none"
   >
-    {{ comment.commentFB.text }}
+    {{ comment.comment }}
   </textarea>
 </div>
 </div>

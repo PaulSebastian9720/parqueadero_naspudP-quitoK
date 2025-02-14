@@ -15,7 +15,7 @@ export class HomeComponent {
   @ViewChild('listComments') listComments!: ListCommentsComponent;
   
   reloadComments(){
-    this.listComments.getComments();
+    this.listComments.getAllComments();
   }
 
 }
