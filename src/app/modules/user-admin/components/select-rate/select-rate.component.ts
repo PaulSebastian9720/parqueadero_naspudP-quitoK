@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RateService } from '../../../../shared/services/rate/rate.service';
-import { RateData} from '../../../../core/models/rate';
 import { FormsModule } from '@angular/forms';
+import { Rate } from '../../../../core/interfaces/rate';
+import { RateService } from '../../../../shared/services/api/rate/rate.service';
 
 @Component({
   selector: 'app-select-rate',
@@ -12,34 +12,38 @@ import { FormsModule } from '@angular/forms';
 })
 export class SelectRateComponent implements OnInit {
   selectRate: string = ''
-  
-  listRate: RateData[] = []
+  rateSelect : Rate = {}
+  listRate: Rate[] = []
+  showInformations: boolean = false
 
-  listFilter: RateData[] = []
-
-  @Output() eventRate = new EventEmitter<RateData>()
+  @Input() filterMonths : boolean = true
+  @Output() eventRate = new EventEmitter<Rate>()
 
   constructor(private rateService: RateService) {}
 
-  async ngOnInit(): Promise<void> {
-    this.initrates()
+  ngOnInit(){
+    this.initRates()
   }
-  async initrates(){
-    try {
-      const data = await this.rateService.getListRate()
-      this.listRate = data
-      this.listFilter = this.listRate
-        .filter(value => value.rateFB.timeUnit === 'month')
-    } catch (error) {}
+  initRates(){
+    this.rateService.getAllRates().subscribe(rates => { 
+      if(this.filterMonths){
+        this.listRate = rates.filter(rate => rate.timeUnit === '1_month')
+      } else {
+        this.listRate = rates.filter(rate => rate.timeUnit !== '1_month')
+
+      }
+   })
   }
 
   onClickRate(): void {
     if (!this.selectRate) {
       return
     }
-    const rateData = this.listRate.find(value => value.id === this.selectRate)
+    const rateData = this.listRate.find(value => value.idRate?.toString() === this.selectRate)
+    this.rateSelect = rateData ?? {}
     this.eventRate.emit(rateData)   
     this.selectRate = '' 
+    this.showInformations = true
   }
 }
 

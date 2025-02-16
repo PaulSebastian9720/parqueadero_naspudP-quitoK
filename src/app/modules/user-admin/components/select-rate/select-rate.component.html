@@ -1,11 +1,48 @@
-<select
-  [(ngModel)]="selectRate"
-  (change)="onClickRate()"
-  class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-700 transition ease-in-out duration-300"
->
-  <option value="" disabled selected>Seleccionar una tarifa</option>
-  
-  <option *ngFor="let rateData of listFilter" [value]="rateData.id">
-    {{ rateData.rateFB.name }} - {{ rateData.rateFB.unitRate }}$ 
-  </option>
-</select>
+<div class="w-full">
+  <select
+    [(ngModel)]="selectRate"
+    (change)="onClickRate()"
+    class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-700 transition ease-in-out duration-300 mb-4"
+  >
+    <option value="" disabled selected>Seleccionar una tarifa</option>
+
+    <option *ngFor="let rate of listRate" [value]="rate.idRate">
+      {{ rate.name }} - {{ rate.timeUnit }} -
+      {{ rate.prize | currency : "USD" }}
+    </option>
+  </select>
+
+  <div
+    *ngIf="showInformations" 
+    class="grid grid-cols-1 md:grid-cols-3 gap-2">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="rateSelect!.name"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700"
+        >Tiempo y Codigo</label
+      >
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="rateSelect.timeUnit"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Precio</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="rateSelect.prize"
+        readonly
+      />
+    </div>
+  </div>
+</div>

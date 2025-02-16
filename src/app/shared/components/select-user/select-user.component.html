@@ -1,11 +1,101 @@
-<select
-  [(ngModel)]="selectedUser"
-  (change)="onClickUser()"
-  class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-700 transition ease-in-out duration-300"
->
-  <option value="" disabled selected>Seleccionar cliente</option>
-  
-  <option *ngFor="let userData of listUserFBFilter" [value]="userData.crendentialUserUID">
-    {{ userData.user.name }} - {{ userData.user.last_name }} - {{ userData.user.correo }}
-  </option>
-</select>
+<div class="w-full">
+  <div
+    class="flex flex-col sm:flex-row gap-2 items-start w-full max-w-full mb-4"
+  >
+    <button
+      class="flex justify-center items-center gap-1 h-10 px-4 border text-gray-700 border-gray-300 hover:bg-gray-700 hover:text-white rounded-md font-semibold w-auto"
+    >
+      <i class="fa fa-user-plus text-sm"></i>
+      Agregar
+    </button>
+    <select
+      [(ngModel)]="selectedUser"
+      (change)="onClickUser()"
+      class="flex-1 h-10 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-700 transition ease-in-out duration-300 max-w-xs sm:max-w-md md:max-w-lg"
+    >
+      <option value="" disabled selected>Seleccionar cliente</option>
+      <option *ngFor="let user of listAllUser" [value]="user.mail">
+        {{ user.name }} - {{ user.lastName }} - {{ user.mail }}
+      </option>
+    </select>
+    <div
+      class="flex items-center flex-1 h-10 border border-gray-300 rounded-md focus-within:border-gray-700 max-w-72"
+    >
+      <i class="fa fa-search text-gray-500 px-3"></i>
+      <input
+        type="text"
+        placeholder="Buscar por documento ID"
+        class="w-full px-4 focus:outline-none"
+        [(ngModel)]="wordFilter"
+        (ngModelChange)="filterListPerWorld()"
+      />
+    </div>
+    <button
+      class="ml-auto flex justify-center items-center gap-1 h-10 px-4 border text-gray-700 border-gray-300 hover:bg-gray-700 hover:text-white rounded-md font-semibold"
+      (click)="toggleInformation()"
+    >
+      <i *ngIf="!showInformation" class="fa fa-arrow-down text-sm"></i>
+      <i *ngIf="showInformation" class="fa fa-arrow-up text-sm"></i>
+    </button>
+  </div>
+
+  <div
+    *ngIf="showInformation"
+    class="grid grid-cols-1 md:grid-cols-3 gap-2"
+  >
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect!.name"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Apellido</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect!.lastName"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Documento</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect.documentID"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Correo</label>
+      <input
+        type="email"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect!.mail"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Ubicación</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect!.location"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="userSelect!.phone"
+        readonly
+      />
+    </div>
+  </div>
+</div>

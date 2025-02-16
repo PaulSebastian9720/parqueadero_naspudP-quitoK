@@ -1,29 +1,48 @@
-<div class="p-6 max-w-lg mx-auto space-y-4">
-    <div class="space-y-2">
-        <label for="selectRow" class="block text-lg font-medium text-gray-700">Seleccionar una FILA</label>
-        <select
-            id="selectRow"
-            [(ngModel)]="selectRow"
-            class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-700 transition ease-in-out duration-300"
-        >
-            <option value="" disabled selected>Seleccionar una FILA</option>
-            <option *ngFor="let letter of listRows" [value]="letter">
-                {{ letter }}
-            </option>
-        </select>
-    </div>
+<div class="p-6 max-w-lg mx-auto space-y-6">
+  <div class="space-y-2">
+    <label for="selectRow" class="block text-lg font-medium text-gray-700">
+      Seleccionar una FILA
+    </label>
+    <select
+      id="selectRow"
+      [(ngModel)]="selectRow"
+      class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-700 transition ease-in-out duration-200"
+    >
+      <option value="" disabled selected>Seleccionar una FILA</option>
+      <option *ngFor="let letter of getArray()" [value]="letter">
+        {{ letter }}
+      </option>
+      <option value="NR">Nueva Row</option>
+    </select>
+  </div>
 
-    <div class="text-gray-700 flex justify-between items-center">
-        <span class="block">FILA SELECCIONADA:</span>
-        <span class="font-bold text-blue-500">{{ selectRow }}</span>
-    </div>
+  <div class="space-y-2">
+    <label for="spotCount" class="block text-lg font-medium text-gray-700">
+      Número de Nuevos Spots (1-4)
+    </label>
+    <input
+      id="spotCount"
+      type="number"
+      min="1"
+      max="4"
+      [(ngModel)]="formLength"
+      class="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-700 transition ease-in-out duration-200"
+      placeholder="(Máx 4, Mín 1)"
+    />
+  </div>
 
-    <div>
-        <button
-            (click)="onAddSpot()"
-            class="w-full max-w-xs mx-auto flex items-center gap-2 px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition duration-200"
-        >
-            Añadir
-        </button>
-    </div>
+  <div class="text-gray-700 flex justify-between items-center border-t pt-4">
+    <span class="block text-lg">FILA SELECCIONADA:</span>
+    <span class="font-bold text-blue-500 text-lg">{{
+      selectRow || "Ninguna"
+    }}</span>
+  </div>
+
+  <button
+    (click)="onAddSpot()"
+    [disabled]="!selectRow || formLength < 1 || formLength > 4"
+    class="w-full flex items-center justify-center gap-2 px-6 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-200"
+  >
+    <i class="fa fa-plus-circle"></i> Añadir Spot
+  </button>
 </div>

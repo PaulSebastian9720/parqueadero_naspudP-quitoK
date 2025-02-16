@@ -7,9 +7,12 @@ import { ManagementFB } from '../../../../core/models/management';
 import { ParkinLotService } from '../../../../shared/services/space/parkink-lot.service';
 import { UserfbService } from '../../../../shared/services/user/userfb.service';
 import { RateData } from '../../../../core/models/rate';
-import { Automobile } from '../../../../core/models/automobile';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 import { LoadingService } from '../../../../shared/services/dialog/dialogLoading.service';
+import { User } from '../../../../core/interfaces/person';
+import { ParkingSpace } from '../../../../core/interfaces/parkingSpace';
+import { Rate } from '../../../../core/interfaces/rate';
+import { Automobile } from '../../../../core/interfaces/automobile';
 
 @Component({
   selector: 'app-create-contract',
@@ -20,9 +23,9 @@ import { LoadingService } from '../../../../shared/services/dialog/dialogLoading
 export class CreateContractComponent implements OnChanges {
 
   // Propiedades de entrada y salida del componente
-  @Input() userData!: UserData | null;  // Datos del usuario recibidos como entrada, pueden ser nulos si no hay usuario.
-  @Input() spaceData!: SpaceData | null;  // Datos del espacio recibido como entrada, puede ser nulo si no hay espacio.
-  @Input() rateData!: RateData | null;  // Datos de la tarifa recibidos como entrada, puede ser nulo si no se selecciona tarifa.
+  @Input() user!: User | null;  // Datos del usuario recibidos como entrada, pueden ser nulos si no hay usuario.
+  @Input() parkingSpace!: ParkingSpace | null;  // Datos del espacio recibido como entrada, puede ser nulo si no hay espacio.
+  @Input() rate!: Rate | null;  // Datos de la tarifa recibidos como entrada, puede ser nulo si no se selecciona tarifa.
   @Input() automobile!: Automobile | null;  // Datos del automóvil recibido, puede ser nulo si no se edita un automóvil.
   @Output() updateMapEvent = new EventEmitter<void>();  // Evento para notificar que el mapa debe actualizarse.
   
@@ -61,7 +64,7 @@ export class CreateContractComponent implements OnChanges {
    * Si no hay datos de tarifa, retorna un mensaje de fecha no válida.
    */
   getEndDate() {
-    if (!this.rateData) return '--/--/----';  // Si no hay datos de tarifa, retorna fecha no válida.
+    if (!this.rate) return '--/--/----';  // Si no hay datos de tarifa, retorna fecha no válida.
     return this.formatDate(this.endDate);  // Formatea y retorna la fecha de finalización.
   }
 
@@ -69,30 +72,13 @@ export class CreateContractComponent implements OnChanges {
    * Método que retorna un mensaje sobre el estado del espacio.
    * Retorna 'Disponible', 'No disponible' u 'Ocupado' dependiendo del estado del espacio.
    */
-  getMenssage(): string {
-    if (!this.spaceData) return '';  // Si no hay datos de espacio, retorna cadena vacía.
-    if (this.spaceData.spaceFB.state === 'Y') {
-      return 'Disponible';  // Espacio disponible.
-    } else if (this.spaceData.spaceFB.state === 'N') {
-      return 'No disponible';  // Espacio no disponible.
-    } else {
-      return 'Ocupado';  // Espacio ocupado.
-    }
-  }
+ 
 
   /**
    * Método que ajusta la fecha de finalización sumando o restando meses.
    * Cambia el precio dependiendo de los meses seleccionados.
    */
-  onClickButtonML(months: number) {
-    if (!this.rateData) return;  // Si no hay datos de tarifa, no hace nada.
-    if (this.endDate.getTime() === this.startDate.getTime() && months < 0) return;  // No permite reducir la fecha si no hay un mes completo.
-    this.endDate.setMonth(this.endDate.getMonth() + months);  // Ajusta la fecha de finalización.
-    // Cambia el precio sumando o restando según los meses seleccionados.
-    this.price = months > 0
-      ? this.price + this.rateData.rateFB.unitRate
-      : this.price - this.rateData.rateFB.unitRate;
-  }
+
 
   /**
    * Método privado que formatea una fecha como 'DD/MM/YYYY'.
@@ -109,84 +95,5 @@ export class CreateContractComponent implements OnChanges {
    * Método que se ejecuta al guardar el contrato.
    * Realiza validaciones y crea el contrato si todo es válido.
    */
-  async onClickSaveContract() {
-    if (!this.userData || !this.spaceData || !this.rateData) {
-      this.notyfyService.notify(`Seleccione todos los datos necesarios`, 'info', 4000);  // Notifica si faltan datos.
-      return;
-    }
-
-    // Verifica que el espacio esté disponible.
-    if (this.spaceData.spaceFB.state === 'N' || this.spaceData.spaceFB.state === 'NP' || this.spaceData.spaceFB.state === 'O') {
-      this.notyfyService.notify(`El espacio no está disponible`, 'error', 4000);  // Notifica si el espacio no está disponible.
-      return;
-    }
-
-    // Verifica que la fecha de inicio sea diferente a la de finalización.
-    if (this.endDate.getTime() === this.startDate.getTime()) {
-      this.notyfyService.notify(`Seleccione por lo menos un mes`, 'warning', 3000);  // Notifica si no se selecciona un mes completo.
-      return;
-    }
-
-    try {
-      // Abre el diálogo de carga mientras se procesa la transacción.
-      this.loadingService.open("Realizando la Transacción, espere un momento");
-      
-      const userID: string = this.userData.crendentialUserUID;  // Obtiene el ID del usuario.
-      const userFB = await this.userService.getUser(userID);  // Obtiene los datos del usuario desde Firebase.
-      const idUserForManagent = this.userData.crendentialUserUID.slice(0, 4);  // Genera un ID para la gestión del contrato.
-      const managementId: string = `man-${idUserForManagent}-${userFB?.listManagement?.length}`;  // Crea un ID único para la gestión del contrato.
-
-      // Define los datos del automóvil (si hay).
-      const automobile = this.automobile
-        ? { id: this.automobile.id, plate: this.automobile.plate, brand: this.automobile.brand, model: this.automobile.model }
-        : { id: "0000", plate: "aaaa-1111", brand: "GENERICO", model: "GENERICO" };
-
-      // Crea el contrato en Firebase.
-      const contractFb = new ManagementFB(
-        "M", 
-        userID, 
-        this.startDate, 
-        this.endDate, 
-        this.price, 
-        "A", 
-        this.spaceData.id, 
-        this.rateData.rateFB, 
-        [], 
-        automobile
-      );
-
-      // Actualiza los datos del espacio en Firebase.
-      const spaceUpdate = new SpaceFB(
-        this.spaceData.spaceFB.location,
-        'N',
-        userID,
-        managementId
-      );
-
-      // Realiza las operaciones de creación y actualización.
-      await this.contractService.createContract(managementId, contractFb);  // Crea el contrato.
-      userFB?.listManagement?.push(managementId);  // Añade el ID de la gestión a la lista del usuario.
-      await this.userService.updateUser(userID, userFB!);  // Actualiza los datos del usuario.
-      await this.parkinkLot.updateParkigSpace(
-        this.spaceData.spaceFB.location,
-        spaceUpdate
-      );  // Actualiza el espacio de parqueo.
-
-      // Emite el evento de actualización del mapa y resetea los datos.
-      this.updateMapEvent.emit();  
-      this.userData = null;
-      this.spaceData = null;
-      this.automobile = null;
-      this.rateData = null;
-
-      // Cierra el diálogo de carga y notifica el éxito.
-      this.loadingService.closeDialog();
-      this.notyfyService.notify(`Transacción realizada con éxito`, 'success', 3000);
-
-    } catch (e) {
-      // En caso de error, actualiza el estado de la transacción y notifica el error.
-      this.loadingService.updateTransactionStatus("error", "Transacción errónea", "Error: " + e as string);
-      this.notyfyService.notify(`Al parecer hubo un error`, 'error', 3000);
-    }
-  }
+  
 }

@@ -1,32 +1,37 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UserfbService } from '../../services/user/userfb.service';
-import { UserData } from '../../../core/models/user';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { User } from '../../../core/interfaces/person';
+import { UserService } from '../../services/api/user/user.service';
 
 @Component({
   selector: 'app-select-user',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './select-user.component.html',
 })
 export class SelectUserComponent implements OnInit {
-  selectedUser: string = "";  // Variable que guarda el UID del usuario seleccionado
-  listUserFb: UserData[] = [];  // Lista completa de usuarios obtenida desde el servicio
-  listUserFBFilter: UserData[] = [];  // Lista filtrada de usuarios excluyendo aquellos con rol "CF"
+  selectedUser: string = ''; // Variable que guarda el UID del usuario seleccionado
+  userSelect: User = {};
+  listAllUser: User[] = []; // Lista completa de usuarios obtenida desde el servicio
+  wordFilter: string = '';
+  showInformation: boolean = true;
 
-  @Output() userEventEmitter = new EventEmitter<UserData>();  // Emite el usuario seleccionado hacia el componente padre
+  @Output() userEventEmitter = new EventEmitter<User>(); // Emite el usuario seleccionado hacia el componente padre
+  @Input() filterList: boolean = false;
 
-  constructor(
-    private userfbService: UserfbService  // Servicio que maneja las operaciones relacionadas con usuarios
-  ) {}
+  constructor(private userService: UserService) {}
 
   /**
    * Método que se ejecuta cuando el componente se inicializa.
    * Llama a 'initListUsers' para obtener la lista de usuarios.
    */
-  async ngOnInit(): Promise<void> {
-    await this.initListUsers();
+  ngOnInit() {
+    this.initListUsers();
+  }
+
+  toggleInformation() {
+    this.showInformation = !this.showInformation;
   }
 
   /**
@@ -34,23 +39,39 @@ export class SelectUserComponent implements OnInit {
    * Busca el usuario seleccionado en 'listUserFb' y emite el usuario encontrado.
    */
   onClickUser() {
-    const userData = this.listUserFb.find(
-      userData => userData.crendentialUserUID === this.selectedUser  // Encuentra el usuario seleccionado por UID
+    const userData = this.listAllUser.find(
+      (user) => user.mail === this.selectedUser
     );
-    this.userEventEmitter.emit(userData);  // Emite el usuario encontrado hacia el componente padre
+    this.userSelect = { ...userData }
+    this.wordFilter =  this.userSelect.documentID!
+    this.userEventEmitter.emit(userData);
   }
 
   /**
    * Método que obtiene la lista de usuarios desde el servicio.
    * Filtra la lista para excluir a los usuarios con rol "CF" y los asigna a 'listUserFBFilter'.
    */
-  async initListUsers() {
-    try {
-      const list = await this.userfbService.getListUsers();  // Obtiene la lista de usuarios desde el servicio
-      this.listUserFb = list;  // Asigna la lista completa a 'listUserFb'
-      this.listUserFBFilter = this.listUserFb.filter(userData => userData.user.rol !== "CF");  // Filtra usuarios con rol distinto a "CF"
-    } catch (e) {
-      // Manejo de errores (vacío por ahora)
+  initListUsers() {
+    this.userService.getAllUsers().subscribe((users: User[]) => {
+      if (this.filterList) {
+        this.listAllUser = users.filter((user) => user.role !== 'CF');
+      } else {
+        this.listAllUser = users;
+      }
+    });
+  }
+
+  filterListPerWorld() {
+    const userFound = this.listAllUser.find(
+      (user) => user.documentID === this.wordFilter
+    );
+    if (userFound) {
+      this.userSelect = { ...userFound };
+      this.userEventEmitter.emit(userFound);
+    } else {
+      this.userSelect = {};
+      this.userEventEmitter.emit(userFound);
+      this.selectedUser = '';
     }
   }
 }

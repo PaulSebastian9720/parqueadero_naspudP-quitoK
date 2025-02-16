@@ -1,87 +1,75 @@
-<div class="overflow-x-auto flex flex-col p-6 lg:p-10 space-y-8 h-screen">
-  <!-- <app-header-service
-    titlePage="Gestión de Espacios"
-    description="Administra la disponibilidad de los espacios y selecciona el que deseas gestionar desde el mapa."
-  >
-  </app-header-service> -->
+<div class="flex flex-col lg:flex-row lg:gap-6 p-6 lg:p-10 space-y-8 h-screen">
+  <div class="flex flex-col gap-4 flex-1">
+    <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-grow-0">
+      <h2 class="text-lg font-semibold mb-2">Gestión de Espacios</h2>
+      <div
+        class="flex flex-row w-full gap-2 py-2 overflow-x-auto custom-scroll"
+      >
+        <button
+          class="flex justify-center items-center gap-1 w-auto px-4 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+          (click)="addSpot()"
+        >
+          <i class="fa fa-plus-circle text-sm"></i>
+          Añadir
+        </button>
 
-  <div class="flex flex-col lg:flex-row gap-8 lg:gap-6 h-screen">
-    <div class="flex-1 flex flex-col p-6 bg-white rounded-lg shadow-lg">
-      <div class="flex flex-col">
-        <h2 class="text-xl lg:text-2xl font-semibold mb-4 ">
-          Opciones de el Espacio
-        </h2>
+        <button
+          class="flex justify-center items-center gap-1 w-auto px-4 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+          (click)="onDisable()"
+        >
+          <i class="fa fa-parking text-sm"></i>
+          Habilitar
+        </button>
 
-        <div class="flex flex-row w-full gap-2 py-2 overflow-x-auto custom-scroll">
-          <button
-            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
-            (click)="addSpot()"
-          >
-            <i class="fa fa-plus-circle"></i>
-            Añadir
-          </button>
+        <button
+          class="flex justify-center items-center gap-1 w-auto px-4 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
+          (click)="onEnable()"
+        >
+          <i class="fa fa-ban text-sm"></i>
+          Deshabilitar
+        </button>
+        <select
+          class="flex justify-center items-center gap-1 w-auto px-4 py-2 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md appearance-none"
+          [(ngModel)]="selectWorld"
+          (change)="filterListPerWorld()"
+        >
+          <option value="" disabled selected>Filtros</option>
+          <option value="">Sin Filtros</option>
+          <option value="FR">Libres</option>
+          <option value="BC">C. Mensuales</option>
+          <option value="BT">C. Temporales</option>
+        </select>
 
-          <button
-            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
-            (click)="onDisable()"
-          >
-            <i class="fa fa-parking"></i>
-            Habilitar
-          </button>
-
-          <button
-            class="flex justify-center items-center gap-1 w-auto px-4 py-1 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md"
-            (click)="onEnable()"
-          >
-            <i class="fa fa-ban"></i>
-            Deshabilitar
-          </button>
-          <select
-            class="flex justify-center items-center gap-1 w-auto px-4 py-2 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md appearance-none"
-            [(ngModel)]="selectWorld"
-            (change)="filterListPerWorld()"
-          >
-            <option value="" disabled selected>Filtros</option>
-            <option value="">Sin Filtros</option>
-            <option value="Y">Libres</option>
-            <option value="N">C. Mensuales</option>
-            <option value="O">C. Temporales</option>
-          </select>
-
-          <div
-            class="flex items-center border-2 border-gray-300 rounded-md focus-within:border-gray-800"
-          >
-            <i class="fa fa-search text-gray-500 px-3"></i>
-            <input
-              type="text"
-              placeholder="Buscar spot"
-              class="w-full px-4 py-2 focus:outline-none"
-              [(ngModel)]="wordFilter"
-              (ngModelChange)="filterListPerWorld()"
-            />
-          </div>
+        <div
+          class="flex items-center border-2 border-gray-300 rounded-md focus-within:border-gray-800"
+        >
+          <i class="fa fa-search text-gray-500 px-3 text-sm"></i>
+          <input
+            type="text"
+            placeholder="Buscar spot"
+            class="w-full px-4 py-2 focus:outline-none"
+            [(ngModel)]="wordFilter"
+            (ngModelChange)="filterListPerWorld()"
+          />
         </div>
-
-        <h2 class="text-xl lg:text-2xl font-semibold mb-4  mt-4">
-          Mapa del Parqueadero
-        </h2>
-        <app-matrix-spaces 
-          #parkingLot 
-          (eventEmitrSpace)="editSpot($event)"
-          >
-        </app-matrix-spaces>
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col bg-white p-6 rounded-lg shadow-lg">
-      <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
-        Información Sobre el Estado Actual Del Espacio
-      </h2>
-      <app-edit-spot
-        (eventReloadMatriz)="reloadParkingLot()"
-        [spaceData]="spaceData!"
-      >
-      </app-edit-spot>
+    <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-grow">
+      <h2 class="text-lg font-semibold mb-2">Mapa del Parqueadero</h2>
+      <app-matrix-spaces #parkingLot (eventEmitrSpace)="editSpot($event)">
+      </app-matrix-spaces>
     </div>
+  </div>
+  
+  <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-1 flex flex-col">
+    <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
+      Información Sobre el Estado Actual Del Espacio
+    </h2>
+    <app-edit-spot
+      (eventReloadMatriz)="reloadParkingLot()"
+      [spaceData]="spaceData!"
+    >
+    </app-edit-spot>
   </div>
 </div>

@@ -1,10 +1,10 @@
-<div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
-  <table class="min-w-full table-auto text-sm" style="table-layout: fixed">
+<div class="mat-elevation-z8 overflow-x-auto w-full mb-6 shadow-lg rounded-sm">
+  <table class="min-w-full table-auto sm:text-sm">
     <thead class="bg-gray-900 text-white">
       <tr>
+        <th class="py-3 md:px-3 sm:px-2 text-left">Placa</th>
         <th class="py-3 md:px-3 sm:px-2 text-left">Marca</th>
         <th class="py-3 md:px-3 sm:px-2 text-left">Modelo</th>
-        <th class="py-3 md:px-3 sm:px-2 text-left">Placa</th>
         <th class="py-3 md:px-3 sm:px-2 text-left">Acciones</th>
       </tr>
     </thead>
@@ -15,30 +15,31 @@
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300"
       >
         <td class="md:py-2 md:px-2 sm:px-4 text-left" style="width: 25%">
+          {{ automovil.licensePlate }}
+        </td>
+        <td class="md:py-2 md:px-2 sm:px-4 text-left" style="width: 25%">
           {{ automovil.brand }}
         </td>
         <td class="md:py-2 md:px-2 sm:px-4 text-left" style="width: 25%">
           {{ automovil.model }}
         </td>
-        <td class="md:py-2 md:px-2 sm:px-4 text-left" style="width: 25%">
-          {{ automovil.licensePlate }}
-        </td>
+
         <td
-          class="md:py-2 md:px-2 sm:px-4 text-center flex flex-col sm:flex-row justify-center gap-1"
+          class="md:py-2 md:px-2 sm:px-4 flex flex-col sm:flex-row justify-center text-center gap-1"
           style="width: 25%"
         >
           <button
             (click)="onUpdateAutomobile(automovil)"
             class="h-8 w-10 rounded-md bg-green-500 text-white hover:bg-green-600"
           >
-            <i class="fa fa-pencil-alt w-5 h-5"></i>
+            <i class="fa fa-edit"></i>
           </button>
 
           <button
             (click)="onClickDeleteAutomobile(automovil)"
             class="h-8 w-10 rounded-md bg-red-500 text-white font-medium hover:bg-red-600"
           >
-            <i class="fa fa-times w-5 h-5"></i>
+            <i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>

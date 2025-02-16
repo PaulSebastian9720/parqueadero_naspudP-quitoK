@@ -33,13 +33,7 @@
           </svg>
           Registrar
         </button>
-        <app-select-automobile
-          #selectAutomobile
-          class="flex-grow"
-          (eventAutomobile)="onClinkAutomobile($event)"
-          [listAutomobile]="[]"
-        >
-        </app-select-automobile>
+       
         <!-- <app-select-automobile
               #selectAutomobile
               class="flex-grow"
@@ -100,9 +94,7 @@
     <app-create-contract
       *ngIf="isSelected1"
       [automobile]="automobile"
-      [userData]="userFb"
-      [spaceData]="spaceFB"
-      [rateData]="rateFb"
+
       (updateMapEvent)="updateMap()"
     ></app-create-contract>
     <app-create-rented

@@ -18,26 +18,15 @@ export class FormAutomovileComponent {
   ) {}
 
   // Propiedades de entrada y salida del componente
-  @Input() automobile: Automobile = {
-    idAutomobile: 0,
-    licensePlate: '',
-    brand: '',
-    model: '',
-    idPerson: 0,
-  };
-  @Output() eventUpateUser = new EventEmitter();
+  @Input() automobile: Automobile = {};
+
+  @Output()eventUpateUser = new EventEmitter<void>();
 
   /**
    * Método para limpiar el formulario (restablecer el objeto 'automobile').
    */
   clearForm() {
-    this.automobile = {
-      idAutomobile: 0,
-      licensePlate: '',
-      brand: '',
-      model: '',
-      idPerson: 0,
-    };
+    this.automobile = {};
   }
 
   /**
@@ -45,36 +34,81 @@ export class FormAutomovileComponent {
    * Si el formulario es válido, crea o actualiza un automóvil en la lista del usuario.
    */
   onSubmit() {
-    if (
-      this.automobile.licensePlate &&
-      this.automobile.licensePlate.length < 5
-    ) {
+    const automobileValidates = {...this.automobile }
+
+
+    const idPerson = automobileValidates.idPerson ?? 0; 
+    const idAutomobile = automobileValidates.idAutomobile ?? 0; 
+    const licensePlate = automobileValidates.licensePlate || ''; 
+
+    if (idPerson <= 0 && licensePlate.length < 5) {
       this.notifyService.notify(
-        'The plate is required, and needs minimum of 5 characters',
+        'The plate is required, and needs a minimum of 5 characters',
         'error',
-        2250,
+        2250
       );
       return;
     }
 
-    console.log(this.automobile);
-    if (this.automobile.idPerson! === 0 && this.automobile.idAutomobile! === 0) {
-      this.automobileService.insertAutomobile(this.automobile);
+    if (idAutomobile === 0) {
+      const newAutomobile = {...this.automobile}
+      newAutomobile.idAutomobile = idAutomobile
+      this.automobileService
+        .insertAutomobile(newAutomobile)
+        .subscribe((response) => {
+          
+          if (response) {
+            this.notifyService.notify(
+              'The automobile insert successfully',
+              'success',
+              2250
+            );
+            this.clearForm();
+            this.eventUpateUser.emit();
+            return;
+          }
+        }, (error)=> {
+          this.notifyService.notify(
+            'Error al insertar el automóvil. ' + error.error,
+            'error',
+            2250
+          );
+          console.error('Error al insertar el automóvil:', error);
+        });
     } else if (
-      this.automobile.idPerson! > 0 &&
-      this.automobile.idAutomobile! > 0
+      idAutomobile > 0
     ) {
-      this.automobileService.updateAutomobile(this.automobile);
+      this.automobileService.updateAutomobile(this.automobile).subscribe(
+        (response) => {
+          if (response) {
+            this.notifyService.notify(response.message, 'success', 2250);
+            this.clearForm();
+            this.eventUpateUser.emit();
+            return;
+          }
+        },
+        (error) => {
+          this.notifyService.notify(
+            'Error al actualizar los datos del automóvil. ' + error.error,
+            'error',
+            2250
+          );
+          console.error('Error al actualizar los datos del automóvil:', error);
+        }
+      );
     } else {
       this.notifyService.notify(
         'There are problems with this action. Please try again',
         'error',
-        22500
+        2250
       );
       return;
     }
-    this.clearForm();
-    this.eventUpateUser.emit();
-    return;
+  }
+
+  get accionButton(): string {
+    return this.automobile?.idAutomobile && this.automobile.idAutomobile > 0
+      ? "Actualizar"
+      : "Agregar";
   }
 }

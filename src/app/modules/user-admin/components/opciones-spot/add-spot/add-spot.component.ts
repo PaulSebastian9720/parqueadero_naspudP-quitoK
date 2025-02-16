@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-spot',
@@ -9,22 +9,27 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './add-spot.component.html',
 })
 export class AddSpotComponent {
-  // Lista de filas disponibles para seleccionar
-  listRows = ["A", "B", "C", "D", "E", "F", "G"];
+  selectRow = '';
+  formLength: number = 1;
 
-  // Fila seleccionada
-  selectRow = "";
+  @Input() length: number = 0;
+  @Output() sendLetterRow = new EventEmitter<{ row: string; length: number }>();
 
-  // Evento de salida para enviar la fila seleccionada
-  @Output() sendLetterRow = new EventEmitter<string>();
-
-  // Método para agregar un espacio
   onAddSpot() {
-    // Si no se ha seleccionado una fila, no hacer nada
-    if (this.selectRow === "") return;
+    if (this.selectRow === '') return;
+    const caseRow = this.selectRow === "NR" ? this.selectRow : `RW${this.selectRow}`
 
-    // Emitir el valor de la fila seleccionada
-    this.sendLetterRow.emit(this.selectRow);
+    this.sendLetterRow.emit(
+      {
+        row: caseRow,
+        length: this.formLength,
+      }
+    );
+  }
+
+  getArray() {
+    return Array.from({ length: this.length }, (_, i) =>
+      String.fromCharCode(65 + i)
+    );
   }
 }
-

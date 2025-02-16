@@ -51,26 +51,26 @@ export class RentSpaceComponent {
    * Opción 2: Muestra tarifas que no son mensuales y todos los usuarios.
    */
   selectOption(option: number) {
-    if (option === 1) {
-      this.isSelected1 = true;  // Opción 1 seleccionada
-      this.isSelected2 = false;  // Opción 2 deseleccionada
-      this.selectTarifa.listFilter = this.selectTarifa.listRate.filter(value => value.rateFB.timeUnit === 'month');
-      this.selectUser.listUserFBFilter = this.selectUser.listUserFb.filter(value => value.user.rol !== "CF");
+    // if (option === 1) {
+    //   this.isSelected1 = true;  // Opción 1 seleccionada
+    //   this.isSelected2 = false;  // Opción 2 deseleccionada
+    //   this.selectTarifa.listFilter = this.selectTarifa.listRate.filter(value => value.rateFB.timeUnit === 'month');
+    //   // this.selectUser.listUserFBFilter = this.selectUser.listUserFb.filter(value => value.user.rol !== "CF");
       
-      if (this.userFb?.user.rol === "CF") {
-        this.userFb = null;  // Resetea el usuario seleccionado si es rol "CF"
-        this.automobile = null;  // Resetea el automóvil
-      }
-    } else if (option === 2) {
-      this.isSelected1 = false;  // Opción 1 deseleccionada
-      this.isSelected2 = true;  // Opción 2 seleccionada
+    //   if (this.userFb?.user.rol === "CF") {
+    //     this.userFb = null;  // Resetea el usuario seleccionado si es rol "CF"
+    //     this.automobile = null;  // Resetea el automóvil
+    //   }
+    // } else if (option === 2) {
+    //   this.isSelected1 = false;  // Opción 1 deseleccionada
+    //   this.isSelected2 = true;  // Opción 2 seleccionada
       
-      this.selectTarifa.listFilter = this.selectTarifa.listRate.filter(value => value.rateFB.timeUnit !== 'month');
-      this.selectUser.listUserFBFilter = this.selectUser.listUserFb;
-    }
+    //   this.selectTarifa.listFilter = this.selectTarifa.listRate.filter(value => value.rateFB.timeUnit !== 'month');
+    //   this.selectUser.listUserFBFilter = this.selectUser.listUserFb;
+    // }
 
-    this.rateFb = null;  // Resetea la tarifa seleccionada
-    this.spaceFB = null;  // Resetea el espacio seleccionado
+    // this.rateFb = null;  // Resetea la tarifa seleccionada
+    // this.spaceFB = null;  // Resetea el espacio seleccionado
   }
 
   /**
@@ -116,7 +116,7 @@ export class RentSpaceComponent {
     const instance = dialogRef.componentInstance;  // Obtiene la instancia del componente modificado
 
     instance.eventUpdateRates.subscribe(() => {
-      this.selectTarifa.initrates();  // Inicializa las tarifas
+      this.selectTarifa.initRates();  // Inicializa las tarifas
       this.dialog.closeAll();  // Cierra todos los diálogos
       this.notyfyService.notify('Se agregó una nueva tarifa', 'success', 3000);  // Muestra una notificación de éxito
     });
@@ -135,7 +135,7 @@ export class RentSpaceComponent {
       const userFbAux = this.userFb;  // Guarda el usuario previamente seleccionado
       this.userFb = null;  // Reinicia el usuario seleccionado
       // Busca el usuario en la lista filtrada por su UID y lo asigna de nuevo
-      this.userFb = this.selectUser.listUserFb.find(user => user.crendentialUserUID === userFbAux?.crendentialUserUID)!;
+      // this.userFb = this.selectUser.listUserFb.find(user => user.crendentialUserUID === userFbAux?.crendentialUserUID)!;
       this.dialog.closeAll();  // Cierra todos los diálogos
       this.notyfyService.notify('Agregado un nuevo Automóvil', 'success', 3000);  // Muestra una notificación de éxito
     });
@@ -153,6 +153,6 @@ export class RentSpaceComponent {
 
 
   filterListPerWorld() {
-    this.mapa.filterPerWorld(this.selectWorld, "")
+    // this.mapa.filterPerWorld(this.selectWorld, "")
   }
 }

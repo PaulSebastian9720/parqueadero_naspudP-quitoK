@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Automobile } from '../../../core/interfaces/automobile';
 import { AutomobileService } from '../../services/api/automovile/automobile.service';
 import { FormAutomovileComponent } from '../form-automovile/form-automovile.component';
+import { NotificationService } from '../../services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-list-automobile',
@@ -28,7 +29,8 @@ export class ListAutomobileComponent implements OnChanges {
   constructor(
     private automobileService: AutomobileService,
     private dialogService: DialogService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notificationService : NotificationService
   ) {
     
    }
@@ -56,7 +58,7 @@ export class ListAutomobileComponent implements OnChanges {
    * Después de actualizar, se cierra el diálogo y se recarga la lista de automóviles.
    * @param automobile - El automóvil a actualizar
    */
-  async onUpdateAutomobile(automobile: Automobile) {
+  onUpdateAutomobile(automobile: Automobile) {
     const dialogRef = this.dialog.open(FormAutomovileComponent);  // Abre un diálogo con el formulario de actualización
     const instance = dialogRef.componentInstance;
     instance.automobile = automobile;  // Pasa el automóvil al formulario
@@ -82,7 +84,7 @@ export class ListAutomobileComponent implements OnChanges {
    * Muestra un cuadro de diálogo de confirmación antes de eliminar el automóvil.
    * @param automobileDelete - El automóvil que se desea eliminar
    */
-  async onClickDeleteAutomobile(automobileDelete: Automobile) {
+  onClickDeleteAutomobile(automobileDelete: Automobile) {
     if (!automobileDelete.idAutomobile) return; 
     this.dialogService
       .confirm({
@@ -92,14 +94,21 @@ export class ListAutomobileComponent implements OnChanges {
         icon: 'fas fa-exclamation-circle',
       })
       .then((confirmed) => {
-        // if (confirmed) {
-        //   // Filtra el automóvil a eliminar de la lista
-        //   const newList = this.listAutomobile.filter(automobile => automobile.id !== automobileDelete.id);
-        //   const userUpdate = { ...this.userData.user };  // Copia los datos del usuario
-        //   userUpdate.listAutomobile = newList;  // Actualiza la lista de automóviles del usuario
-        //   this.userService.updateUser(this.userData.crendentialUserUID, userUpdate);  // Actualiza el usuario en la base de datos
-        //   this.initList();  // Recarga la lista de automóviles
-        // } 
+        if (confirmed) {
+          this.automobileService.deleteAutomobile(automobileDelete.idAutomobile!).subscribe((response)=> {
+            this.notificationService.notify(
+              response.message,
+              'success',
+              2250
+            )
+          })
+        } else {
+          this.notificationService.notify(
+            'Automobile not removed',
+            'warning',
+            2250
+          );
+        }
       });
   }
 

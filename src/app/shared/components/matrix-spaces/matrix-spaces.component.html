@@ -1,44 +1,59 @@
 <div class="w-full sm:max-w-[600px] md:max-w-[725px] mx-auto overflow-hidden">
-  <div *ngIf="isLoading;" class="flex justify-center items-center h-[425px]">
-    <mat-progress-spinner
-      color="primary"
-      mode="indeterminate"
-      [diameter]="50">
+  <div *ngIf="isLoading" class="flex justify-center items-center h-[425px]">
+    <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
     </mat-progress-spinner>
   </div>
-  <div *ngFor="let rowOfMatriz of matrizSpacesFilter; let i = index" 
-        class="flex gap-2 items-start mb-2 overflow-x-auto overflow-y-hidden custom-scroll">
-      <div *ngFor="let space of rowOfMatriz" 
-            class="w-20  h-16   flex justify-center items-center flex-shrink-0">
+  <ng-container *ngIf="!isLoading">
+    <div
+      *ngFor="let rowOfMatriz of matrizSpacesFilter; let i = index"
+      class="flex gap-2 items-start mb-2 overflow-x-auto overflow-y-hidden custom-scroll"
+    >
+      <div
+        *ngFor="let space of rowOfMatriz"
+        class="w-20 h-16 flex justify-center items-center flex-shrink-0"
+      >
         <div
-          (click)="onCLickEmiter(space)"
           class="w-full h-full flex flex-col justify-center items-center rounded-lg cursor-pointer"
           [ngClass]="{
-            'bg-green-400 hover:bg-green-300': space.spaceFB.state === 'Y', 
-            'bg-red-400 hover:bg-red-300': space.spaceFB.state === 'N',
-            'bg-yellow-300 hover:bg-yellow-200': space.spaceFB.state === 'O',
-          }"
+              'bg-green-400 hover:bg-green-300': space.status === 'FR', 
+              'bg-red-400 hover:bg-red-300': space.status === 'BC',
+              'bg-yellow-300 hover:bg-yellow-200': space.status === 'BT',
+              'bg-gray-50  border border-black' : space.status === 'IN'
+            }"
         >
-          <span class="sm:text-sm md:font-medium sm:font-normal w-full text-white bg-gray-600 px-2   my-1 text-center">
-            {{ space.spaceFB.location }}
+          <span
+            class="sm:text-sm md:font-medium sm:font-normal w-full text-white bg-gray-600 px-2 my-1 text-center"
+          >
+            {{ space.status !== 'IN' ? space.location : 'NDP' }}
           </span>
 
           <div class="flex justify-center items-center">
-            <i *ngIf="space.spaceFB.state === 'Y'" class="fas fa-car text-xl text-black"></i>
-            <i *ngIf="space.spaceFB.state === 'N'" class="fas fa-ban text-xl text-black"></i>
-            <i *ngIf="space.spaceFB.state === 'O'" class="fas fa-clock text-xl text-black"></i>
+            <i
+              *ngIf="space.status === 'FR'"
+              class="fas fa-car text-xl text-black"
+            ></i>
+            <i
+              *ngIf="space.status === 'BC'"
+              class="fas fa-ban text-xl text-black"
+            ></i>
+            <i
+              *ngIf="space.status === 'BT'"
+              class="fas fa-clock text-xl text-black"
+            ></i>
           </div>
         </div>
+      </div>
     </div>
+  </ng-container>
+
+  <style>
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </div>
-
-<style>
-  .custom-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .custom-scroll {
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
-  }
-</style>
