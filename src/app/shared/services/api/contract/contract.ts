@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../../config/enviorement";
-import { Contract, ReqContract } from "../../../../core/interfaces/contract";
+import { Contract, ReqDealBase } from "../../../../core/interfaces/contract";
 import { Observable } from "rxjs";
 import { ResponseMessage } from "../../../../core/interfaces/responseMessage";
 
@@ -17,7 +17,7 @@ export class ContractService {
         return this.http.get<Contract[]>(query);
     }   
 
-    insertContract(contractRequest: ReqContract):Observable<ResponseMessage>{
+    insertContract(contractRequest: ReqDealBase):Observable<ResponseMessage>{
         const query = `${this.API_ENDPOINT_CONTRACT}/create`;
         return this.http.post<ResponseMessage>(query, contractRequest);
     }

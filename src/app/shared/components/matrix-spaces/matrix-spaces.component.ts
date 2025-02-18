@@ -112,15 +112,10 @@ export class MatrixSpacesComponent implements OnInit {
         .map((row) =>
           row.filter(
             (space) =>
-              // space.spaceFB.idFBCliente
-              //   .toLowerCase()
-              //   .includes(this.wordFilter.toLowerCase()) ||
-              // space.spaceFB.idFBManagement
-              //   .toLowerCase()
-              //   .includes(this.wordFilter.toLowerCase()) ||
               space.location!
                 .toLowerCase()
-                .includes(this.wordFilter.toLowerCase())
+                .includes(this.wordFilter.toLowerCase()      
+              )
           )
         )
         .filter((row) => row.length > 0);

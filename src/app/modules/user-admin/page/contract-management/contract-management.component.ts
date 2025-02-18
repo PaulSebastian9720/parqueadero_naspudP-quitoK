@@ -14,7 +14,7 @@ import { ShowParkingspaceComponent } from '../../../../shared/components/show-pa
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 import { ContractService } from '../../../../shared/services/api/contract/contract';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
-import { ReqContract } from '../../../../core/interfaces/contract';
+import { ReqDealBase } from '../../../../core/interfaces/contract';
 
 @Component({
   selector: 'app-contract-management',
@@ -129,7 +129,7 @@ export class ContractManagementComponent {
       })
       .then((confirm) => {
         if (confirm) {
-          const reqContact: ReqContract = {
+          const reqContact: ReqDealBase = {
             autoRenewal: this.isAutoRenewable,
             idRate: this.rateSelect?.idRate!,
             person: {

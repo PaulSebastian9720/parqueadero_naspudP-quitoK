@@ -1,7 +1,7 @@
 import { DealBase } from "./dealBase";
 import { Rate } from "./rate";
 
-export interface Tickect extends DealBase  {
+export interface Ticket extends DealBase  {
     tyoe: 'tickect', 
     rates: Rate[];
 

@@ -7,7 +7,7 @@ export interface Contract extends DealBase {
   rate: Rate
 }
 
-export interface ReqContract {
+export interface ReqDealBase {
   autoRenewal: boolean,
   idRate: number,
   person: {
