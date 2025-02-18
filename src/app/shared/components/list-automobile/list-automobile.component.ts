@@ -23,8 +23,9 @@ export class ListAutomobileComponent implements OnChanges {
   itemsPerPage: number = 4;
   itemsPerPageOptions: number[] = [4, 6, 8];
   pages: number[] = [];
-  @Input() isLoading = true
   @Input() listAutomobile : Automobile[]= [] 
+
+  @Output() eventUpadateAutomobile= new EventEmitter<void>(); 
 
   constructor(
     private automobileService: AutomobileService,
@@ -43,15 +44,11 @@ export class ListAutomobileComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes["listAutomobile"]  && changes["listAutomobile"].currentValue){
-      if(this.isLoading) return
       this.initList()
     }
   }
 
-  @Output() eventGetRateDate = new EventEmitter<void>();  // Evento para obtener la tasa de fecha (sin usar en el código actual)
-
   
-
   /**
    * Abre un diálogo para actualizar la información de un automóvil.
    * Se pasan los datos del automóvil y del usuario al formulario de actualización.
@@ -65,6 +62,7 @@ export class ListAutomobileComponent implements OnChanges {
     instance.eventUpateUser.subscribe(() => {
       this.dialog.closeAll();  // Cierra todos los diálogos
       this.initList();  // Recarga la lista de automóviles
+      this
     });
   }
 

@@ -16,28 +16,26 @@
         class="py-2 px-5 rounded-t-xl transition-all duration-200"
         [ngClass]="{
           'bg-gray-900 text-white': viewPage === '/viewContracts',
-          'bg-gray-200 text-gray-800 hover:bg-gray-300': viewPage !== '/viewContracts'
+          'bg-gray-200 text-gray-800 hover:bg-gray-300':
+            viewPage !== '/viewContracts'
         }"
         (click)="changePage('/viewContracts')"
       >
-        Contratos
+        Reservas
       </button>
     </div>
-    
+
     <ng-container *ngIf="viewPage === '/viewAutomobiles'">
-      <!-- <h2 class="font-bold text-2xl mb-2">Listado de Vehiculos</h2> -->
       <div class="overflow-x-auto w-full mb-6">
-        <app-list-automobile
-          [listAutomobile]="vehiculos"
-            > 
+        <app-list-automobile [listAutomobile]="vehiculos">
         </app-list-automobile>
       </div>
     </ng-container>
 
     <ng-container *ngIf="viewPage === '/viewContracts'">
-      <!-- <h2 class="font-bold text-2xl mb-2">Listado de Contratos</h2> -->
       <div class="overflow-x-auto w-full mb-6">
-        <app-table-contract > </app-table-contract>
+        <app-table-contract [dealList]="contractList"> </app-table-contract>
+        <app-table-contract [dealList]="ticketList"> </app-table-contract>
       </div>
     </ng-container>
   </div>

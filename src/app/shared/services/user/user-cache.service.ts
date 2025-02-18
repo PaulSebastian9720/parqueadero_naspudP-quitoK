@@ -1,6 +1,5 @@
 import { Injectable, OnInit } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { UserFB } from '../../../core/models/user'
 import { User } from '../../../core/interfaces/person';
 
 

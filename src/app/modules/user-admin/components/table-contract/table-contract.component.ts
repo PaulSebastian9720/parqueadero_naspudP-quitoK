@@ -2,16 +2,12 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ManagementFB } from '../../../../core/models/management';
-import { ContractManFBService } from '../../../../shared/services/contract-management/contract-manfb.service';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RateFB } from '../../../../core/models/rate';
-import { UserService } from '../../../../shared/services/api/user/user.service';
-import { User } from '../../../../core/interfaces/person';
+
 import { DealBase } from '../../../../core/interfaces/dealBase';
 
 @Component({
@@ -21,8 +17,8 @@ import { DealBase } from '../../../../core/interfaces/dealBase';
   imports: [CommonModule, FormsModule],
 })
 export class TableContractComponent implements OnChanges {
-  @Input() contractList: DealBase[] = [];
-  contractListFilter: DealBase[] = [];
+  @Input() dealList: DealBase[] = [];
+  dealListFilter: DealBase[] = [];
 
   currentPage: number = 1;
   totalPages: number = 0;
@@ -33,50 +29,55 @@ export class TableContractComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dealBaseList'] && changes['dealBaseList'].currentValue) {
-      this.totalPages = Math.ceil(this.contractList.length / this.itemsPerPage);
-      this.contractListFilter = this.getPaginatedData();
+    if (changes['dealList'] && changes['dealList'].currentValue) {
+      this.totalPages = Math.ceil(this.dealList.length / this.itemsPerPage);
+      this.dealListFilter = this.getPaginatedData();
       this.updatePages();
     }
   }
 
   getDateFormat(date: Date): string {
+    if (!date || isNaN(new Date(date).getTime())) return '';
+
+    const isDateValid = new Date(date);
     return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    ).toString();
+      isDateValid.getFullYear(),
+      isDateValid.getMonth(),
+      isDateValid.getDate()
+    )
+      .toISOString()
+      .split('T')[0];
   }
 
   showMenssageState(status: string) {
     return status === 'AC'
-      ? 'ACTIVO'
+      ? 'ACTI'
       : status === 'CL'
-      ? 'CANCELADO'
+      ? 'CANC'
       : status === 'WT'
-      ? 'ESPERA'
+      ? 'ESPE'
       : status === 'IN'
-      ? 'INACTICO'
+      ? 'INAC'
       : '';
   }
 
   getPaginatedData() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.contractList.slice(startIndex, endIndex);
+    return this.dealList.slice(startIndex, endIndex);
   }
 
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.contractListFilter = this.getPaginatedData();
+      this.dealListFilter = this.getPaginatedData();
     }
   }
 
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.contractListFilter = this.getPaginatedData();
+      this.dealListFilter = this.getPaginatedData();
     }
   }
 
@@ -86,14 +87,14 @@ export class TableContractComponent implements OnChanges {
 
   goToPage(page: number) {
     this.currentPage = page;
-    this.contractListFilter = this.getPaginatedData();
+    this.dealListFilter = this.getPaginatedData();
   }
 
   updateItemsPerPage() {
     this.currentPage = 1;
     this.itemsPerPage = Number(this.itemsPerPage);
-    this.totalPages = Math.ceil(this.contractList.length / this.itemsPerPage);
-    this.contractListFilter = this.getPaginatedData();
+    this.totalPages = Math.ceil(this.dealList.length / this.itemsPerPage);
+    this.dealListFilter = this.getPaginatedData();
     this.updatePages();
   }
 }

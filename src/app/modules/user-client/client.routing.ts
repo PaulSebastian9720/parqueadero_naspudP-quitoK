@@ -1,5 +1,4 @@
-import { Routes, RouterModule, Route } from '@angular/router';
-import { PayParkingComponent } from './page/pay-parking/pay-parking.component';
+import { Routes} from '@angular/router';
 import { ReservationHistorialComponent } from './page/reservation-historial/reservation-historial.component';
 import { MailComponent } from './page/mail/mail.component';
 import { AbountUserComponent } from './page/abount-user/abount-user.component';
@@ -13,19 +12,8 @@ export default [
     
   },
   {  
-      path: "reservation-history",
-      component : ReservationHistorialComponent
-
-  },
-
-  {  
       path: "mail",
       component : MailComponent
-
-  },
-  {  
-      path: "pay-parking",
-      component : PayParkingComponent
 
   },
   {  

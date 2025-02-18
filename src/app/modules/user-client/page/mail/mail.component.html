@@ -14,8 +14,6 @@
         <option value="SF">Sin Filtros</option>
         <option value="NRD">Sin leer</option>
         <option value="RED">Leidos</option>
-        <option value="ADM">Desde Adminstraicion</option>
-        <option value="FAV">Favoritos</option>
       </select>
 
       <div class="flex items-center border-2 border-gray-300 rounded-md focus-within:border-gray-800">
@@ -79,7 +77,11 @@
   <div class="flex-1 overflow-y-auto">
     <ng-container *ngFor="let mail of listFilterMails">
       <div class="flex-1 left-2">
-        <app-mesagge-mail [messageMail]="mail"> </app-mesagge-mail>
+        <app-mesagge-mail 
+          (eventShowMore)="updateState($event)"
+          [messageMail]="mail"
+          >
+        </app-mesagge-mail>
       </div>
     </ng-container>
   </div>

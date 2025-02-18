@@ -28,8 +28,4 @@ export default [
         path: "parking-rates",
         component: ParkingRatesComponent
     },
-    {
-        path: "admin-mail",
-        component: AdminMailComponent
-    },
 ] as Routes

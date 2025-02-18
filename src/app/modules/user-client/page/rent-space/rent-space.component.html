@@ -1,0 +1,120 @@
+<div class="flex flex-col gap-4 p-10 mb-7">
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg">
+      <h2 class="text-lg font-semibold mb-2">Tú informacion</h2>
+      <div class="flex w-full gap-2 mb-2">
+        <app-select-user
+          [showSelectUser]="false"
+          class="flex-grow"
+          [userSelect]="currentUser"
+          #appSelectUser
+        ></app-select-user>
+      </div>
+    </div>
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg">
+      <h2 class="text-lg font-semibold mb-2">Seleccione un Automóvil</h2>
+      <app-select-automobile
+        [userSelect]="currentUser"
+        (eventAutomobile)="onClinkAutomobile($event)"
+      ></app-select-automobile>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white px-6 py-4 rounded-lg shadow-lg">
+        <div class="flex mb-2">
+          <button
+            (click)="onChangeType('/contract')"
+            [ngClass]="{
+              'bg-gray-300 text-white': page === '/contract',
+              'bg-white': page !== '/contract'
+            }"
+            class="px-2 py-1 w-24 rounded-l-lg border border-gray-300"
+          >
+            Contrato
+          </button>
+  
+          <button
+            (click)="onChangeType('/ticket')"
+            [ngClass]="{
+              'bg-gray-300 text-white': page === '/ticket',
+              'bg-white': page !== '/ticket'
+            }"
+            class="px-2 py-1 w-24 rounded-r-lg border border-gray-300"
+          >
+            Ticket
+          </button>
+        </div>
+        <ng-container *ngIf="page === '/contract'">
+          <h2 class="text-lg font-semibold mb-2">Unica Tarifa Asignable</h2>
+          <app-select-rate
+            #appSelectRate
+            [showSelect]="false"
+            [rateSelect]="rateDefect"
+            ></app-select-rate>
+          <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-2 my-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Fecha de Inicio</label
+              >
+              <input
+                type="text"
+                class="w-full p-2 border rounded bg-gray-100"
+                [(ngModel)]="startDate"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Fecha de fin</label
+              >
+              <input
+                type="text"
+                class="w-full p-2 border rounded bg-gray-100"
+                [(ngModel)]="endDate"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Auto Renovar</label
+              >
+              <button
+                (click)="toggleAutoRenew()"
+                [ngClass]="{
+                  'bg-green-500': isAutoRenewable,
+                  'bg-red-300': !isAutoRenewable
+                }"
+                class="text-white rounded-md w-full py-2"
+              >
+                {{ isAutoRenewable ? " Activada" : " Desactivada" }}
+              </button>
+            </div>
+          </div>
+        </ng-container>
+  
+        <app-show-parkingspace [parkingSpace]="parkingSpace">
+        </app-show-parkingspace>
+        <button
+          (click)="onSubmitContract()"
+          [ngClass]="{
+            'bg-blue-500 hover:bg-blue-700': validatosrContract,
+            'bg-gray-400 cursor-not-allowed': !validatosrContract
+          }"
+          class="mt-4 w-full flex justify-center items-center gap-1 h-10 px-4 border text-white rounded-md font-semibold"
+        >
+          <i class="fa fa-save text-sm"></i>
+          Agregar
+        </button>
+      </div>
+  
+      <div
+        class="bg-white px-6 py-4 rounded-lg shadow-lg w-full flex flex-col items-center text-center"
+      >
+        <h2 class="text-lg font-semibold mb-2">Mapa del Parqueadero</h2>
+        <app-matrix-spaces
+          #parkinSpaceMap
+          (eventEmitrSpace)="onClickParkingSpace($event)"
+        >
+        </app-matrix-spaces>
+      </div>
+    </div>
+  </div>
+  

@@ -23,10 +23,15 @@
   ></div>
 
   <nav
-    [ngClass]="{ 'translate-x-0': isSidebarVisible, '-translate-x-full': !isSidebarVisible }"
+    [ngClass]="{
+      'translate-x-0': isSidebarVisible,
+      '-translate-x-full': !isSidebarVisible
+    }"
     class="top-0 left-0 w-64 min-h-screen h-full bg-white p-6 shadow-lg border-r border-gray-200 transform transition-transform duration-300 ease-in-out max-md:fixed max-md:left-0 max-md:z-40"
   >
-    <h1 class="text-gray-800 text-xl font-bold mb-8 px-3">Servicios del Cliente</h1>
+    <h1 class="text-gray-800 text-xl font-bold mb-8 px-3">
+      Servicios del Cliente
+    </h1>
     <ul class="space-y-4">
       <li>
         <a
@@ -38,7 +43,7 @@
           <i class="fa fa-database text-gray-900 mr-3"></i>
           <span>Informacion del Usuario</span>
         </a>
-      </li> 
+      </li>
       <li>
         <a
           routerLink="/services-client/rent-space"
@@ -52,17 +57,6 @@
       </li>
       <li>
         <a
-          routerLink="/services-client/pay-parking"
-          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
-        >
-          <i class="fa fa-money-check text-gray-900 mr-3"></i>
-          <span>Pagar Espacio</span>
-        </a>
-      </li>
-      <li>
-        <a
           routerLink="/services-client/mail"
           routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -70,17 +64,6 @@
         >
           <i class="fa fa-mail-bulk text-gray-900 mr-3"></i>
           <span>Mensajes de Correo</span>
-        </a>
-      </li>
-      <li>
-        <a
-          routerLink="/services-client/reservation-history"
-          routerLinkActive="bg-blue-200 text-gray-900 shadow-md border-l-4 border-blue-600"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center p-3 rounded-lg transition-all hover:bg-blue-50"
-        >
-          <i class="fa fa-history text-gray-900 mr-3"></i>
-          <span>Historial de Reservas</span>
         </a>
       </li>
     </ul>

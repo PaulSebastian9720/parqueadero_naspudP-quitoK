@@ -9,77 +9,59 @@ import { AutomobileService } from '../../../../shared/services/api/automovile/au
 import { UserCurrentService } from '../../../../shared/services/user/user-cache.service';
 import { User } from '../../../../core/interfaces/person';
 import { Contract } from '../../../../core/interfaces/contract';
+import { Ticket } from '../../../../core/interfaces/ticket';
+import { ContractService } from '../../../../shared/services/api/contract/contract';
+import { TicketService } from '../../../../shared/services/api/ticket/ticket';
 
 @Component({
   selector: 'app-abount-user',
   standalone: true,
-  imports: [CommonModule, ListAutomobileComponent, TableContractComponent, FormsModule],
+  imports: [
+    CommonModule,
+    ListAutomobileComponent,
+    TableContractComponent,
+    FormsModule,
+  ],
   templateUrl: './abount-user.component.html',
   styleUrl: './abount-user.component.scss',
 })
 export class AbountUserComponent {
   user!: User;
   vehiculos: Automobile[] = [];
-  contractList: Contract[] =  [] 
-  viewPage :  "/viewAutomobiles" |  "/viewContracts" = "/viewAutomobiles"
-  loading: boolean = false
+  contractList: Contract[] = [];
+  ticketList: Ticket[] = [];
+
+  viewPage: '/viewAutomobiles' | '/viewContracts' = '/viewAutomobiles';
 
   constructor(
     private userCurrent: UserCurrentService,
     private automobileService: AutomobileService,
+    private contractService: ContractService,
+    private ticketService: TicketService
   ) {}
 
-   ngOnInit(): void {
-    this.loading = true;
-    this.userCurrent.getUser().subscribe(user=> {
-      if(user){
-        this.automobileService.getAutomobileListByIdPerson(user.idPerson!).pipe(
-          finalize(()=> this.loading = false)
-        ).subscribe((results) => {
-          this.vehiculos = results;
-        })
+  ngOnInit(): void {
+    this.userCurrent.getUser().subscribe((user) => {
+      const userId = user?.idPerson ?? 0;
+      if (userId > 0) {
+        this.automobileService
+          .getAutomobileListByIdPerson(userId)
+          .subscribe((results) => {
+            this.vehiculos = results;
+          });
+        this.contractService
+          .getContractListByIdPerson(userId)
+          .subscribe((results) => {
+            this.contractList = results;
+          });
+        this.ticketService.getTicketsByIdPerson(userId).subscribe((results) => {
+          this.ticketList = results;
+        });
       }
-    }
-  )
-    
-  
-    
-
-    // try {
-    //   const currentUserUID = await this.authService.credentialUserUID;
-    //   if (currentUserUID) {
-    //     this.userFBSerivce.listenToUserChanges(currentUserUID);
-    //     this.userFBSerivce.user$.subscribe((userData) => {
-    //       if (userData) {
-    //         this.user = new UserData(currentUserUID, userData);
-    //       }
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.error(
-    //     'Error al obtener el UID o al escuchar cambios en el usuario:',
-    //     error
-    //   );
-    // }
+    });
   }
 
-  private async fetchAutomobiles() {
-    // const currentUserUID = await this.authService.credentialUserUID;
-    // if (currentUserUID) {
-    //   this.userFBSerivce.listenToUserChanges(currentUserUID);
-    //   this.userFBSerivce.user$.subscribe((userData) => {
-    //     if (userData) {
-    //       this.user = new UserData(currentUserUID, userData);
-    //       this.vehiculos = this.user.user.listAutomobile || [];
-    //     } else {
-    //       this.vehiculos = [];
-    //     }
-    //   });
-    // }
-  }
-
-  public changePage(namePage: "/viewContracts"   | "/viewAutomobiles"){
+  public changePage(namePage: '/viewContracts' | '/viewAutomobiles') {
     this.viewPage = namePage;
   }
-
 }

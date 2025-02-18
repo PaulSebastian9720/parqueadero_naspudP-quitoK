@@ -15,6 +15,7 @@ import { NotificationService } from '../../../../shared/services/dialog/notifica
 import { ContractService } from '../../../../shared/services/api/contract/contract';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { ReqDealBase } from '../../../../core/interfaces/contract';
+import { TicketService } from '../../../../shared/services/api/ticket/ticket';
 
 @Component({
   selector: 'app-contract-management',
@@ -49,7 +50,8 @@ export class ContractManagementComponent {
   constructor(
     private notificationService: NotificationService,
     private contractService: ContractService,
-    private dialogConfirmService: DialogService
+    private dialogConfirmService: DialogService,
+    private ticketService: TicketService
   ) {}
 
   onClickUser(user: User) {
@@ -113,13 +115,26 @@ export class ContractManagementComponent {
 
   onSubmitContract() {
     if (!this.validatosrContract) {
-      this.notificationService.notify('All date is requeired', 'warning', 2250);
+      this.notificationService.notify(
+        'Necesita toda la informacion',
+        'warning',
+        2250
+      );
+      return;
+    }
+    if (!this.rateSelect && this.page === '/contract') {
+      this.notificationService.notify(
+        'Debes seleccionar una tarifa',
+        'warning',
+        2250
+      );
+      return;
     }
 
     const question =
       this.page === '/contract'
-        ? `¿Estás seguro de crear el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`
-        : '';
+        ? `¿Estás seguro de registrar el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`
+        : `¿Estás seguro de registrar el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`;
     this.dialogConfirmService
       .confirm({
         title: 'Nueva Reserva en el Parking',
@@ -146,27 +161,48 @@ export class ContractManagementComponent {
             },
           };
 
-          this.contractService.insertContract(reqContact).subscribe(
-            (response) => {
-              if (response) {
-                this.notificationService.notify(
-                  response.message,
-                  'success',
-                  2250
-                );
-                this.clearnCamps();
-                this.updateMap();
+          if (this.page === '/contract') {
+            this.contractService.insertContract(reqContact).subscribe(
+              (response) => {
+                if (response) {
+                  this.notificationService.notify(
+                    response.message,
+                    'success',
+                    2250
+                  );
+                  this.clearnCamps();
+                  this.updateMap();
+                }
+              },
+              (error) => {
+                this.notificationService.notify(error.error, 'error', 2250);
               }
-            },
-            (error) => {
-              this.notificationService.notify(error.error, 'error', 2250);
-            }
-          );
+            );
+          } else {
+            this.ticketService.insertTicket(reqContact).subscribe(
+              (response) => {
+                if (response) {
+                  this.notificationService.notify(
+                    response.accessToken,
+                    'success',
+                    2250
+                  );
+                  this.clearnCamps();
+                  this.updateMap();
+                }
+              },
+              (error) => {
+                this.notificationService.notify(error.error, 'error', 2250);
+              }
+            );
+          }
         } else {
           this.notificationService.notify('Contrato cancelado', 'error', 2250);
         }
       });
   }
+
+  
 
   tiggerClearCamps(): void {}
 
@@ -181,7 +217,6 @@ export class ContractManagementComponent {
   get validatosrContract(): boolean {
     if (!this.automobileSelect) return false;
     if (!this.userSelect) return false;
-    if (!this.rateSelect) return false;
     if (this.page === '/contract' && !this.rateSelect) return false;
     if (!this.spaceSelect) return false;
     if (this.spaceSelect.status !== 'FR') return false;

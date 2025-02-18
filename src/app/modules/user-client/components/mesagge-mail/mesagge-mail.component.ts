@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MessageMail } from '../../../../core/models/message';
+import { MessageMail } from '../../../../core/interfaces/messageMail';
 
 @Component({
   selector: 'app-mesagge-mail',
@@ -12,11 +12,12 @@ import { MessageMail } from '../../../../core/models/message';
 export class MesaggeMailComponent {
   showMore: boolean = false;
 
-  @Input() messageMail!: MessageMail
-  @Output() eventShowMore = new  EventEmitter<boolean>()
+  @Input() messageMail: MessageMail = {}
+  @Output() eventShowMore = new  EventEmitter<number>()
 
   toggleDescription(): void {
     this.showMore = !this.showMore;
-    this.eventShowMore.emit(this.showMore)
+    this.messageMail.status = 'RD'
+    this.eventShowMore.emit(this.messageMail.idMessageMail)
   }
 }

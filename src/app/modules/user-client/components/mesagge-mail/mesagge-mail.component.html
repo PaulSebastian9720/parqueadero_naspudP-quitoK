@@ -6,11 +6,11 @@
   <div class="flex items-center gap-4">
     <div class="flex items-center justify-center w-16">
       <i
-        *ngIf="messageMail.status !== 'nr'"
+        *ngIf="messageMail.status !== 'NR'"
         class="fa fa-eye text-green-800 text-lg"
       ></i>
       <i
-        *ngIf="messageMail.status === 'nr'"
+        *ngIf="messageMail.status === 'RD'"
         class="fa fa-eye-low-vision text-red-800 text-lg"
       ></i>
     </div>
@@ -19,8 +19,8 @@
       <h3
         class="text-sm font-bold truncate"
         [ngClass]="{
-          'font-bold': messageMail.status === 'nr',
-          'font-normal': messageMail.status === 'rd'
+          'font-bold': messageMail.status === 'NR',
+          'font-normal': messageMail.status === 'RD'
         }"
         style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow:ellipsis;"
       >
@@ -32,7 +32,7 @@
         class="text-gray-600 text-sm"
         style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
       >
-        {{ messageMail.mesagge }}
+        {{ messageMail.message }}
       </p>
 
       <p class="text-sm text-gray-400 min-w-[100px] text-right" style="max-width: 100px;">
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="mt-3">
-      <p class="text-gray-800">{{ messageMail.mesagge }}</p>
+      <p class="text-gray-800">{{ messageMail.message }}</p>
     </div>
   </div>
 </div>

@@ -206,7 +206,6 @@
         Listado de los Automobiles del Cliente
       </h3>
       <app-list-automobile
-        [isLoading]="isLoadingTAuto"
         [listAutomobile]="automobiles"
       >
       </app-list-automobile>
@@ -214,7 +213,15 @@
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de Contratos del Cliente
       </h3>
-      <app-table-contract ></app-table-contract>
+      <app-table-contract 
+        [dealList]="contractsList">
+      </app-table-contract>
+      <h3 class="font-bold text-xl sm:text-2xl mb-2">
+        Listado de Tickets del Cliente
+      </h3>
+      <app-table-contract [dealList]="ticketList">
+        
+      </app-table-contract>
     </div>
   </div>
   <div

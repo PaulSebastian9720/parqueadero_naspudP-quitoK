@@ -11,6 +11,10 @@ import { NotificationService } from '../../../../shared/services/dialog/notifica
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { AutomobileService } from '../../../../shared/services/api/automovile/automobile.service';
 import { Automobile } from '../../../../core/interfaces/automobile';
+import { Contract } from '../../../../core/interfaces/contract';
+import { Ticket } from '../../../../core/interfaces/ticket';
+import { ContractService } from '../../../../shared/services/api/contract/contract';
+import { TicketService } from '../../../../shared/services/api/ticket/ticket';
 
 @Component({
   selector: 'app-about-client',
@@ -31,7 +35,9 @@ export class AboutClientComponent implements OnInit {
     private userService: UserService,
     private automobileService: AutomobileService,
     private notiticationService: NotificationService,
-    private showDialgConfirn: DialogService
+    private showDialgConfirn: DialogService,
+    private contactService: ContractService,
+    private ticketService: TicketService,
   ) {} // Servicio para obtener la lista de usuarios
 
   // Propiedades de entrada y salida del componente
@@ -39,6 +45,8 @@ export class AboutClientComponent implements OnInit {
   users: User[] = []; // Lista completa de usuarios
   filteredUsers: User[] = []; // Lista de usuarios filtrados según la búsqueda
   automobiles: Automobile[] = [];
+  contractsList : Contract [] =[]
+  ticketList : Ticket [] =[]
   wordFilter: string = '';
   isEditing = false;
   isOpen = false;
@@ -62,13 +70,27 @@ export class AboutClientComponent implements OnInit {
   selectTables(idPerson : number) {
     this.isLoadingTAuto = true;
     this.automobiles = [];
+    this.contractsList = [];
+    this.ticketList = [];
     this.automobileService
       .getAutomobileListByIdPerson(idPerson)
       .subscribe((automobiles) => {
-        console.log(automobiles);
         this.automobiles = automobiles;
         this.isLoadingTAuto = false;
-      });
+      }
+    );
+    this.contactService.getContractListByIdPerson(idPerson)
+      .subscribe((contracts) => {
+        console.log(contracts);
+        this.contractsList = contracts;
+      }
+    )
+    this.ticketService.getTicketsByIdPerson(idPerson)
+      .subscribe((tickets) => {
+        console.log(tickets);
+        this.ticketList = tickets;
+      }
+    )
   }
  
 
