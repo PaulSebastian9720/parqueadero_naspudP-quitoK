@@ -32,7 +32,7 @@ export class UpdateStateComponent {
     this.parkisSService.getFilterList('IN').subscribe((list) => {
       if (list) {
         list.forEach((space) => {
-          const key = space.location.split('-')[0];
+          const key = space.location!.split('-')[0];
           if (!this.mapSlot.has(key)) {
             this.mapSlot.set(key, []);
           }
@@ -45,7 +45,7 @@ export class UpdateStateComponent {
     this.parkisSService.getFilterList('FR').subscribe((list) => {
       if (list) {
         list.forEach((space) => {
-          const key = space.location.split('-')[0];
+          const key = space.location!.split('-')[0];
           if (!this.mapSlot.has(key)) {
             this.mapSlot.set(key, []);
           }
@@ -68,7 +68,7 @@ export class UpdateStateComponent {
   // Selecciona un espacio basado en el ID de la ubicación
   selectSpace() {
     const space = this.listRowPosibilies.find(
-      (value) => value.location === this.selectSpaceId
+      (value) => value.location! === this.selectSpaceId
     );
     this.spaceParkingSelect = { ...space! }; // Asigna el espacio encontrado
   }

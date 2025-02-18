@@ -1,0 +1,31 @@
+<div class="w-full">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Precio Final</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="dealBase.finalPrice"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Dia de inicio</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="startDate"
+        readonly
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Dia de inicio</label>
+      <input
+        type="text"
+        class="w-full p-2 border rounded bg-gray-100"
+        [(ngModel)]="endDate"
+        readonly
+      />
+    </div>
+  </div>
+</div>

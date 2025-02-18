@@ -5,13 +5,16 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { SelectUserComponent } from '../../../../shared/components/select-user/select-user.component';
 import { SelectRateComponent } from '../../components/select-rate/select-rate.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { SelectAutomobileComponent } from "../../components/select-automobile/select-automobile.component";
-import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { SelectAutomobileComponent } from '../../components/select-automobile/select-automobile.component';
 import { User } from '../../../../core/interfaces/person';
 import { ParkingSpace } from '../../../../core/interfaces/parkingSpace';
 import { Rate } from '../../../../core/interfaces/rate';
 import { Automobile } from '../../../../core/interfaces/automobile';
-
+import { ShowParkingspaceComponent } from '../../../../shared/components/show-parkingspace/show-parkingspace.component';
+import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
+import { ContractService } from '../../../../shared/services/api/contract/contract';
+import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
+import { ReqContract } from '../../../../core/interfaces/contract';
 
 @Component({
   selector: 'app-contract-management',
@@ -24,98 +27,164 @@ import { Automobile } from '../../../../core/interfaces/automobile';
     SelectRateComponent,
     MatToolbarModule,
     SelectAutomobileComponent,
-],
+    ShowParkingspaceComponent,
+  ],
   templateUrl: './contract-management.component.html',
 })
 export class ContractManagementComponent {
-  
   // Propiedades del componente
-  userSelect!: User | null;  
-  spaceSelect!: ParkingSpace | null;  // Espacio seleccionado o null si no hay ninguno
-  rateSelect!: Rate | null;  // Tarifa seleccionada o null si no hay ninguna
-  automobileSelect!: Automobile | null;  // Automóvil seleccionado o null si no hay ninguno
-  worldFilter : string = ""
-  page : '/contract' | '/ticket' = '/contract'
-  
+  userSelect: User = {};
+  spaceSelect: ParkingSpace = {};
+  rateSelect!: Rate | null; // Tarifa seleccionada o null si no hay ninguna
+  automobileSelect!: Automobile | null; // Automóvil seleccionado o null si no hay ninguno
+  worldFilter: string = '';
+  page: '/contract' | '/ticket' = '/contract';
+  isAutoRenewable: boolean = false;
 
   // Referencias a componentes hijos
-  @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent;  // Componente para mostrar el mapa de espacios
+  @ViewChild('mapaSpaces') mapa!: MatrixSpacesComponent; // Componente para mostrar el mapa de espacios
+  @ViewChild('appSelectUser') appUserSelect!: SelectUserComponent;
+  @ViewChild('appSelectRate') appSelectRate!: SelectRateComponent;
 
-  /**
-   * Método para seleccionar la opción 1 o 2 y filtrar los datos correspondientes.
-   * Opción 1: Muestra tarifas mensuales y filtra usuarios sin rol "CF".
-   * Opción 2: Muestra tarifas que no son mensuales y todos los usuarios.
-   */
-  selectOption() {
-    if (this.page === '/contract') {
+  constructor(
+    private notificationService: NotificationService,
+    private contractService: ContractService,
+    private dialogConfirmService: DialogService
+  ) {}
 
-      }
-    else if (this.page === '/ticket') {
-      
+  onClickUser(user: User) {
+    this.userSelect = user; // Asigna el usuario seleccionado
+    this.automobileSelect = {}; // Resetea el automóvil
+  }
+
+  onClickRate(rateData: Rate) {
+    this.rateSelect = rateData; // Asigna la tarifa seleccionada
+  }
+
+  onClinkSpace(space: ParkingSpace) {
+    this.spaceSelect = space; // Asigna el espacio seleccionado
+  }
+
+  onClinkAutomobile(automobile: Automobile) {
+    this.automobileSelect = automobile; // Asigna el automóvil seleccionado
+  }
+
+  onClickParkingSpace(parkingSpace: ParkingSpace) {
+    this.spaceSelect = parkingSpace;
+  }
+
+  updateMap() {
+    this.mapa.initParkingLotService(); // Inicializa el servicio del mapa
+  }
+
+  onChangeType(page: '/contract' | '/ticket') {
+    this.page = page;
+    this.rateSelect = null;
+  }
+
+  get startDate(): string {
+    const today = new Date();
+    return today.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  get endDate(): string {
+    const today = new Date();
+    const nextMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate()
+    );
+    return this.rateSelect
+      ? nextMonth.toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        })
+      : '';
+  }
+
+  toggleAutoRenew() {
+    this.isAutoRenewable = !this.isAutoRenewable;
+  }
+
+  onSubmitContract() {
+    if (!this.validatosrContract) {
+      this.notificationService.notify('All date is requeired', 'warning', 2250);
     }
 
-    this.rateSelect = null; 
-    this.spaceSelect = null;  
+    const question =
+      this.page === '/contract'
+        ? `¿Estás seguro de crear el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`
+        : '';
+    this.dialogConfirmService
+      .confirm({
+        title: 'Nueva Reserva en el Parking',
+        question: question,
+        highlight: 'Confirmar',
+        icon: 'fa fa-credit-card',
+      })
+      .then((confirm) => {
+        if (confirm) {
+          const reqContact: ReqContract = {
+            autoRenewal: this.isAutoRenewable,
+            idRate: this.rateSelect?.idRate!,
+            person: {
+              idPerson: this.userSelect?.idPerson!,
+              documentID: this.userSelect?.documentID!,
+            },
+            automobile: {
+              idAutomobile: this.automobileSelect?.idAutomobile!,
+              licensePlate: this.automobileSelect?.licensePlate!,
+            },
+            parkingSpace: {
+              idParkingSpace: this.spaceSelect.idParkingSpace!,
+              location: this.spaceSelect.location!,
+            },
+          };
+
+          this.contractService.insertContract(reqContact).subscribe(
+            (response) => {
+              if (response) {
+                this.notificationService.notify(
+                  response.message,
+                  'success',
+                  2250
+                );
+                this.clearnCamps();
+                this.updateMap();
+              }
+            },
+            (error) => {
+              this.notificationService.notify(error.error, 'error', 2250);
+            }
+          );
+        } else {
+          this.notificationService.notify('Contrato cancelado', 'error', 2250);
+        }
+      });
   }
 
-  /**
-   * Método que se ejecuta cuando se selecciona un usuario.
-   * Asigna el usuario seleccionado y resetea el automóvil.
-   */
-  onClickUser(user: User) {
-    this.userSelect = user;  // Asigna el usuario seleccionado
-    this.automobileSelect = null;  // Resetea el automóvil
+  tiggerClearCamps(): void {}
+
+  clearnCamps() {
+    this.rateSelect = {};
+    this.userSelect = {};
+    this.spaceSelect = {};
+    this.appUserSelect.clearCamps();
+    this.appSelectRate.clearCamps();
   }
 
-  /**
-   * Método que se ejecuta cuando se selecciona una tarifa.
-   * Asigna la tarifa seleccionada.
-   */
-  onClickRate(rateData: Rate) {
-    this.rateSelect= rateData;  // Asigna la tarifa seleccionada
-  }
-
-  /**
-   * Método que se ejecuta cuando se selecciona un espacio.
-   * Asigna el espacio seleccionado.
-   */
-  onClinkSpace(space: ParkingSpace) {
-    this.spaceSelect = space;  // Asigna el espacio seleccionado
-  }
-
-  /**
-   * Método que se ejecuta cuando se selecciona un automóvil.
-   * Asigna el automóvil seleccionado.
-   */
-  onClinkAutomobile(automobile: Automobile) {
-    this.automobileSelect = automobile;  // Asigna el automóvil seleccionado
-  }
-
-  /**
-   * Método para abrir el diálogo para agregar una nueva tarifa.
-   * Después de agregar la tarifa, actualiza la lista de tarifas y muestra una notificación de éxito.
-   */
-
-
-
-
-  /**
-   * Método para actualizar el mapa de espacios.
-   * Resetea los datos seleccionados y reinicia el servicio del mapa.
-   */
-  updateMap() {
-    this.userSelect = null;  // Resetea el usuario seleccionado
-    this.spaceSelect = null;  // Resetea el espacio seleccionado
-    this.mapa.initParkingLotService();  // Inicializa el servicio del mapa
-  }
-
-
-  filterSpace(){
-
-  }
-
-  onChangeType(page: '/contract'  | '/ticket'){
-    this.page = page;
-    
+  get validatosrContract(): boolean {
+    if (!this.automobileSelect) return false;
+    if (!this.userSelect) return false;
+    if (!this.rateSelect) return false;
+    if (this.page === '/contract' && !this.rateSelect) return false;
+    if (!this.spaceSelect) return false;
+    if (this.spaceSelect.status !== 'FR') return false;
+    return true;
   }
 }

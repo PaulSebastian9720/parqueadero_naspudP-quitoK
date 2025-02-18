@@ -12,10 +12,10 @@ import { RateService } from '../../../../shared/services/api/rate/rate.service';
 })
 export class SelectRateComponent implements OnInit {
   selectRate: string = ''
-  rateSelect : Rate = {}
   listRate: Rate[] = []
-  showInformations: boolean = false
-
+  @Input() showSelect: boolean = true
+  @Input() showRateInformations: boolean = true
+  @Input() rateSelect : Rate = {}
   @Input() filterMonths : boolean = true
   @Output() eventRate = new EventEmitter<Rate>()
 
@@ -39,11 +39,14 @@ export class SelectRateComponent implements OnInit {
     if (!this.selectRate) {
       return
     }
-    const rateData = this.listRate.find(value => value.idRate?.toString() === this.selectRate)
-    this.rateSelect = rateData ?? {}
+    const rateData = {...this.listRate.find(value => value.idRate?.toString() === this.selectRate)}
+    this.rateSelect = rateData
     this.eventRate.emit(rateData)   
-    this.selectRate = '' 
-    this.showInformations = true
+  }
+
+  clearCamps(){
+    this.selectRate = ''
+    this.rateSelect = {}  
   }
 }
 

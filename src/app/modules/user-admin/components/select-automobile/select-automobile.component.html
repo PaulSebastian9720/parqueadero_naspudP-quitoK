@@ -1,5 +1,6 @@
 <div class="w-full">
   <div
+    *ngIf="showSelect"
     class="flex flex-col sm:flex-row gap-2 items-start w-full max-w-full mb-4"
   >
     <button
@@ -7,7 +8,7 @@
       (click)="onAddAutomobile()"
     >
       <i class="fa fa-car text-sm"></i>
-      {{automobileSelect?.idAutomobile === 0  ? "Agregar" : "Actualizar"}}
+      {{automobileSelect.idAutomobile === 0  ? "Agregar" : "Actualizar"}}
     </button>
     <select
       [(ngModel)]="selectAutomovile"

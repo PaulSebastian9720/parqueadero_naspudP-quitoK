@@ -1,0 +1,27 @@
+<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-2">
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Location</label>
+    <input
+      type="text"
+      class="w-full p-2 border rounded bg-gray-100"
+      [(ngModel)]="parkingSpace.location"
+      readonly
+    />
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Estado</label>
+    <input
+      type="text"
+      class="w-full p-2 border rounded bg-gray-100"
+      [(ngModel)]="parkingSpace.status"
+      readonly
+    />
+  </div>
+  <div class="flex gap-2">
+    <div
+      class="max-w-2 p-2" 
+      [ngClass]="{'bg-red-500': parkingSpace.status === 'BC', 'bg-yellow-500': parkingSpace.status === 'BT', 'bg-green-500': parkingSpace.status === 'FR'}">
+    </div>
+      <span>{{parkingStatus}}</span>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 <div class="w-full">
   <div
+    *ngIf="showSelectUser"
     class="flex flex-col sm:flex-row gap-2 items-start w-full max-w-full mb-4"
   >
     <button
@@ -34,7 +35,7 @@
       class="ml-auto flex justify-center items-center gap-1 h-10 px-4 border text-gray-700 border-gray-300 hover:bg-gray-700 hover:text-white rounded-md font-semibold"
       (click)="toggleInformation()"
     >
-      <i *ngIf="!showInformation" class="fa fa-arrow-down text-sm"></i>
+      <i *ngIf="showInformation" class="fa fa-arrow-down text-sm"></i>
       <i *ngIf="showInformation" class="fa fa-arrow-up text-sm"></i>
     </button>
   </div>
@@ -48,7 +49,7 @@
       <input
         type="text"
         class="w-full p-2 border rounded bg-gray-100"
-        [(ngModel)]="userSelect!.name"
+        [(ngModel)]="userSelect.name"
         readonly
       />
     </div>
@@ -57,7 +58,7 @@
       <input
         type="text"
         class="w-full p-2 border rounded bg-gray-100"
-        [(ngModel)]="userSelect!.lastName"
+        [(ngModel)]="userSelect.lastName"
         readonly
       />
     </div>
@@ -75,7 +76,7 @@
       <input
         type="email"
         class="w-full p-2 border rounded bg-gray-100"
-        [(ngModel)]="userSelect!.mail"
+        [(ngModel)]="userSelect.mail"
         readonly
       />
     </div>
@@ -84,7 +85,7 @@
       <input
         type="text"
         class="w-full p-2 border rounded bg-gray-100"
-        [(ngModel)]="userSelect!.location"
+        [(ngModel)]="userSelect.location"
         readonly
       />
     </div>
@@ -93,7 +94,7 @@
       <input
         type="text"
         class="w-full p-2 border rounded bg-gray-100"
-        [(ngModel)]="userSelect!.phone"
+        [(ngModel)]="userSelect.phone"
         readonly
       />
     </div>

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SpaceData, SpaceFB } from '../../../core/models/space';
 import { CommonModule } from '@angular/common';
-import { ParkinLotService } from '../../services/space/parkink-lot.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ParkingSpaceService } from '../../services/api/parkingSpace/parkingSpace.service';
 import { ParkingSpace } from '../../../core/interfaces/parkingSpace';
@@ -15,7 +14,7 @@ import { ParkingSpace } from '../../../core/interfaces/parkingSpace';
 export class MatrixSpacesComponent implements OnInit {
   matrizSpaces: ParkingSpace[][] = []; // Matriz que contiene los datos de los espacios de estacionamiento
   matrizSpacesFilter: ParkingSpace[][] = []; // Matriz que contiene los datos de los espacios de estacionamiento
-  @Output() eventEmitrSpace = new EventEmitter<SpaceData>(); // Emite un evento con la información del espacio seleccionado
+  @Output() eventEmitrSpace = new EventEmitter<ParkingSpace>(); // Emite un evento con la información del espacio seleccionado
   isLoading: boolean = true; // Estado que indica si los datos están cargando
   selectWorld: 'FR' | 'BC' | 'BT' | 'IN' | '' = '';
   wordFilter = '';
@@ -58,8 +57,9 @@ export class MatrixSpacesComponent implements OnInit {
    * Método que emite un evento con los datos del espacio seleccionado.
    * @param spaceData - Los datos del espacio seleccionado
    */
-  onCLickEmiter(spaceData: SpaceData) {
-    this.eventEmitrSpace.emit(spaceData); // Emite el evento con los datos del espacio
+  onCLickEmiter(parkingSpace: ParkingSpace) {
+    if(parkingSpace.status === 'IN') return
+    this.eventEmitrSpace.emit(parkingSpace);
   }
 
   /**
@@ -80,19 +80,18 @@ export class MatrixSpacesComponent implements OnInit {
       return [];
     }
 
-    const matrizFilter: ParkingSpace [][] = []; // Nueva matriz para los espacios filtrados
+    const matrizFilter: ParkingSpace [][] = []; 
     this.matrizSpaces.forEach((row) => {
-      const rowData: ParkingSpace [] = []; // Fila filtrada de espacios
+      const rowData: ParkingSpace [] = []; 
       row.forEach((space) => {
         if (space.status !== 'IN') {
-          // Solo agrega los espacios cuyo estado no sea "NP"
           rowData.push(space);
         }
       });
-      matrizFilter.push(rowData); // Agrega la fila filtrada a la matriz
+      matrizFilter.push(rowData); 
     });
 
-    return matrizFilter; // Devuelve la matriz filtrada
+    return matrizFilter; 
   }
 
   getListWithFilter() {
@@ -119,7 +118,7 @@ export class MatrixSpacesComponent implements OnInit {
               // space.spaceFB.idFBManagement
               //   .toLowerCase()
               //   .includes(this.wordFilter.toLowerCase()) ||
-              space.location
+              space.location!
                 .toLowerCase()
                 .includes(this.wordFilter.toLowerCase())
           )
@@ -127,7 +126,7 @@ export class MatrixSpacesComponent implements OnInit {
         .filter((row) => row.length > 0);
     }
 
-    return listAux;
+    return  sortMatrixRows(listAux);
   }
 
   filterPerWorld(selectWorld: 'FR' | 'BC' | 'BT' | 'IN' | '' = '', filterWorld: string) {
@@ -138,13 +137,40 @@ export class MatrixSpacesComponent implements OnInit {
   }
 }
 
+function sortMatrixRows(matrix: ParkingSpace[][]): ParkingSpace[][] {
+  const regex = /(\D+)(\d+)/; // Expresión regular para capturar letras y números separados
+
+  const sortRow = (row: ParkingSpace[]): ParkingSpace[] => {
+    return row.sort((a, b) => {
+      const matchA = a.location!.match(regex);
+      const matchB = b.location!.match(regex);
+
+      if (matchA && matchB) {
+        const prefixA = matchA[1]; 
+        const prefixB = matchB[1]; 
+        const numA = parseInt(matchA[2], 10); 
+        const numB = parseInt(matchB[2], 10); 
+
+        const prefixSort = prefixA.localeCompare(prefixB);
+        if (prefixSort !== 0) return prefixSort;
+
+        return numA - numB;
+      }
+
+      return a.location!!.localeCompare(b.location!!);
+    });
+  };
+
+  // Ordenar cada fila de la matriz
+  return matrix.map(row => sortRow(row));
+}
 
 function buildMatrix(spacesList :ParkingSpace []): ParkingSpace[][] {
   const matrix: ParkingSpace[][] = [];
   const map :{[key:string]: ParkingSpace[]} = {}
 
   spacesList.forEach(space => {
-    const key = space.location.split('-')[0];
+    const key = space.location!!.split('-')[0];
     if (!map[key]) map[key] = [];
     map[key].push(space);
   })

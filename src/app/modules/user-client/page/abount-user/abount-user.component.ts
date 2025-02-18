@@ -8,6 +8,7 @@ import { finalize } from 'rxjs';
 import { AutomobileService } from '../../../../shared/services/api/automovile/automobile.service';
 import { UserCurrentService } from '../../../../shared/services/user/user-cache.service';
 import { User } from '../../../../core/interfaces/person';
+import { Contract } from '../../../../core/interfaces/contract';
 
 @Component({
   selector: 'app-abount-user',
@@ -19,6 +20,7 @@ import { User } from '../../../../core/interfaces/person';
 export class AbountUserComponent {
   user!: User;
   vehiculos: Automobile[] = [];
+  contractList: Contract[] =  [] 
   viewPage :  "/viewAutomobiles" |  "/viewContracts" = "/viewAutomobiles"
   loading: boolean = false
 

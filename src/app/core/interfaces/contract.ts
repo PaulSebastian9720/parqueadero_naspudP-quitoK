@@ -1,17 +1,25 @@
-import { Automobile } from "../models/automobile";
-import { ParkingSpace } from "./parkingSpace";
-import { User } from "./person";
+import { DealBase } from "./dealBase";
 import { Rate } from "./rate";
 
-export interface Contract {
-  idContract?: number;
-  type: 'MT' | 'TM';
-  status: 'AC' | 'IN' | 'WT' | 'CL';
-  prize?: number;
-  startDate: Date;
-  endDate?: Date;
-  person: User;
-  parkingSpace: ParkingSpace;
-  rates: Rate[];
-  automobile?: Automobile;
+export interface Contract extends DealBase {
+  type: 'contract',
+  autoRenewal: boolean,
+  rate: Rate
+}
+
+export interface ReqContract {
+  autoRenewal: boolean,
+  idRate: number,
+  person: {
+    idPerson: number,
+    documentID: string
+  }
+  automobile: {
+    idAutomobile: number,
+    licensePlate: string
+  },
+  parkingSpace: {
+    idParkingSpace: number,
+    location: string,
+  }
 }

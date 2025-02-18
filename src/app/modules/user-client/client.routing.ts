@@ -1,9 +1,9 @@
 import { Routes, RouterModule, Route } from '@angular/router';
-import { RentSpaceComponent } from './page/rent-space/rent-space.component';
 import { PayParkingComponent } from './page/pay-parking/pay-parking.component';
 import { ReservationHistorialComponent } from './page/reservation-historial/reservation-historial.component';
 import { MailComponent } from './page/mail/mail.component';
 import { AbountUserComponent } from './page/abount-user/abount-user.component';
+import { RentSpaceComponent } from './page/rent-space/rent-space.component';
 
 export default [
  

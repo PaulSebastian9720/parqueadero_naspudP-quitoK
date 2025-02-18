@@ -22,9 +22,10 @@ import { AutomobileService } from '../../../../shared/services/api/automovile/au
 })
 export class SelectAutomobileComponent implements OnChanges {
   selectAutomovile: string = '';
-  automobileSelect: Automobile | null = { idAutomobile: 0 };
-  showInformation: boolean = false;
 
+  showInformation: boolean = true;
+  @Input() showSelect : boolean = true;
+  @Input() automobileSelect: Automobile = {};
   @Input() userSelect: User | null = {};
   @Input() listAutomobile: Automobile[] = [];
   @Output() eventAutomobile = new EventEmitter<Automobile>();

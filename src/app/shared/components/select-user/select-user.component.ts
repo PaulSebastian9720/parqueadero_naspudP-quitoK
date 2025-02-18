@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../core/interfaces/person';
@@ -11,14 +19,15 @@ import { UserService } from '../../services/api/user/user.service';
   templateUrl: './select-user.component.html',
 })
 export class SelectUserComponent implements OnInit {
-  selectedUser: string = ''; // Variable que guarda el UID del usuario seleccionado
-  userSelect: User = {};
+  selectedUser: string = '';
   listAllUser: User[] = []; // Lista completa de usuarios obtenida desde el servicio
   wordFilter: string = '';
-  showInformation: boolean = true;
-
-  @Output() userEventEmitter = new EventEmitter<User>(); // Emite el usuario seleccionado hacia el componente padre
+  @Input() showSelectUser : boolean = true
+  @Input() showInformation: boolean = true;
+  @Input() userSelect: User = {};
   @Input() filterList: boolean = false;
+  @Output() userEventEmitter = new EventEmitter<User>();
+  
 
   constructor(private userService: UserService) {}
 
@@ -28,23 +37,11 @@ export class SelectUserComponent implements OnInit {
    */
   ngOnInit() {
     this.initListUsers();
+
   }
 
   toggleInformation() {
     this.showInformation = !this.showInformation;
-  }
-
-  /**
-   * Método que maneja el evento de hacer clic sobre un usuario.
-   * Busca el usuario seleccionado en 'listUserFb' y emite el usuario encontrado.
-   */
-  onClickUser() {
-    const userData = this.listAllUser.find(
-      (user) => user.mail === this.selectedUser
-    );
-    this.userSelect = { ...userData }
-    this.wordFilter =  this.userSelect.documentID!
-    this.userEventEmitter.emit(userData);
   }
 
   /**
@@ -61,17 +58,34 @@ export class SelectUserComponent implements OnInit {
     });
   }
 
+  /**
+   * Método que maneja el evento de hacer clic sobre un usuario.
+   * Busca el usuario seleccionado en 'listUserFb' y emite el usuario encontrado.
+   */
+  onClickUser() {
+    const userData = {
+      ...this.listAllUser.find((user) => user.mail === this.selectedUser),
+    };
+
+    this.wordFilter = userData.documentID ?? '';
+    this.userSelect = userData;
+    this.userEventEmitter.emit(userData);
+  }
+
   filterListPerWorld() {
-    const userFound = this.listAllUser.find(
-      (user) => user.documentID === this.wordFilter
-    );
-    if (userFound) {
-      this.userSelect = { ...userFound };
-      this.userEventEmitter.emit(userFound);
-    } else {
-      this.userSelect = {};
-      this.userEventEmitter.emit(userFound);
-      this.selectedUser = '';
-    }
+    const userFound = {
+      ...this.listAllUser.find((user) => user.documentID === this.wordFilter),
+    };
+
+    this.selectedUser = userFound.mail ?? '';
+    this.userEventEmitter.emit(userFound);
+
+    this.userSelect = userFound;
+  }
+
+  clearCamps() {
+    this.wordFilter = '';
+    this.selectedUser = '';
+    this.userSelect = {};
   }
 }

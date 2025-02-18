@@ -1,6 +1,6 @@
-<div class="flex flex-col lg:flex-row lg:gap-6 p-6 lg:p-10 space-y-8 h-screen">
-  <div class="flex flex-col gap-4 flex-1">
-    <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-grow-0">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-10 mb-7 h-screen">
+  <div class="flex flex-col gap-6">
+    <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg">
       <h2 class="text-lg font-semibold mb-2">Gestión de Espacios</h2>
       <div
         class="flex flex-row w-full gap-2 py-2 overflow-x-auto custom-scroll"
@@ -28,6 +28,7 @@
           <i class="fa fa-ban text-sm"></i>
           Deshabilitar
         </button>
+
         <select
           class="flex justify-center items-center gap-1 w-auto px-4 py-2 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md appearance-none"
           [(ngModel)]="selectWorld"
@@ -47,7 +48,7 @@
           <input
             type="text"
             placeholder="Buscar spot"
-            class="w-full px-4 py-2 focus:outline-none"
+            class="w-full px-4 py-2 focus:outline-none min-w-32"
             [(ngModel)]="wordFilter"
             (ngModelChange)="filterListPerWorld()"
           />
@@ -55,21 +56,80 @@
       </div>
     </div>
 
-    <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-grow">
+    <div
+      class="flex flex-col items-center bg-white px-6 py-4 rounded-lg shadow-lg w-full"
+      style="overflow-x: auto"
+    >
       <h2 class="text-lg font-semibold mb-2">Mapa del Parqueadero</h2>
-      <app-matrix-spaces #parkingLot (eventEmitrSpace)="editSpot($event)">
-      </app-matrix-spaces>
+      <app-matrix-spaces
+        #parkingLot
+        (eventEmitrSpace)="editSpot($event)"
+      ></app-matrix-spaces>
     </div>
   </div>
-  
-  <div class="w-full bg-white px-6 py-4 rounded-lg shadow-lg flex-1 flex flex-col">
-    <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
-      Información Sobre el Estado Actual Del Espacio
-    </h2>
-    <app-edit-spot
-      (eventReloadMatriz)="reloadParkingLot()"
-      [spaceData]="spaceData!"
-    >
-    </app-edit-spot>
+
+  <div class="flex flex-col gap-2 items-start w-full max-w-full mb-4">
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full">
+      <h2 class="text-lg font-semibold mb-2">Información de el Cliente</h2>
+      <app-select-user
+        [showSelectUser]="false"
+        [userSelect]="userSelect"
+      ></app-select-user>
+    </div>
+
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full">
+      <h2 class="text-lg font-semibold mb-2">Información de el Automóvile</h2>
+      <app-select-automobile
+        [showSelect]="false"
+        [automobileSelect]="automobileSelect"
+      ></app-select-automobile>
+    </div>
+
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full flex flex-col">
+      <h2 class="text-lg font-semibold mb-2">Información de el Espacio</h2>
+      <app-show-parkingspace
+        [parkingSpace]="parkingSpace"
+      ></app-show-parkingspace>
+    </div>
+
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full gap-2">
+      <h2 class="text-lg font-semibold mb-2">Tarifa/Tarifas</h2>
+      <ng-container *ngIf="showSelectRateTickets">
+        <app-select-rate
+          [showSelect]="true"
+          [showRateInformations]="false"
+          [filterMonths]="false"
+          (eventRate)="reciveRate($event)"
+        ></app-select-rate>
+      </ng-container>
+      <ng-container *ngFor="let rate of rates">
+        <app-select-rate
+          [showSelect]="false"
+          [rateSelect]="rate"
+        ></app-select-rate>
+      </ng-container>
+    </div>
+
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full gap-2">
+      <h2 class="text-lg font-semibold mb-2">Contratos y Tickets</h2>
+      <app-show-deal-base [dealBase]="dealBase"></app-show-deal-base>
+
+      <div class="flex flex-row">
+        <button
+          (click)="onSubmit()"
+          class="mt-4 w-full flex justify-center items-center gap-1 h-10 px-4 border text-white rounded-md font-semibold bg-blue-500 hover:bg-blue-700"
+        >
+          <i class="fa fa-save text-sm"></i>
+          Cobrar
+        </button>
+        <button
+          (click)="onDisableContract()"
+          class="mt-4 w-full flex justify-center items-center gap-1 h-10 px-4 border text-white rounded-md font-semibold bg-red-500 hover:bg-red-700"
+        >
+          <i class="fa fa-save text-sm"></i>
+          Anular
+        </button>
+      </div>
+    </div>
   </div>
 </div>

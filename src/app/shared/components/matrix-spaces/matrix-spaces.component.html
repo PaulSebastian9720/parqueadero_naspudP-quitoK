@@ -20,9 +20,10 @@
               'bg-yellow-300 hover:bg-yellow-200': space.status === 'BT',
               'bg-gray-50  border border-black' : space.status === 'IN'
             }"
+            (click)="onCLickEmiter(space)"
         >
           <span
-            class="sm:text-sm md:font-medium sm:font-normal w-full text-white bg-gray-600 px-2 my-1 text-center"
+            class="sm:text-xs   w-full text-white bg-gray-600 px-2 my-1 text-center"
           >
             {{ space.status !== 'IN' ? space.location : 'NDP' }}
           </span>
