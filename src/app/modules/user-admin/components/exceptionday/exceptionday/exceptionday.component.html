@@ -1,0 +1,62 @@
+<h2 class="text-lg font-semibold text-center mb-3">
+    Crea una excepción a un día festivo o no laborable
+  </h2>
+  
+  <div class="p-5 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Agregar Excepción</h2>
+  
+    <form (submit)="saveException(); $event.preventDefault()" #exceptionForm="ngForm">
+      <label class="block mb-2 text-gray-700">Día:</label>
+      <input type="date" [(ngModel)]="exceptionDay" name="day" required
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3" />
+  
+      <label class="block mb-2 text-gray-700">Hora de Inicio:</label>
+      <input type="time" [(ngModel)]="startTime" name="startTime" required
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3" />
+  
+      <label class="block mb-2 text-gray-700">Hora de Fin:</label>
+      <input type="time" [(ngModel)]="endTime" name="endTime" required
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"/>
+  
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all">
+        {{ isEditMode ? 'Editar Excepción' : 'Guardar Excepción' }}
+      </button>
+    </form>
+  </div>
+  
+  <!-- Listado de excepciones -->
+  <div class="mt-5 p-5 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Lista de Excepciones</h2>
+  
+    <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+      <thead>
+        <tr class="bg-gray-800 text-white">
+          <th class="p-2">Fecha</th>
+          <th class="p-2">Apertura</th>
+          <th class="p-2">Cierre</th>
+          <th class="p-2">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exception of exceptions; let i = index" class="border-b text-gray-700">
+            <td class="p-2">{{ exception.exceptionDay | date: 'dd/MM' }}</td>
+          <td class="p-2">{{ exception.openingTime | date: 'shortTime' }}</td>
+          <td class="p-2">{{ exception.closingTime | date: 'shortTime' }}</td>
+          <td class="p-2 flex justify-center space-x-2">
+            <button (click)="editException(i)" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" aria-label="Editar">
+              <i class="fa fa-pencil-alt"></i>
+            </button>
+  
+            <button (click)="deleteException(i)" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" aria-label="Eliminar">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <p *ngIf="exceptions.length === 0" class="text-gray-500 text-center mt-3">
+      No hay excepciones registradas.
+    </p>
+  </div>
+  

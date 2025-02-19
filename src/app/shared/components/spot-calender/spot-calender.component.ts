@@ -1,10 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/daygrid';
-import { WorkDayFB } from '../../../core/models/shedule';
+import interactionPlugin from '@fullcalendar/interaction';
 import { Schedule } from '../../../core/interfaces/schedule';
+import { ScheduleService } from '../../services/api/schedules/schedule.service';
 
 @Component({
   selector: 'app-spot-calender',
@@ -18,28 +18,14 @@ export class SpotCalenderComponent implements OnInit {
   calendarOptions!: CalendarOptions;
   currentDate!: Date;
 
+  private scheduleService = inject(ScheduleService);
+
   @Output() sendDateEvevnt = new EventEmitter<Schedule>();
 
-  workDays: WorkDayFB[] = [
-    new WorkDayFB(1, 'R', 'lunes', '08:00', '17:00'),
-    new WorkDayFB(2, 'R', 'martes', '08:00', '17:00'),
-    new WorkDayFB(3, 'R', 'miércoles', '08:00', '17:00'),
-    new WorkDayFB(4, 'R', 'jueves', '08:00', '21:00'),
-    new WorkDayFB(5, 'R', 'viernes', '08:00', '17:00'),
-    new WorkDayFB(6, 'R', 'sábado', '08:00', '12:00'),
-    new WorkDayFB(7, 'R', 'domingo', '07:00', '14:00'),
-    new WorkDayFB(8, 'E', '', '10:00', '14:00', '2025-01-15'),
-    new WorkDayFB(9, 'E', '', '00:00', '00:00', '2025-01-25'),
-    new WorkDayFB(11, 'NO', '', '00:00', '00:00', '2025-01-2'),
-    new WorkDayFB(13, 'E', '', '06:00', '22:30', '2025-01-31'),
-    new WorkDayFB(14, 'E', '', '11:00', '23:59', '2025-01-2'),
-    new WorkDayFB(15, 'E', '', '11:00', '23:59', '2025-01-4'),
-    new WorkDayFB(16, 'NO', '', '00:00', '00:00', '2025-01-10'),
-    new WorkDayFB(17, 'NO', '', '00:00', '00:00', '2025-01-11'),
-    new WorkDayFB(18, 'E', '', '00:00', '00:00', '2025-01-12'),
-  ];
+  workDays: Schedule[] = [];
 
   ngOnInit(): void {
+    this.workDays = this.getSchedule();
     this.currentDate = new Date();
 
     this.calendarOptions = {
@@ -52,15 +38,6 @@ export class SpotCalenderComponent implements OnInit {
         right: 'dayGridMonth',
       },
       plugins: [dayGridPlugin, interactionPlugin],
-      // customButtons: {
-      //   prev: {
-      //     click: () => this.handlePrev(),
-      //   },
-      //   // next: {
-      //   //   // click: () => this.handleNext(),
-      //   // },
-
-      // },
       eventContent: (arg) => {
         return {
           html: createResponsiveEvent(arg.event.title, arg.event.extendedProps['open'], arg.event.extendedProps['close'], arg.event.backgroundColor),
@@ -76,34 +53,47 @@ export class SpotCalenderComponent implements OnInit {
           openingTime: openingTime,
           closingTime: closingTime,
         }
-        console.log(scheduleEvent);
         this.sendDateEvevnt.emit(scheduleEvent);
       },
     };
   }
 
-  handlePrev() {
-    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-    console.log('hola mundo');
-    this.calendarOptions.events = this.generateEventsForMonth(this.currentDate);
-  }
 
-  handleNext() {
-    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-    console.log('hola mundo');
-    console.log(this.currentDate);
-    this.calendarOptions.events = this.generateEventsForMonth(this.currentDate);
+  getSchedule(): Schedule[] {
+    let schedulesList: Schedule[] = [];  
+  
+    this.scheduleService.getAllSchedules().subscribe({
+      next: (schedules: Schedule[]) => {
+        this.workDays = schedules;
+        this.workDays.forEach((schedule: any) => {
+          if (schedule.openingTime) {
+            schedule.openingTime = new Date(schedule.openingTime); 
+          }
+          if (schedule.closingTime) {
+            schedule.closingTime = new Date(schedule.closingTime); 
+          }
+        });
+        schedulesList = this.workDays;  
+        this.updateCalendar();  
+      },
+      error: (error) => {
+        console.error('Error al obtener los horarios:', error);
+      },
+    });
+  
+    return schedulesList;  
   }
-
+  
   generateEventsForMonth(currentMonth: Date) {
+    console.log(this.workDays);
     const startOfMonth = new Date(
       currentMonth.getFullYear(),
-      currentMonth.getMonth(),
+      currentMonth.getMonth() -1,
       1
     );
     const endOfMonth = new Date(
       currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1,
+      currentMonth.getMonth() + 2,
       0
     );
 
@@ -111,71 +101,79 @@ export class SpotCalenderComponent implements OnInit {
     const occupiedDaysSet = new Set<string>();
 
     this.workDays.forEach((workDay) => {
-      if (workDay.state === 'R') return;
-      const eventColor = this.getColorByState(workDay.state);
-      const startDate = new Date(workDay.date!);
-      startDate.setHours(
-        parseInt(workDay.open.split(':')[0]),
-        parseInt(workDay.open.split(':')[1]),
-        0
-      );
+      if (workDay.status === 'R') return;
+      if (workDay.status === 'NW' && workDay.exceptionDay === null) return;
 
-      const endDate = new Date(workDay.date!);
-      endDate.setHours(
-        parseInt(workDay.close.split(':')[0]),
-        parseInt(workDay.close.split(':')[1]),
-        0
-      );
+      
+      console.log('workDayException', workDay);
+      const eventColor = this.getColorByState(workDay.status);
 
-      const eventKey = startDate.toISOString().split('T')[0];
+      const startDate = new Date(workDay.openingTime!);
+      const endDate = new Date(workDay.closingTime!);
+
+      console.log('startDate', startDate);
+      console.log('endDate', endDate);
+      if (!startDate.getTime() || !endDate.getTime()) {
+        console.error('Error: las fechas no son válidas', workDay);
+        return; 
+      }
+
+      const eventKey = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}`;
+
+      console.log('eventKey', eventKey);
       if (!occupiedDaysSet.has(eventKey)) {
         events.push({
-          title: workDay.state === 'E' ? 'EXCEPCIÓN' : 'CERRADO',
+          title: workDay.status === 'E' ? 'FESTIVO' : 'CERRADO',
           start: startDate.toISOString(),
           end: endDate.toISOString(),
           backgroundColor: eventColor,
-          extendedProps: { open: workDay.open, close: workDay.close },
+          extendedProps: { open: workDay.openingTime, close: workDay.closingTime },
         });
         occupiedDaysSet.add(eventKey);
+        console.log('eventKey', eventKey);
       }
     });
 
     this.workDays.forEach((workDay) => {
-      if (workDay.state === 'R') {
-        const eventColor = this.getColorByState(workDay.state);
 
+      if (workDay.status === 'R' || (workDay.status === 'NW' && workDay.exceptionDay === null)) {
+        const eventColor = this.getColorByState(workDay.status);
         for (
           let day = new Date(startOfMonth);
           day <= endOfMonth;
           day.setDate(day.getDate() + 1)
         ) {
           const dayOfWeek = day.toLocaleString('es-ES', { weekday: 'long' });
-          const eventKey = day.toISOString().split('T')[0]; // Clave única para el día
+          const eventKey = day.toISOString().split('T')[0]; 
 
           if (
-            workDay.dayOfWeek === dayOfWeek &&
+            workDay.dayName?.trim() === dayOfWeek &&
             !occupiedDaysSet.has(eventKey)
           ) {
+
             const startDate = new Date(day);
-            startDate.setHours(
-              parseInt(workDay.open.split(':')[0]),
-              parseInt(workDay.open.split(':')[1]),
-              0
-            );
+            if (workDay.openingTime) {
+              const hours = workDay.openingTime.getHours();
+              const minutes = workDay.openingTime.getMinutes();
+              startDate.setHours(hours);
+              startDate.setMinutes(minutes);
+          
+            }
+            
 
             const endDate = new Date(day);
             endDate.setHours(
-              parseInt(workDay.close.split(':')[0]),
-              parseInt(workDay.close.split(':')[1]),
-              0
+              workDay.openingTime?.getHours() ?? 0,  
+              workDay.openingTime?.getMinutes() ?? 0  
             );
+            
 
             events.push({
-              title: 'ABIERTO',
+              title: workDay.status === 'R' ? 'ABIERTO' : 'CERRADO',
               start: startDate.toISOString(),
               end: endDate.toISOString(),
               backgroundColor: eventColor,
-              extendedProps: { open: workDay.open, close: workDay.close },
+              extendedProps: { open: workDay.openingTime, close: workDay.closingTime },
             });
             occupiedDaysSet.add(eventKey);
           }
@@ -186,18 +184,29 @@ export class SpotCalenderComponent implements OnInit {
     return events;
   }
 
-  getColorByState(state: 'R' | 'E' | 'NO'): string {
+  getColorByState(state: 'R' | 'E' | 'NW'): string {
     return state === 'R' ? '#6EC1E4' : state === 'E' ? '#F2A7D2' : '#FFB28C';
+  }
+
+  private updateCalendar(): void {
+    this.calendarOptions.events = this.generateEventsForMonth(this.currentDate);
   }
 }
 
 
 const createResponsiveEvent = (
   title: string,
-  open: string,
-  close: string,
+  open: Date,
+  close: Date,
   backgroundColor: string
-): string => `
+): string => {
+  const formatTime = (date: Date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  return `
   <div 
     class="responsive-container" 
     style="background-color: ${backgroundColor};"
@@ -205,8 +214,7 @@ const createResponsiveEvent = (
     <div class="event-content">
       <strong class="event-title">${title}</strong>
       <div class="event-time-container">
-        <span class="event-time">Abierto: ${open}</span>
-        <span class="event-time">Cerrado: ${close}</span>
+        <span class="event-time">${formatTime(open)} - ${formatTime(close)}</span>
       </div>
       <i class="fa fa-calendar event-icon" aria-hidden="true"></i>
     </div>
@@ -325,3 +333,4 @@ const createResponsiveEvent = (
     }
   </style>
 `;
+};

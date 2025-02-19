@@ -1,10 +1,10 @@
 export class WorkDayFB {
     constructor(
       public id: number,
-      public state: 'R' | 'E' | 'NO', 
-      public dayOfWeek: string,  
-      public open: string,       
-      public close: string,      
+      public status: 'R' | 'E' | 'NW', 
+      public dayName: string,  
+      public openingTime: string,       
+      public closingTime: string,      
       public date?: string       
     ) {}
   }

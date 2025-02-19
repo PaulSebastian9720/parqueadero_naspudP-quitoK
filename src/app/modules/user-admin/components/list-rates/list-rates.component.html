@@ -10,17 +10,17 @@
     </thead>
     <tbody>
       <tr
-        *ngFor="let rateData of dataSource.filteredData"
+        *ngFor="let rate of dataSource.filteredData"
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 text-center"
       >
-        <td class="py-3 px-4">{{ rateData.rateFB.name }}</td>
-        <td class="py-3 px-4">{{ rateData.rateFB.unitRate + " $" }}</td>
+        <td class="py-3 px-4">{{ rate.name }}</td>
+        <td class="py-3 px-4">{{ rate.prize + " $" }}</td>
         <td class="py-3 px-4">
-          {{ getNameSpanish(rateData.rateFB.timeUnit, rateData.rateFB.quantity) }}
+          {{ rate.timeUnit }}
         </td>
         <td class="py-3 px-4 flex justify-center space-x-4">
           <button
-            (click)="getRateDate(rateData)"
+            (click)="getRateDate(rate)"
             class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
           >
             <svg
@@ -39,8 +39,10 @@
             </svg>
             Seleccionar
           </button>
+          <!-- Eliminar botón, si lo habilitas -->
+          <!--
           <button
-            (click)="onClickDeleteRate(rateData)"
+            (click)="onClickDeleteRate(rate)"
             class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
           >
             <svg
@@ -59,6 +61,7 @@
             </svg>
             Eliminar
           </button>
+          -->
         </td>
       </tr>
     </tbody>

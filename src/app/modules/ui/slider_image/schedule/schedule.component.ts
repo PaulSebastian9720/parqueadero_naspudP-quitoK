@@ -30,11 +30,11 @@ export class ScheduleComponent implements OnInit {
     const grouped = new Map<string, { days: string[], open: string, close: string }>();
 
     for (const day of this.listWorkDays) {
-      const key = `${day.open}-${day.close}`;
+      const key = `${day.openingTime}-${day.closingTime}`;
       if (!grouped.has(key)) {
-        grouped.set(key, { days: [], open: day.open, close: day.close })
+        grouped.set(key, { days: [], open: day.openingTime, close: day.closingTime })
       }
-      grouped.get(key)!.days.push(day.dayOfWeek)
+      grouped.get(key)!.days.push(day.dayName)
     }
 
     this.groupedDays = Array.from(grouped.values()).map(group => ({

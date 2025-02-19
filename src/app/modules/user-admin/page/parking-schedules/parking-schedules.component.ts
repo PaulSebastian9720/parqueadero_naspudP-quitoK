@@ -3,8 +3,8 @@ import { EditSchedulesComponent } from '../../components/edit-schedules/edit-sch
 import { ListWorkdayComponent } from '../../../../shared/components/list-workday/list-workday.component';
 import { SpotCalenderComponent } from '../../../../shared/components/spot-calender/spot-calender.component';
 import { CommonModule } from '@angular/common';
-import { WorkDayFB } from '../../../../core/models/shedule';
 import { Schedule } from '../../../../core/interfaces/schedule';
+import { ExceptiondayComponent } from '../../components/exceptionday/exceptionday/exceptionday.component';
 
 @Component({
   selector: 'app-parking-schedules',
@@ -14,6 +14,7 @@ import { Schedule } from '../../../../core/interfaces/schedule';
     ListWorkdayComponent,
     SpotCalenderComponent,
     CommonModule,
+    ExceptiondayComponent,
   ],
   templateUrl: './parking-schedules.component.html',
 })
@@ -24,28 +25,26 @@ export class ParkingSchedulesComponent {
 
   @ViewChild('schedule') listCalendar!: ListWorkdayComponent;
   @ViewChild('calendar') calendar!: SpotCalenderComponent;
+  @ViewChild('editSchedule') editSchedule!: EditSchedulesComponent
+  @ViewChild('exceptionComponent') exceptionComponent!: ExceptiondayComponent;
 
-  container: 'calendar' | 'table' = 'calendar';
+
+  container: 'calendar' | 'table' | 'exception' = 'calendar';
 
   showFormSchedule = false;
+  showFormException = false;
 
   /**
    * Método para actualizar la lista de horarios.
    * Llama al método 'initWorkDayList' del componente 'schedule' para actualizar la lista de horarios de trabajo.
    */
   updateSchedule() {
-    this.listCalendar.initWorkDayList(); // Actualiza la lista de horarios de trabajo
+    this.listCalendar.initWorkDayList(); 
   }
 
-  toggleContainer(container: 'calendar' | 'table') {
+  toggleContainer(container: 'calendar' | 'table' | 'exception') {  
     this.container = container;
   }
-
-
-  toggleShowFormSchedule() {
-    this.showFormSchedule = !this.showFormSchedule;
-  }
-
 
   eventSelectDay( scheduleEvent : Schedule){
     this.schedule = scheduleEvent;

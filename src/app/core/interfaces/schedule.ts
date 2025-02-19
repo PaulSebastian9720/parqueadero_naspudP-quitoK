@@ -4,4 +4,5 @@ export interface  Schedule {
   dayName?: string;
   openingTime?: Date;
   closingTime?: Date;
+  exceptionDay?: Date;
 }
