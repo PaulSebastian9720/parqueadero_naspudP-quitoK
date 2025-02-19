@@ -31,8 +31,14 @@
           {{ container === "table" ? "Horario Estandar" : "" }}
         </h2>
 
-        <app-spot-calender (sendDateEvevnt)="eventSelectDay($event)" *ngIf="container === 'calendar'"
-          #calendar></app-spot-calender>
+        <app-spot-calender 
+  (sendDateEvevnt)="eventSelectDay($event)" 
+  (eventUpdateCalendar)="updateCalendar()" 
+  *ngIf="container === 'calendar'"
+  #calendar>
+</app-spot-calender>
+
+
 
         <app-list-workday *ngIf="container === 'table'" #schedule>
         </app-list-workday>

@@ -17,22 +17,28 @@ export class ShowDealBaseComponent {
   get startDate(): string {
     const dealStartDate = this.dealBase.startDate;
     return dealStartDate
-      ? new Date(dealStartDate).toLocaleDateString('es-ES', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        })
-      : '';
+    ? new Date(dealStartDate).toLocaleString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+  : '';
   }
 
   get endDate(): string {
     const dealEndDate = this.dealBase.endDate;
     return dealEndDate
-      ? new Date(dealEndDate).toLocaleDateString('es-ES', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        })
-      : '??';
+    ? new Date(dealEndDate).toLocaleString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+  : '';
   }
 }

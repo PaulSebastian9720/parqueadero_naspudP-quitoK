@@ -188,7 +188,7 @@ export class SpotCalenderComponent implements OnInit {
     return state === 'R' ? '#6EC1E4' : state === 'E' ? '#F2A7D2' : '#FFB28C';
   }
 
-  private updateCalendar(): void {
+  updateCalendar(): void {
     this.calendarOptions.events = this.generateEventsForMonth(this.currentDate);
   }
 }

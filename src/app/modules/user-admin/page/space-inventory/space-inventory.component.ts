@@ -78,6 +78,7 @@ export class SpaceInventoryComponent {
     this.showSelectRateTickets = false;
     this.rates = [{}];
     const dealBaseId = this.parkingSpace.idDealBase ?? 0;
+
     if (dealBaseId > 0) {
       if (parkingSpace.status === 'BC') {
         this.contractService
@@ -109,6 +110,11 @@ export class SpaceInventoryComponent {
                 .subscribe((userSearch) => {
                   if (userSearch) {
                     this.userSelect = userSearch;
+                    this.dealBase.endDate = new Date();
+                    this.ticketService.calculateTicketPrice('BF93-VZ55').subscribe((ticket) => {
+                      console.log(ticket);
+                      this.dealBase.finalPrice = ticket;
+                    });
                   }
                 });
               this.dealBase = dealBase;

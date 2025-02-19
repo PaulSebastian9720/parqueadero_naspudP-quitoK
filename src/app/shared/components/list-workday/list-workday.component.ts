@@ -11,13 +11,35 @@ import { CommonModule } from '@angular/common';
 })
 export class ListWorkdayComponent implements OnInit {
 
-  
-
   workDays: Schedule[] = [];
   private schedulerService = inject(ScheduleService);
 
+  inicioSemana = new Date();
+  finSemana = new Date();
+
+  
+
   ngOnInit() {
     this.initWorkDayList();
+    this.semanaActual();
+
+  }
+
+  semanaActual() {
+    const hoy = new Date();
+    this.inicioSemana = new Date(hoy);
+    this.inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+    this.inicioSemana.setHours(0, 0, 0, 0);
+    this.finSemana = new Date(this.inicioSemana);
+    this.finSemana.setDate(this.inicioSemana.getDate() + 6);
+  }
+
+  formatearFecha(fecha: Date): string {
+    return fecha.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long'
+    });
   }
 
   initWorkDayList() {
@@ -29,8 +51,6 @@ export class ListWorkdayComponent implements OnInit {
           closingTime: schedule.closingTime ? new Date(schedule.closingTime) : undefined,
         }));
 
-        console.log("workdays",this.workDays);
-
         this.applyExceptions();
         this.sortWorkDaysByName();
       },
@@ -40,9 +60,7 @@ export class ListWorkdayComponent implements OnInit {
 
   applyExceptions() {
     const horariosRegulares = this.workDays.filter(h => h.status === 'R' || h.status === 'NW');
-    console.log("hoRegu",horariosRegulares);
     const excepciones = this.workDays.filter(h => h.status === 'E' && h.openingTime && h.closingTime);
-    console.log("excep",excepciones);
 
     const inicioSemana = new Date();
     inicioSemana.setDate(inicioSemana.getDate() - ((inicioSemana.getDay() + 6) % 7));
@@ -58,9 +76,7 @@ export class ListWorkdayComponent implements OnInit {
         excepcion.openingTime.getTime() >= inicioSemana.getTime() &&
         excepcion.openingTime.getTime() <= finSemana.getTime()
       ) {
-        console.log("entro aqui?")
         const index = horariosRegulares.findIndex(h => h.dayName === excepcion.dayName);
-        console.log("index",index);
 
         if (index !== -1) {
           this.workDays[index].openingTime = excepcion.openingTime;
@@ -69,18 +85,10 @@ export class ListWorkdayComponent implements OnInit {
       }
     });
 
-    console.log("workdays sin Filtrar",this.workDays);
-
-
     this.workDays = this.workDays.filter(h =>
       h.status !== 'E' || (h.openingTime && h.openingTime.getTime() >= inicioSemana.getTime() && h.openingTime.getTime() <= finSemana.getTime())
     );
 
-
-
-
-
-    console.log("workdays Filtrado",this.workDays);
   }
 
   sortWorkDaysByName() {

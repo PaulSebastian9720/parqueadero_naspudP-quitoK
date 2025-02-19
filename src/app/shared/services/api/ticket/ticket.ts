@@ -44,9 +44,9 @@ export class TicketService {
         return this.http.put<ResponseMessage>(query, null);
     }
 
-    calculateTicketPrice(idTicket:number):Observable<Ticket>{
-        const query = `${this.API_ENDPOINT_TICKETS}/price/${idTicket}`
-        return this.http.get<Ticket>(query);
+    calculateTicketPrice(accessToken:string):Observable<number>{
+        const query = `${this.API_ENDPOINT_TICKETS}/${accessToken}/price`
+        return this.http.get<number>(query);
     }
 
 }

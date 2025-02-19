@@ -42,6 +42,10 @@ export class ParkingSchedulesComponent {
     this.listCalendar.initWorkDayList(); 
   }
 
+  updateCalendar() {
+    this.calendar.updateCalendar();
+  }
+
   toggleContainer(container: 'calendar' | 'table' | 'exception') {  
     this.container = container;
   }
