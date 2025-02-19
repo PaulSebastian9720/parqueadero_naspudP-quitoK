@@ -111,7 +111,7 @@ export class SpaceInventoryComponent {
                   if (userSearch) {
                     this.userSelect = userSearch;
                     this.dealBase.endDate = new Date();
-                    this.ticketService.calculateTicketPrice('BF93-VZ55').subscribe((ticket) => {
+                    this.ticketService.calculateTicketPrice((dealBase as any).accessTicket).subscribe((ticket) => {
                       console.log(ticket);
                       this.dealBase.finalPrice = ticket;
                     });

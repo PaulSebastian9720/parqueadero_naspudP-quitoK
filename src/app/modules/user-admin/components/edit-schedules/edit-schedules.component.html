@@ -13,23 +13,11 @@
     <div class="grid grid-cols-1 gap-3 sm:gap-4">
         <!-- Campo: Desde -->
         <div class="flex flex-col">
-            <label for="startDay" class="text-sm font-semibold mb-1">Desde</label>
+            <label for="startDay" class="text-sm font-semibold mb-1">Dia</label>
             <select id="startDay" [(ngModel)]="selectedStartDay"
                 class="border border-gray-300 rounded-lg p-2 w-full text-gray-700">
                 <option value="" disabled selected hidden>Día de inicio</option>
                 <option *ngFor="let day of daysOfWeek" [value]="day">
-                    {{ day }}
-                </option>
-            </select>
-        </div>
-
-        <!-- Campo: Hasta -->
-        <div class="flex flex-col">
-            <label for="endDay" class="text-sm font-semibold mb-1">Hasta</label>
-            <select id="endDay" [(ngModel)]="selectedEndDay"
-                class="border border-gray-300 rounded-lg p-2 w-full text-gray-700">
-                <option value="" disabled selected hidden>Día de fin</option>
-                <option *ngFor="let day of getFilteredEndDays()" [value]="day">
                     {{ day }}
                 </option>
             </select>

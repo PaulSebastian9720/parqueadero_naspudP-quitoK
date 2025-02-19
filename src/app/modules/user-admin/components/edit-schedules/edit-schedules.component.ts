@@ -44,7 +44,80 @@ export class EditSchedulesComponent implements OnChanges{
     return this.daysOfWeek.slice(startIndex);
   }
 
+//   async onCLickSetDasy(){
+//     if(!this.selectedStartDay) {
+//       return 
+//     }
+//     if(!this.selectStartTime || !this.selectEndTime){
+//       return
+//     }
 
+//     if(this.selectStartTime > this.selectEndTime ){
+//       return
+//     }
+
+//     try {
+//       if (this.selectedEndDay) {
+//         const indexStart = this.daysOfWeek.indexOf(this.selectedStartDay);
+//         const indexEnd = this.daysOfWeek.indexOf(this.selectedEndDay);
+//         console.log(indexStart, indexEnd);
+      
+//         // Obtiene la fecha más próxima que cae en el día seleccionado
+//         const currentDate = new Date(); // Fecha actual
+//         // const targetDate = this.getNextDayOfWeek(currentDate, indexStart); // Busca el próximo día correcto
+      
+//         // Combina la fecha correcta con la hora seleccionada
+//         const openingDateTime = new Date(currentDate + 'T' + this.selectStartTime);
+//         openingDateTime.setHours(+this.selectStartTime.split(':')[0], +this.selectStartTime.split(':')[1]);
+      
+//         const closingDateTime = new Date(currentDate + 'T' + this.selectEndTime);
+//         closingDateTime.setHours(+this.selectEndTime.split(':')[0], +this.selectEndTime.split(':')[1]);
+
+//         if (openingDateTime.getHours() === 0 && openingDateTime.getMinutes() === 0 && openingDateTime.getSeconds() === 0 &&
+//     closingDateTime.getHours() === 0 && closingDateTime.getMinutes() === 0 && closingDateTime.getSeconds() === 0) {
+//     console.log('Ambos tiempos son 00:00:00');
+// }
+
+
+//         const workDay: Schedule = {
+//           dayName: this.selectedStartDay.toLowerCase(),
+//           openingTime: openingDateTime,
+//           closingTime: closingDateTime,
+//           status: 'R'
+//         };
+      
+//         console.log(workDay);
+      
+    
+      
+//         // for (let i = indexStart; i < indexEnd + 1; i++){
+//         //   const day = this.daysOfWeek[i]
+//         //   const workDay: WorkDayFB = {
+//         //     dayOfWeek: day,
+//         //     open: this.selectStartTime,
+//         //     close: this.selectEndTime,
+//         //   }
+
+//         //   await this.scheduleService.updateDay(day.toLowerCase(), workDay)
+//         //}
+//       }else {
+//         // const workDay: WorkDayFB = {
+//         //   dayOfWeek: this.selectedStartDay,
+//         //   open: this.selectStartTime,
+//         //   close: this.selectEndTime,
+//         // }
+//         // await this.scheduleService.updateDay(this.selectedStartDay.toLowerCase(), workDay)
+        
+//       }
+//       this.selectEndTime = ""
+//       this.selectStartTime = ""
+//       this.selectedEndDay = ""
+//       this.selectedStartDay = ""
+//       this.notyfyService.notify(`Horario actualizaco`, 'success', 4000)
+
+//       this.eventUpdateSchedule.emit()
+//     }catch(e){}
+//   }
 onClickSetDay() {
   if (!this.selectedStartDay || !this.selectStartTime || !this.selectEndTime) {
     this.handleError('Todos los campos son obligatorios');
@@ -56,37 +129,34 @@ onClickSetDay() {
     return;
   }
 
-  const indexStart = this.daysOfWeek.indexOf(this.selectedStartDay);
-const indexEnd = this.selectedEndDay ? this.daysOfWeek.indexOf(this.selectedEndDay) : indexStart;
+  const idDay = this.daysOfWeek.indexOf(this.selectedStartDay) + 1;
 
-for (let i = indexStart; i <= indexEnd; i++) {
-  const idDay = i + 1;
-  const dayName = this.daysOfWeek[i].toLowerCase();
   const openingDateTime = this.combineDateTime(this.selectStartTime);
   const closingDateTime = this.combineDateTime(this.selectEndTime);
+
   const status = this.isMidnight(openingDateTime) && this.isMidnight(closingDateTime) ? 'NW' : 'R';
 
-  const workDay: Schedule = {
-    idDay,
-    dayName,
-    openingTime: openingDateTime,
-    closingTime: closingDateTime,
-    status,
-  };
+const workDay: Schedule = {
+  idDay,  
+  dayName: this.selectedStartDay.toLowerCase(),
+  openingTime: openingDateTime,
+  closingTime: closingDateTime,
+  status, 
+};
+
 
   console.log('Horario actualizado:', workDay);
 
   this.scheduleService.updateSchedule(workDay).subscribe(
     () => {
+      this.clearForm();
       this.handleSuccess(`Horario actualizado con éxito (ID: ${idDay ?? 'Nuevo'})`);
-      this.eventUpdateSchedule.emit();
+      this.eventUpdateSchedule.emit(); 
     },
     () => {
       this.handleError('Error al actualizar el horario');
     }
   );
-}
-
 }
 
 
