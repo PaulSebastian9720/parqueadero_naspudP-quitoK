@@ -115,7 +115,6 @@ export class RentSpaceComponent implements OnInit {
 
   clearnCamps() {
     this.isAutoRenewable = false;
-    this.automobile = {};
     this.parkingSpace = {};
   }
 
@@ -194,6 +193,7 @@ export class RentSpaceComponent implements OnInit {
                     2250
                   );
                   this.clearnCamps();
+                  this.parkingSpaceMap.initParkingLotService()
                 }
               },
               (error) => {

@@ -1,76 +1,33 @@
-<div class="overflow-x-auto w-full mb-6 flex flex-col shadow-lg">
-  <table class="min-w-full shadow-sm text-sm">
+<div class="mat-elevation-z8 overflow-x-auto w-full mb-6 shadow-lg rounded-sm">
+  <table class="w-full table-auto sm:text-sm">
     <thead class="bg-gray-900 text-white">
       <tr>
-        <th class="py-3 px-4 text-center">Nombre</th>
-        <th class="py-3 px-4 text-center">Tarifa</th>
-        <th class="py-3 px-4 text-center">Tiempo</th>
-        <th class="py-3 px-4 text-center">Acciones</th>
+        <th class="py-3 px-4 text-left">Nombre</th>
+        <th class="py-3 px-4 text-left">Tarifa</th>
+        <th class="py-3 px-4 text-left">Tiempo</th>
+        <th class="py-3 px-4 text-left">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr
-        *ngFor="let rate of dataSource.filteredData"
+        *ngFor="let rate of listRate"
         class="even:bg-gray-100 hover:bg-blue-50 transition-colors duration-300 text-center"
       >
-        <td class="py-3 px-4">{{ rate.name }}</td>
-        <td class="py-3 px-4">{{ rate.prize + " $" }}</td>
-        <td class="py-3 px-4">
+        <td class="py-2 px-4 text-left">{{ rate.name }}</td>
+        <td class="py-2 px-4 text-left">{{ rate.prize + " $" }}</td>
+        <td class="py-2 px-4 text-left">
           {{ rate.timeUnit }}
         </td>
-        <td class="py-3 px-4 flex justify-center space-x-4">
+        <td class="py-2 px-4 text-left flex justify-center space-x-4">
           <button
             (click)="getRateDate(rate)"
             class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            Seleccionar
+            <i class="fas fa-sync-alt"></i>
+            Actualizar
           </button>
-          <!-- Eliminar botón, si lo habilitas -->
-          <!--
-          <button
-            (click)="onClickDeleteRate(rate)"
-            class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            Eliminar
-          </button>
-          -->
         </td>
       </tr>
     </tbody>
   </table>
-
-  <!-- Paginador -->
-  <mat-paginator 
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons
-    class="mt-4"
-  ></mat-paginator>
 </div>

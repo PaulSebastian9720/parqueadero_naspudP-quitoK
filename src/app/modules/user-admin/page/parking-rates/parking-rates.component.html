@@ -1,29 +1,5 @@
 <div class="overflow-x-auto flex flex-col p-6 lg:p-10 space-y-8 mb-7">
-  <app-header-service 
-    titlePage="Gestiona y actualiza las tarifas de tus clientes"
-    description="Utiliza esta página para crear, modificar y organizar las tarifas aplicables a tus clientes, manteniendo la información siempre actualizada.">
-  </app-header-service>
-
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
-    <div class="p-6 shadow-md rounded-lg bg-white">
-      <div class="mt-4">
-        <app-edit-rate
-          [rateData]="rateData"
-          (eventUpdateRates)="updateRates()">
-        </app-edit-rate>
-      </div>
-    </div>
-
-    <div class="p-6 shadow-md rounded-lg bg-white">
-      <h2 class="text-xl lg:text-2xl font-semibold mb-4 text-center">
-        Lista de Tarifas Actuales
-      </h2>
-      <div class="mt-4">
-        <app-list-rates
-          #tableRates
-          (eventGetRateDate)="getRateData($event)">
-        </app-list-rates>
-      </div>
-    </div>
+  <div class="mt-4">
+    <app-list-rates> </app-list-rates>
   </div>
 </div>

@@ -4,7 +4,7 @@ import { SpaceInventoryComponent } from "./page/space-inventory/space-inventory.
 import { ContractManagementComponent } from "./page/contract-management/contract-management.component";
 import { ParkingSchedulesComponent } from "./page/parking-schedules/parking-schedules.component";
 import { ParkingRatesComponent } from "./page/parking-rates/parking-rates.component";
-import { AdminMailComponent } from "./page/admin-mail/admin-mail.component";
+import { ListAllDealComponent } from "./page/list-all-deal/list-all-deal.component";
 
 export default [
     {
@@ -28,4 +28,8 @@ export default [
         path: "parking-rates",
         component: ParkingRatesComponent
     },
+    {
+        path: "all-contracts-tickets",
+        component: ListAllDealComponent
+    }
 ] as Routes
