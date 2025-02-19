@@ -25,7 +25,7 @@ export class MatrixSpacesComponent implements OnInit {
    * Método que se ejecuta cuando el componente se inicializa.
    * Llama a 'initParkingLotService' para obtener la matriz de espacios de estacionamiento.
    */
-  ngOnInit(){
+  ngOnInit() {
     this.initParkingLotService();
   }
 
@@ -37,7 +37,6 @@ export class MatrixSpacesComponent implements OnInit {
   getRowHeader(i: number): string {
     return String.fromCharCode(65 + i); // Convierte el índice en un carácter ASCII (letra)
   }
-  
 
   /**
    * Método que obtiene la matriz de espacios de estacionamiento desde el servicio.
@@ -45,7 +44,7 @@ export class MatrixSpacesComponent implements OnInit {
    */
   initParkingLotService() {
     this.pSpaceService.getAllSpaces().subscribe((spaces) => {
-      if(spaces){
+      if (spaces) {
         this.matrizSpaces = buildMatrix(spaces);
         this.isLoading = false;
         this.matrizSpacesFilter = this.getListWithFilter();
@@ -58,7 +57,7 @@ export class MatrixSpacesComponent implements OnInit {
    * @param spaceData - Los datos del espacio seleccionado
    */
   onCLickEmiter(parkingSpace: ParkingSpace) {
-    if(parkingSpace.status === 'IN') return
+    if (parkingSpace.status === 'IN') return;
     this.eventEmitrSpace.emit(parkingSpace);
   }
 
@@ -80,30 +79,26 @@ export class MatrixSpacesComponent implements OnInit {
       return [];
     }
 
-    const matrizFilter: ParkingSpace [][] = []; 
+    const matrizFilter: ParkingSpace[][] = [];
     this.matrizSpaces.forEach((row) => {
-      const rowData: ParkingSpace [] = []; 
+      const rowData: ParkingSpace[] = [];
       row.forEach((space) => {
         if (space.status !== 'IN') {
           rowData.push(space);
         }
       });
-      matrizFilter.push(rowData); 
+      matrizFilter.push(rowData);
     });
 
-    return matrizFilter; 
+    return matrizFilter;
   }
 
   getListWithFilter() {
     let listAux: ParkingSpace[][] = this.matrizSpaces;
 
-    
-
     if (this.selectWorld !== '') {
       listAux = listAux
-        .map((row) =>
-          row.filter((space) => space.status === this.selectWorld)
-        )
+        .map((row) => row.filter((space) => space.status === this.selectWorld))
         .filter((row) => row.length > 0);
     }
 
@@ -112,19 +107,28 @@ export class MatrixSpacesComponent implements OnInit {
         .map((row) =>
           row.filter(
             (space) =>
-              space.location!
-                .toLowerCase()
-                .includes(this.wordFilter.toLowerCase()      
+              space
+                .location!.toLowerCase()
+                .includes(this.wordFilter.toLowerCase()) ||
+              space
+                .documentID?.toLowerCase()
+                .includes(this.wordFilter.toLowerCase()) ||
+              space
+                .licensePlate?.toLowerCase()
+                .includes(this.wordFilter.toLowerCase()
               )
           )
         )
         .filter((row) => row.length > 0);
     }
 
-    return  sortMatrixRows(listAux);
+    return sortMatrixRows(listAux);
   }
 
-  filterPerWorld(selectWorld: 'FR' | 'BC' | 'BT' | 'IN' | '' = '', filterWorld: string) {
+  filterPerWorld(
+    selectWorld: 'FR' | 'BC' | 'BT' | 'IN' | '' = '',
+    filterWorld: string
+  ) {
     this.selectWorld = selectWorld;
     this.wordFilter = filterWorld;
 
@@ -141,10 +145,10 @@ function sortMatrixRows(matrix: ParkingSpace[][]): ParkingSpace[][] {
       const matchB = b.location!.match(regex);
 
       if (matchA && matchB) {
-        const prefixA = matchA[1]; 
-        const prefixB = matchB[1]; 
-        const numA = parseInt(matchA[2], 10); 
-        const numB = parseInt(matchB[2], 10); 
+        const prefixA = matchA[1];
+        const prefixB = matchB[1];
+        const numA = parseInt(matchA[2], 10);
+        const numB = parseInt(matchB[2], 10);
 
         const prefixSort = prefixA.localeCompare(prefixB);
         if (prefixSort !== 0) return prefixSort;
@@ -157,18 +161,18 @@ function sortMatrixRows(matrix: ParkingSpace[][]): ParkingSpace[][] {
   };
 
   // Ordenar cada fila de la matriz
-  return matrix.map(row => sortRow(row));
+  return matrix.map((row) => sortRow(row));
 }
 
-function buildMatrix(spacesList :ParkingSpace []): ParkingSpace[][] {
+function buildMatrix(spacesList: ParkingSpace[]): ParkingSpace[][] {
   const matrix: ParkingSpace[][] = [];
-  const map :{[key:string]: ParkingSpace[]} = {}
+  const map: { [key: string]: ParkingSpace[] } = {};
 
-  spacesList.forEach(space => {
+  spacesList.forEach((space) => {
     const key = space.location!!.split('-')[0];
     if (!map[key]) map[key] = [];
     map[key].push(space);
-  })
+  });
 
   for (const key in map) {
     if (map.hasOwnProperty(key)) {
@@ -176,5 +180,5 @@ function buildMatrix(spacesList :ParkingSpace []): ParkingSpace[][] {
     }
   }
 
-  return matrix
+  return matrix;
 }
