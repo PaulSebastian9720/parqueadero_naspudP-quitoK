@@ -46,8 +46,8 @@
           <h2 class="text-lg font-semibold mb-2">Unica Tarifa Asignable</h2>
           <app-select-rate
             #appSelectRate
-            [showSelect]="false"
-            [rateSelect]="rateDefect"
+            (eventRate)="reciveRate($event)"   
+            [showSelect]="true" 
             ></app-select-rate>
           <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-2 my-4">
             <div>
@@ -72,11 +72,12 @@
                 readonly
               />
             </div>
-            <div>
+            <div *ngIf="rateDefect.timeUnit === '1_month'">
               <label class="block text-sm font-medium text-gray-700"
                 >Auto Renovar</label
               >
-              <button
+              <button  
+              
                 (click)="toggleAutoRenew()"
                 [ngClass]="{
                   'bg-green-500': isAutoRenewable,

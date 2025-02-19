@@ -27,7 +27,7 @@ export class SelectRateComponent implements OnInit {
   initRates(){
     this.rateService.getAllRates().subscribe(rates => { 
       if(this.filterMonths){
-        this.listRate = rates.filter(rate => rate.timeUnit === '1_month')
+        this.listRate = rates.filter(rate => rate.timeUnit === '1_month' || rate.timeUnit === '1_day' || rate.timeUnit === '1_night')
       } else {
         this.listRate = rates.filter(rate => rate.timeUnit !== '1_month')
 

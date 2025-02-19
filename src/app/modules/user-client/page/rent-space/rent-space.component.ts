@@ -63,6 +63,10 @@ export class RentSpaceComponent implements OnInit {
     });
   }
 
+  reciveRate(rate: Rate) {
+    this.rateDefect = rate;
+  }
+
   toggleAutoRenew() {
     this.isAutoRenewable = !this.isAutoRenewable;
   }
