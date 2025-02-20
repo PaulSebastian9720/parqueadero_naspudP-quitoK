@@ -34,8 +34,14 @@
 
     <ng-container *ngIf="viewPage === '/viewContracts'">
       <div class="overflow-x-auto w-full mb-6">
-        <app-table-contract [dealList]="contractList"> </app-table-contract>
-        <app-table-contract [dealList]="ticketList"> </app-table-contract>
+        <app-table-contract 
+          [dealType]="'contract'"
+          [dealList]="contractList">
+         </app-table-contract>
+        <app-table-contract 
+          [dealType]="'tickect'"
+          [dealList]="ticketList"> 
+        </app-table-contract>
       </div>
     </ng-container>
   </div>

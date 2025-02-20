@@ -49,4 +49,9 @@ export class TicketService {
         return this.http.get<number>(query);
     }
 
+    updateEndTicket(accessTicket: string):Observable<ResponseMessage>{
+        const query = `${this.API_ENDPOINT_TICKETS}/${accessTicket}/end-ticket`
+        return this.http.put<ResponseMessage>(query, null)
+    }
+
 }

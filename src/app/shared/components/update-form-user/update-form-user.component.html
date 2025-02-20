@@ -2,121 +2,177 @@
   <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
     <div class="space-y-4 mt-8 md:w-[450px]">
       <div class="mb-4">
-        <label for="name" class="block text-gray-500 font-semibold mb-2">Nombre</label>
-        <input 
+        <label for="name" class="block text-gray-500 font-semibold mb-2"
+          >Nombre</label
+        >
+        <input
           id="name"
-          type="text" 
-          formControlName="name" 
-          class="w-full mt-1 p-3 border  focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-          placeholder="Tu nombre"
+          type="text"
+          formControlName="name"
+          class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{
+            'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+              !isEditing,
+            'border-gray-500': isEditing
+          }"
+          placeholder="Nombre"
           [readonly]="!isEditing"
         />
-        <small *ngIf="isRequired('name')" class="text-red-500">Este campo es requerido.</small>
-        <small *ngIf="isShortParameter('name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isRequired('name')" class="text-red-500"
+          >Este campo es requerido.</small
+        >
+        <small *ngIf="isShortParameter('name')" class="text-red-500"
+          >Se necesita por lo menos 3 caracteres</small
+        >
       </div>
-      
+
       <div class="mb-4">
-        <label for="lastName" class="block text-gray-600 font-semibold mb-2">Apellido</label>
-        <input 
+        <label for="lastName" class="block text-gray-600 font-semibold mb-2"
+          >Apellido</label
+        >
+        <input
           id="lastName"
-          type="text" 
+          type="text"
           formControlName="lastName"
           [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-
-          placeholder="Tu apellido"
+          class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+          [ngClass]="{
+            'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+              !isEditing,
+            'border-gray-500': isEditing
+          }"
+          placeholder="Apellido"
+        />
+        <small *ngIf="isRequired('last_name')" class="text-red-500"
+          >Este campo es requerido.</small
         >
-        <small *ngIf="isRequired('last_name')" class="text-red-500">Este campo es requerido.</small>
-        <small *ngIf="isShortParameter('last_name')" class="text-red-500">Se necesita por lo menos 3 caracteres</small>
+        <small *ngIf="isShortParameter('last_name')" class="text-red-500"
+          >Se necesita por lo menos 3 caracteres</small
+        >
       </div>
 
       <div class="mb-4">
-        <label for="correo" class="block text-gray-500 font-semibold mb-2">Correo principal</label>
-        <input 
+        <label for="correo" class="block text-gray-500 font-semibold mb-2"
+          >Correo principal</label
+        >
+        <input
           id="mail"
-          type="email" 
+          type="email"
           formControlName="mail"
-          [readonly]="true" 
-          class="w-full mt-1 p-3 border bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed500" 
+          [readonly]="!isEditingMail"
+          class="w-full mt-1 p-3 border bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed500"
           placeholder="example@gmail.com"
-        >   
-      </div>
-
-      <label class="block text-center text-gray-500 font-semibold mb-2">Opcionales</label>
-      
-      <div class="mb-4">
-        <label for="correoO" class="block text-gray-500 font-semibold mb-2">Correo Secundario</label>
-        <input 
-          id="mailS"
-          type="email" 
-          formControlName="mailS"
-          [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-          placeholder="example@gmail.com"
-        >   
-      </div>
-
-      <div class="mb-4">
-        <label for="direccion" class="block text-gray-500 font-semibold mb-2">Dirección</label>
-        <input 
-          id="location"
-          type="text" 
-          formControlName="location"
-          [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-
-          placeholder="Tu dirección"
         />
       </div>
-
-      <div class="mb-4">
-        <label for="documentID" class="block text-gray-500 font-semibold mb-2">Documento de Identidad</label>
-        <input 
-          id="documentID"
-          type="text" 
-          formControlName="documentID"
-          [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-          placeholder="Documento de ID"
-        />
-      </div>
-
-      <div class="mb-4">
-        <label for="phone" class="block text-gray-500 font-semibold mb-2">Número de teléfono</label>
-        <input 
-          id="phone"
-          type="text" 
-          formControlName="phone"
-          [readonly]="!isEditing"
-          class="w-full mt-1 p-3 border   focus:ring focus:ring-indigo-300 focus:border-indigo-500" 
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
-          placeholder="Número de teléfono"
-        />
-        <small *ngIf="isNotNumber()" class="text-red-500">Se necesita por lo menos 10 caracteres</small>
-      </div>
-
-      <div class="mb-4">
-        <label for="birthday" class="block text-gray-500 font-semibold mb-2">Fecha de nacimiento</label>
-        <input 
-          id="birthday" 
-          type="date"
-          [readonly]="!isEditing"
-          formControlName="birthday" 
-          class="w-full mt-1 p-3 border  focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          [ngClass]="{'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':!isEditing, 'border-gray-500':isEditing}"
+      <ng-container *ngIf="showOptionals">
+        <label class="block text-center text-gray-500 font-semibold mb-2"
+          >Opcionales</label
         >
-      </div>
+
+        <div class="mb-4">
+          <label for="correoO" class="block text-gray-500 font-semibold mb-2"
+            >Correo Secundario</label
+          >
+          <input
+            id="mailS"
+            type="email"
+            formControlName="mailS"
+            [readonly]="!isEditing"
+            class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+            [ngClass]="{
+              'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+                !isEditing,
+              'border-gray-500': isEditing
+            }"
+            placeholder="example@gmail.com"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="direccion" class="block text-gray-500 font-semibold mb-2"
+            >Dirección</label
+          >
+          <input
+            id="location"
+            type="text"
+            formControlName="location"
+            [readonly]="!isEditing"
+            class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+            [ngClass]="{
+              'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+                !isEditing,
+              'border-gray-500': isEditing
+            }"
+            placeholder="Dirección"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="documentID" class="block text-gray-500 font-semibold mb-2"
+            >Documento de Identidad</label
+          >
+          <input
+            id="documentID"
+            type="text"
+            formControlName="documentID"
+            [readonly]="!isEditing"
+            class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+            [ngClass]="{
+              'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+                !isEditing,
+              'border-gray-500': isEditing
+            }"
+            placeholder="Documento de ID"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="phone" class="block text-gray-500 font-semibold mb-2"
+            >Número de teléfono</label
+          >
+          <input
+            id="phone"
+            type="text"
+            formControlName="phone"
+            [readonly]="!isEditing"
+            class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+            [ngClass]="{
+              'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+                !isEditing,
+              'border-gray-500': isEditing
+            }"
+            placeholder="Número de teléfono"
+          />
+          <small *ngIf="isNotNumber()" class="text-red-500"
+            >Se necesita por lo menos 10 caracteres</small
+          >
+        </div>
+
+        <div class="mb-4">
+          <label for="birthday" class="block text-gray-500 font-semibold mb-2"
+            >Fecha de nacimiento</label
+          >
+          <input
+            id="birthday"
+            type="date"
+            [readonly]="!isEditing"
+            formControlName="birthday"
+            class="w-full mt-1 p-3 border focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+            [ngClass]="{
+              'bg-slate-100 border-gray-300 text-gray-600 cursor-not-allowed':
+                !isEditing,
+              'border-gray-500': isEditing
+            }"
+          />
+        </div>
+      </ng-container>
     </div>
 
-    <button 
-      type="submit" 
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 my-2">
-      Actualizar
+    <button
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 my-2"
+    >
+      {{ messageButton }}
     </button>
   </form>
 </div>

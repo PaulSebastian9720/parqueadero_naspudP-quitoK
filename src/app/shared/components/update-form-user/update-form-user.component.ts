@@ -33,7 +33,10 @@ import { User, UserForm } from '../../../core/interfaces/person';
 export class UpdateFormUserComponent implements OnInit, OnChanges {
   registerForm!: FormGroup;
 
-  @Input() user!: User;
+  @Input() showOptionals: boolean = true;
+  @Input() messageButton = "Actualizar"
+  @Input() user: User = {};
+  @Input() isEditingMail = true
   @Input() isEditing: boolean = false;
   @Output() sendUser = new EventEmitter<User>();
 

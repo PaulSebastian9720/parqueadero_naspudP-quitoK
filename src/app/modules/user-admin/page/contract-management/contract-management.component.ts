@@ -134,7 +134,7 @@ export class ContractManagementComponent {
     const question =
       this.page === '/contract'
         ? `¿Estás seguro de registrar el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`
-        : `¿Estás seguro de registrar el contrato en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`;
+        : `¿Estás seguro de registrar el ticket en ${this.spaceSelect.location} para ${this.userSelect?.name} ?`;
     this.dialogConfirmService
       .confirm({
         title: 'Nueva Reserva en el Parking',
@@ -187,8 +187,9 @@ export class ContractManagementComponent {
                     'success',
                     2250
                   );
-                  this.clearnCamps();
                   this.updateMap();
+                  this.clearnCamps();
+
                 }
               },
               (error) => {

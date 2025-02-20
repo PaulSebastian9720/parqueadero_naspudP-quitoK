@@ -2,15 +2,12 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
-  inject,
   OnInit,
   Output,
   ViewChild,
-  AfterViewInit,
 } from '@angular/core';
 import { NotificationService } from '../../../../shared/services/dialog/notificaion.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { RateService } from '../../../../shared/services/api/rate/rate.service';
 import { Rate } from '../../../../core/interfaces/rate';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,7 +27,6 @@ export class ListRatesComponent implements OnInit {
 
   constructor(
     private ratesService: RateService,
-    private notyfyService: NotificationService,
     private dialog: MatDialog
   ) {}
 

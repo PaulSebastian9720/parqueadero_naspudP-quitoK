@@ -2,7 +2,7 @@ import { DealBase } from "./dealBase";
 import { Rate } from "./rate";
 
 export interface Ticket extends DealBase  {
-    tyoe: 'tickect', 
+    accessTicket: string, 
     rates: Rate[];
 
 }

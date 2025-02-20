@@ -19,6 +19,8 @@ export class ListAllDealComponent implements OnInit {
   selectDealBase: string = '';
   selectByDay: string = '';
   selectByStatus: string = '';
+    tableTypeDeal :  'contract' | 'tickect' = 'contract';
+
 
   constructor(
     private contractService: ContractService,
@@ -36,11 +38,13 @@ export class ListAllDealComponent implements OnInit {
     this.dealBaseList = [];
     this.dealBaseFilter = [];
     if (this.selectDealBase === 'CNT') {
+      this.tableTypeDeal = 'contract'
       this.contractService.getAllContracts().subscribe((contracts) => {
         this.dealBaseList = contracts;
         this.dealBaseFilter = contracts;
       });
     } else {
+      this.tableTypeDeal = 'tickect'
       this.ticketService.getAllTickets().subscribe((tickets) => {
         this.dealBaseList = tickets;
         this.dealBaseFilter = tickets;

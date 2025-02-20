@@ -19,11 +19,11 @@ export class AuthService  {
     this._isAuthenticated.next(!!this.jwt.getToken());
   }
 
-  signUp(register: AuthRequest): Observable<AuthResponse | null> {
+  signUp(register: AuthRequest): Observable<AuthResponse> {
     return this.http.post(
       `${this.API_ENDPOINT_AUTH}/sign-up`,
       register
-    ) as Observable<AuthResponse | null>;
+    ) as Observable<AuthResponse>;
   }
 
   signIn(credentials : { credentials: Credential}): Observable<AuthResponse | null> {
@@ -34,11 +34,11 @@ export class AuthService  {
   }
 
   setToken(token: Jwt) {
-    this.jwt.setToken(token);
+    this.jwt.setToken(token.token);
     this._isAuthenticated.next(true);
   }
 
-  getToken(): Jwt | null {
+  getToken(): string {
     return this.jwt.getToken();
   }
 

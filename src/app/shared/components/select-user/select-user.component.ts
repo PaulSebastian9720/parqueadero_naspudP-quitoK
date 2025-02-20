@@ -11,6 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../core/interfaces/person';
 import { UserService } from '../../services/api/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateFormUserComponent } from '../update-form-user/update-form-user.component';
+import { NotificationService } from '../../services/dialog/notificaion.service';
 
 @Component({
   selector: 'app-select-user',
@@ -22,14 +25,41 @@ export class SelectUserComponent implements OnInit {
   selectedUser: string = '';
   listAllUser: User[] = []; // Lista completa de usuarios obtenida desde el servicio
   wordFilter: string = '';
-  @Input() showSelectUser : boolean = true
+  @Input() showSelectUser: boolean = true;
   @Input() showInformation: boolean = true;
   @Input() userSelect: User = {};
   @Input() filterList: boolean = false;
   @Output() userEventEmitter = new EventEmitter<User>();
-  
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private matDialogService: MatDialog,
+    private notiticationService: NotificationService
+  ) {}
+
+
+  addNewUser() {
+    const dialogRef = this.matDialogService.open(UpdateFormUserComponent);
+    const instance = dialogRef.componentInstance;
+    instance.isEditingMail = true;
+    instance.isEditing = true;
+    instance.showOptionals = false
+    instance.messageButton = 'Registrar';
+    instance.sendUser.subscribe((user) => {
+      this.userService.insertUser(user).subscribe(
+        (response) => {
+          if (response) {
+            this.initListUsers();
+            this.notiticationService.notify(response.message, 'success', 2250);
+            this.matDialogService.closeAll()
+          }
+        },
+        (error) => {
+          this.notiticationService.notify(error.error, 'error', 2250);
+        }
+      );
+    });
+  }
 
   /**
    * Método que se ejecuta cuando el componente se inicializa.
@@ -37,7 +67,6 @@ export class SelectUserComponent implements OnInit {
    */
   ngOnInit() {
     this.initListUsers();
-
   }
 
   toggleInformation() {

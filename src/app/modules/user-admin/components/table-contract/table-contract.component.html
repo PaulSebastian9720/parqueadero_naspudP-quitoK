@@ -8,6 +8,9 @@
         <th class="py-3 px-4 text-left">Fecha de Inicio</th>
         <th class="py-3 px-4 text-left">Fecha Final</th>
         <th class="py-3 px-4 text-left">Final Price</th>
+        <th class="py-3 px-4 text-left">
+          {{ dealType === "contract" ? "Renobable" : "Codigo de Ticket" }}
+        </th>
         <th class="py-3 px-4 text-left"></th>
         <!-- Para alinear con <tbody> -->
       </tr>
@@ -25,7 +28,7 @@
               'bg-yellow-500': contract.status === 'WT',
               'bg-red-500': contract.status === 'CL',
             }"
-            class="inline-block text-center text-white rounded-lg px-2  min-w-16"
+            class="inline-block text-center text-white rounded-lg px-2 min-w-16"
           >
             {{ showMenssageState(contract.status ?? "") }}
           </span>
@@ -45,8 +48,10 @@
         <td class="py-2 px-4 text-left">
           {{ contract.finalPrice | currency : "USD" : "symbol" }}
         </td>
+        <td class="py-2 px-4 text-left">
+          {{dealBase(contract)}}
+        </td>
         <td class="py-2 px-4 text-left"></td>
-        <!-- Asegura alineación con <th> -->
       </tr>
     </tbody>
   </table>

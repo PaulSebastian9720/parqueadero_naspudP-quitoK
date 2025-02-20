@@ -21,6 +21,7 @@ import { ContractService } from '../../../../shared/services/api/contract/contra
 import { UserService } from '../../../../shared/services/api/user/user.service';
 import { DialogService } from '../../../../shared/services/dialog/dialogconfirm.service';
 import { TicketService } from '../../../../shared/services/api/ticket/ticket';
+import { Ticket } from '../../../../core/interfaces/ticket';
 
 @Component({
   selector: 'app-space-inventory',
@@ -43,7 +44,7 @@ export class SpaceInventoryComponent {
   selectWorld: 'FR' | 'BC' | 'BT' | 'IN' | '' = '';
   userSelect: User = {};
   automobileSelect: Automobile = {};
-  rates: Rate[] = [{}];
+  rate: Rate = {};
   showSelectRateTickets: boolean = false;
   parkingSpace: ParkingSpace = {};
   dealBase: DealBase = {};
@@ -75,12 +76,12 @@ export class SpaceInventoryComponent {
    */
   editSpot(parkingSpace: ParkingSpace): void {
     this.parkingSpace = parkingSpace;
-    this.showSelectRateTickets = false;
-    this.rates = [{}];
+    this.rate = {};
     const dealBaseId = this.parkingSpace.idDealBase ?? 0;
 
     if (dealBaseId > 0) {
       if (parkingSpace.status === 'BC') {
+        this.showSelectRateTickets = true;
         this.contractService
           .getOneContractById(dealBaseId)
           .subscribe((dealBase) => {
@@ -96,11 +97,12 @@ export class SpaceInventoryComponent {
               this.automobileSelect = dealBase.automobile!;
               this.dealBase = dealBase;
               if ('rate' in dealBase) {
-                this.rates = [dealBase.rate];
+                this.rate = dealBase.rate!;
               }
             }
           });
       } else {
+        this.showSelectRateTickets = false;
         this.ticketService
           .getOneTicketByIdTicket(dealBaseId)
           .subscribe((dealBase) => {
@@ -111,17 +113,17 @@ export class SpaceInventoryComponent {
                   if (userSearch) {
                     this.userSelect = userSearch;
                     this.dealBase.endDate = new Date();
-                    this.ticketService.calculateTicketPrice((dealBase as any).accessTicket).subscribe((ticket) => {
-                      console.log(ticket);
-                      this.dealBase.finalPrice = ticket;
-                    });
+                    this.ticketService
+                      .calculateTicketPrice((dealBase as any).accessTicket)
+                      .subscribe((ticket) => {
+                        this.dealBase.finalPrice = ticket;
+                      });
                   }
                 });
               this.dealBase = dealBase;
               this.automobileSelect = dealBase.automobile!;
               this.dealBase = dealBase;
-              this.rates = [];
-              this.validatorIsDealBaseTicket();
+              this.rate = {};
             }
           });
       }
@@ -129,7 +131,7 @@ export class SpaceInventoryComponent {
       this.userSelect = {};
       this.automobileSelect = {};
       this.dealBase = {};
-      this.rates = [{}];
+      this.rate = {};
     }
   }
 
@@ -207,28 +209,43 @@ export class SpaceInventoryComponent {
     const idDealBase = this.dealBase.idDeal ?? 0;
     if (idDealBase < 0) return;
 
+    const showMessage =
+      this.parkingSpace.status === 'BC'
+        ? '¿Seguro de Finalizar el contrato?'
+        : 'Fincalización de renata de Espacio ¿Continuar?';
+
     this.dialgoConfirm
       .confirm({
         title: 'Confirmar acción',
-        question: '¿Segura de Finalizar el contrato?',
+        question: showMessage,
         highlight: 'Finalización',
         icon: 'fa fa-question-circle',
       })
       .then((confirm) => {
         if (confirm) {
-          this.contractService
-            .updateEndContract(idDealBase)
-            .subscribe((data) => {
-              this.notyfyService.notify(data.message, 'info', 2250);
-              this.clearCamps();
-              this.reloadParkingLot();
-            });
+          if (this.parkingSpace.status === 'BC') {
+            this.contractService
+              .updateEndContract(idDealBase)
+              .subscribe((data) => {
+                this.notyfyService.notify(data.message, 'info', 2250);
+                this.clearCamps();
+                this.reloadParkingLot();
+              });
+          } else {
+            this.ticketService
+              .updateEndTicket((this.dealBase as Ticket).accessTicket)
+              .subscribe((data) => {
+                this.notyfyService.notify(data.message, 'info', 2250);
+                this.clearCamps();
+                this.reloadParkingLot();
+              });
+          }
         }
       });
   }
 
   onDisableContract() {
-    console.log(this.dealBase)
+    console.log(this.dealBase);
     if (this.dealBase.status !== 'AC') {
       this.notyfyService.notify(
         'Solo puede finalizar un contrato activo',
@@ -268,7 +285,6 @@ export class SpaceInventoryComponent {
                 this.notyfyService.notify(data.message, 'info', 2250);
                 this.clearCamps();
                 this.reloadParkingLot();
-                this.validatorIsDealBaseTicket()
               });
           }
         }
@@ -279,49 +295,8 @@ export class SpaceInventoryComponent {
     this.userSelect = {};
     this.automobileSelect = {};
     this.dealBase = {};
-    this.rates = [];
+    this.rate = {};
     this.parkingSpace = {};
     this.dealBase = {};
-  }
-
-  reciveRate(rateRecive: Rate) {
-    this.validatorIsDealBaseTicket();
-    if (rateRecive.timeUnit === '1_day' || rateRecive.timeUnit === '1_night') {
-      this.rates = [rateRecive];
-      return;
-    }
-    const rateFound = this.rates.find(
-      (rate) => rate.idRate == rateRecive.idRate
-    );
-    if (rateFound) {
-      this.notyfyService.notify(
-        'Ya tienes este rate agregado',
-        'warning',
-        2250
-      );
-      return;
-    }
-
-    const rateDAY_NIGHT = this.rates.find(
-      (rate) => rate.timeUnit == '1_night' || rate.timeUnit === '1_day'
-    );
-
-    if (rateDAY_NIGHT) {
-      this.rates = [];
-      this.notyfyService.notify(
-        'No se puede agregar una Rate Junto con una de Dia o Noche',
-        'warning',
-        2250
-      );
-    }
-
-    this.rates.push(rateRecive);
-  }
-
-  validatorIsDealBaseTicket() {
-    if (!this.dealBase) this.showSelectRateTickets = false;
-    if (!this.parkingSpace) this.showSelectRateTickets = false;
-    if (!('rates' in this.dealBase)) this.showSelectRateTickets = false;
-    this.showSelectRateTickets = true;
   }
 }

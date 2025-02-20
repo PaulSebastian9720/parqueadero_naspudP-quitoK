@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { DealBase } from '../../../../core/interfaces/dealBase';
+import { Contract } from '../../../../core/interfaces/contract';
+import { Ticket } from '../../../../core/interfaces/ticket';
 
 @Component({
   selector: 'app-table-contract',
@@ -18,6 +20,7 @@ import { DealBase } from '../../../../core/interfaces/dealBase';
 })
 export class TableContractComponent implements OnChanges {
   @Input() dealList: DealBase[] = [];
+  @Input() dealType: 'contract' | 'tickect' = 'tickect'; 
   dealListFilter: DealBase[] = [];
 
   currentPage: number = 1;
@@ -96,5 +99,15 @@ export class TableContractComponent implements OnChanges {
     this.totalPages = Math.ceil(this.dealList.length / this.itemsPerPage);
     this.dealListFilter = this.getPaginatedData();
     this.updatePages();
+  }
+
+
+  dealBase(dealBase: DealBase): string{
+    console.log(this.dealType)
+    if(this.dealType == 'contract'){
+      return (dealBase as Contract ).autoRenewal ? "YES" : "NO"
+    }else {
+      return (dealBase as Ticket ).accessTicket
+    }
   }
 }

@@ -9,6 +9,7 @@
         class="flex flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2"
       >
         <button
+          (click)="addNewUser()"
           class="flex justify-center items-center gap-1 w-auto px-4 py-2 border text-gray-700 border-gray-700 hover:bg-gray-700 hover:text-white rounded-md font-semibold"
         >
           <i class="fa fa-user-plus"></i>
@@ -205,22 +206,18 @@
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de los Automobiles del Cliente
       </h3>
-      <app-list-automobile
-        [listAutomobile]="automobiles"
-      >
+      <app-list-automobile [listAutomobile]="automobiles">
       </app-list-automobile>
 
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de Contratos del Cliente
       </h3>
-      <app-table-contract 
-        [dealList]="contractsList">
+      <app-table-contract [dealType]="'contract'" [dealList]="contractsList">
       </app-table-contract>
       <h3 class="font-bold text-xl sm:text-2xl mb-2">
         Listado de Tickets del Cliente
       </h3>
-      <app-table-contract [dealList]="ticketList">
-        
+      <app-table-contract [dealType]="'tickect'" [dealList]="ticketList">
       </app-table-contract>
     </div>
   </div>

@@ -92,23 +92,16 @@
       ></app-show-parkingspace>
     </div>
 
-    <!-- <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full gap-2">
+    <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full gap-2">
       <h2 class="text-lg font-semibold mb-2">Tarifa/Tarifas</h2>
       <ng-container *ngIf="showSelectRateTickets">
         <app-select-rate
-          [showSelect]="true"
-          [showRateInformations]="false"
-          [filterMonths]="false"
-          (eventRate)="reciveRate($event)"
-        ></app-select-rate>
-      </ng-container>
-      <ng-container *ngFor="let rate of rates">
-        <app-select-rate
           [showSelect]="false"
+          [showRateInformations]="true"
           [rateSelect]="rate"
         ></app-select-rate>
       </ng-container>
-    </div> -->
+    </div>
 
     <div class="bg-white px-6 py-4 rounded-lg shadow-lg w-full gap-2">
       <h2 class="text-lg font-semibold mb-2">Contratos y Tickets</h2>

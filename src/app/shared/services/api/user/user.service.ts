@@ -31,4 +31,9 @@ export class UserService {
     const query = `${this.API_ENDPOINT_USER}/change-state/${idPerson}`;
     return this.http.put<ResponseMessage>(query, null);
   }
+
+  insertUser(user: User):Observable<ResponseMessage> {
+    const query = `${this.API_ENDPOINT_USER}/insert`
+    return this.http.post<ResponseMessage>(query, user);
+  }
 }

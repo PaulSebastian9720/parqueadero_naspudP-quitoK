@@ -8,8 +8,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class JwtService {
     private JWT_KEY = "_jwt";
 
-    setToken(jwtUserCurrent: Jwt){
-        console.log(jwtUserCurrent)
+    setToken(jwtUserCurrent: string){
         localStorage.setItem(
             this.JWT_KEY,
             JSON.stringify(
@@ -18,8 +17,8 @@ export class JwtService {
         )
     }
 
-    getToken():Jwt | null {
-        return localStorage.getItem(this.JWT_KEY) as Jwt | null
+    getToken(): string  {
+        return localStorage.getItem(this.JWT_KEY) ?? ''
     }
 
     removeToken(){

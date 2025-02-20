@@ -42,7 +42,10 @@
       </div>
     </div>
     <div class="overflow-x-auto w-full mb-6">
-      <app-table-contract [dealList]="dealBaseFilter"></app-table-contract>
+      <app-table-contract 
+      [dealType]="tableTypeDeal"
+      [dealList]="dealBaseFilter">
+    </app-table-contract>
     </div>
   </div>
   

@@ -15,6 +15,7 @@ import { Contract } from '../../../../core/interfaces/contract';
 import { Ticket } from '../../../../core/interfaces/ticket';
 import { ContractService } from '../../../../shared/services/api/contract/contract';
 import { TicketService } from '../../../../shared/services/api/ticket/ticket';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-about-client',
@@ -38,6 +39,7 @@ export class AboutClientComponent implements OnInit {
     private showDialgConfirn: DialogService,
     private contactService: ContractService,
     private ticketService: TicketService,
+    private matDialogService: MatDialog
   ) {} // Servicio para obtener la lista de usuarios
 
   // Propiedades de entrada y salida del componente
@@ -45,8 +47,8 @@ export class AboutClientComponent implements OnInit {
   users: User[] = []; // Lista completa de usuarios
   filteredUsers: User[] = []; // Lista de usuarios filtrados según la búsqueda
   automobiles: Automobile[] = [];
-  contractsList : Contract [] =[]
-  ticketList : Ticket [] =[]
+  contractsList: Contract[] = [];
+  ticketList: Ticket[] = [];
   wordFilter: string = '';
   isEditing = false;
   isOpen = false;
@@ -67,7 +69,30 @@ export class AboutClientComponent implements OnInit {
     this.initUsers();
   }
 
-  selectTables(idPerson : number) {
+  addNewUser() {
+    const dialogRef = this.matDialogService.open(UpdateFormUserComponent);
+    const instance = dialogRef.componentInstance;
+    instance.isEditingMail = true;
+    instance.isEditing = true;
+    instance.showOptionals = false
+    instance.messageButton = 'Registrar';
+    instance.sendUser.subscribe((user) => {
+      this.userService.insertUser(user).subscribe(
+        (response) => {
+          if (response) {
+            this.initUsers();
+            this.notiticationService.notify(response.message, 'success', 2250);
+            this.matDialogService.closeAll()
+          }
+        },
+        (error) => {
+          this.notiticationService.notify(error.error, 'error', 2250);
+        }
+      );
+    });
+  }
+
+  selectTables(idPerson: number) {
     this.isLoadingTAuto = true;
     this.automobiles = [];
     this.contractsList = [];
@@ -77,22 +102,18 @@ export class AboutClientComponent implements OnInit {
       .subscribe((automobiles) => {
         this.automobiles = automobiles;
         this.isLoadingTAuto = false;
-      }
-    );
-    this.contactService.getContractListByIdPerson(idPerson)
+      });
+    this.contactService
+      .getContractListByIdPerson(idPerson)
       .subscribe((contracts) => {
         console.log(contracts);
         this.contractsList = contracts;
-      }
-    )
-    this.ticketService.getTicketsByIdPerson(idPerson)
-      .subscribe((tickets) => {
-        console.log(tickets);
-        this.ticketList = tickets;
-      }
-    )
+      });
+    this.ticketService.getTicketsByIdPerson(idPerson).subscribe((tickets) => {
+      console.log(tickets);
+      this.ticketList = tickets;
+    });
   }
- 
 
   updateItemsPerPage() {
     this.currentPage = 1;
@@ -231,7 +252,6 @@ export class AboutClientComponent implements OnInit {
     if (this.user.role === 'A' || this.user.role === 'CF') return; // Si el rol del usuario es 'A' o 'CF', no se puede editar
     this.isEditing = !this.isEditing; // Cambia el estado de edición
   }
-  
 
   /**
    * Método que se ejecuta cuando el usuario realiza una búsqueda.
